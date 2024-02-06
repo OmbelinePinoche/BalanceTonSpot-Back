@@ -26,7 +26,7 @@ class Spot
     private ?string $picture = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adress = null;
+    private ?string $address = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
@@ -92,14 +92,14 @@ class Spot
         return $this;
     }
 
-    public function getAdress(): ?string
+    public function getAddress(): ?string
     {
-        return $this->adress;
+        return $this->address;
     }
 
-    public function setAdress(string $adress): static
+    public function setAddress(string $adress): static
     {
-        $this->adress = $adress;
+        $this->address = $address;
 
         return $this;
     }
