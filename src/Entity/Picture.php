@@ -16,8 +16,12 @@ class Picture
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $path = null;
+
     #[ORM\ManyToOne(inversedBy: 'pictures')]
-    private ?spot $spot_id = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Spot $spot = null;
 
     public function getId(): ?int
     {
@@ -36,14 +40,26 @@ class Picture
         return $this;
     }
 
-    public function getSpotId(): ?spot
+    public function getPath(): ?string
     {
-        return $this->spot_id;
+        return $this->path;
     }
 
-    public function setSpotId(?spot $spot_id): static
+    public function setPath(string $path): static
     {
-        $this->spot_id = $spot_id;
+        $this->path = $path;
+
+        return $this;
+    }
+
+    public function getSpot(): ?Spot
+    {
+        return $this->spot;
+    }
+
+    public function setSpot(?Spot $spot): static
+    {
+        $this->spot = $spot;
 
         return $this;
     }

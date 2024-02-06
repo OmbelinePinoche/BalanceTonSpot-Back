@@ -18,7 +18,7 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: spot::class, mappedBy: 'location_id')]
+    #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location_id', orphanRemoval: true)]
     private Collection $spot_id;
 
     public function __construct()
@@ -44,29 +44,29 @@ class Location
     }
 
     /**
-     * @return Collection<int, spot>
+     * @return Collection<int, Spot>
      */
     public function getSpotId(): Collection
     {
         return $this->spot_id;
     }
 
-    public function addSpotId(spot $spotId): static
+    public function addSpotId(Spot $spotId): static
     {
         if (!$this->spot_id->contains($spotId)) {
             $this->spot_id->add($spotId);
-            $spotId->setLocationId($this);
+            $spotId->setLocation($this);
         }
 
         return $this;
     }
 
-    public function removeSpotId(spot $spotId): static
+    public function removeSpotId(Spot $spotId): static
     {
         if ($this->spot_id->removeElement($spotId)) {
             // set the owning side to null (unless already changed)
-            if ($spotId->getLocationId() === $this) {
-                $spotId->setLocationId(null);
+            if ($spotId->getLocation() === $this) {
+                $spotId->setLocation(null);
             }
         }
 

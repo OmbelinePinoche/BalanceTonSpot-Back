@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SpotRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpotRepository::class)]
@@ -19,30 +20,35 @@ class Spot
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $content = null;
+    private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Comment::class, mappedBy: 'spot_id')]
+    #[ORM\Column(length: 255)]
+    private ?string $picture = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adress = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
+    private ?string $rating = null;
+
+    #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
+    private Collection $sport_id;
+
+    #[ORM\ManyToOne(inversedBy: 'spot_id')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $location = null;
+
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot_id')]
     private Collection $comments;
 
     #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot_id')]
     private Collection $pictures;
 
-    #[ORM\ManyToMany(targetEntity: Sport::class)]
-    private Collection $sport_id;
-
-    #[ORM\Column(length: 255)]
-    private ?string $adress = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
-
-
-
     public function __construct()
     {
+        $this->sport_id = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->pictures = new ArrayCollection();
-        $this->sport_id = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -62,14 +68,86 @@ class Spot
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getDescription(): ?string
     {
-        return $this->content;
+        return $this->description;
     }
 
-    public function setContent(string $content): static
+    public function setDescription(string $description): static
     {
-        $this->content = $content;
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): static
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): static
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getRating(): ?string
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?string $rating): static
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sport>
+     */
+    public function getSportId(): Collection
+    {
+        return $this->sport_id;
+    }
+
+    public function addSportId(Sport $sportId): static
+    {
+        if (!$this->sport_id->contains($sportId)) {
+            $this->sport_id->add($sportId);
+        }
+
+        return $this;
+    }
+
+    public function removeSportId(Sport $sportId): static
+    {
+        $this->sport_id->removeElement($sportId);
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }
@@ -86,7 +164,7 @@ class Spot
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
-            $comment->setSpotId($this);
+            $comment->setSpot($this);
         }
 
         return $this;
@@ -96,8 +174,8 @@ class Spot
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getSpotId() === $this) {
-                $comment->setSpotId(null);
+            if ($comment->getSpot() === $this) {
+                $comment->setSpot(null);
             }
         }
 
@@ -116,7 +194,7 @@ class Spot
     {
         if (!$this->pictures->contains($picture)) {
             $this->pictures->add($picture);
-            $picture->setSpotId($this);
+            $picture->setSpot($this);
         }
 
         return $this;
@@ -126,61 +204,11 @@ class Spot
     {
         if ($this->pictures->removeElement($picture)) {
             // set the owning side to null (unless already changed)
-            if ($picture->getSpotId() === $this) {
-                $picture->setSpotId(null);
+            if ($picture->getSpot() === $this) {
+                $picture->setSpot(null);
             }
         }
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, sport>
-     */
-    public function getSportId(): Collection
-    {
-        return $this->sport_id;
-    }
-
-    public function addSportId(sport $sportId): static
-    {
-        if (!$this->sport_id->contains($sportId)) {
-            $this->sport_id->add($sportId);
-        }
-
-        return $this;
-    }
-
-    public function removeSportId(sport $sportId): static
-    {
-        $this->sport_id->removeElement($sportId);
-
-        return $this;
-    }
-
-    public function getAdress(): ?string
-    {
-        return $this->adress;
-    }
-
-    public function setAdress(string $adress): static
-    {
-        $this->adress = $adress;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    
 }

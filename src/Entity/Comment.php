@@ -16,16 +16,12 @@ class Comment
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comments')]
-    private ?users $name = null;
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?spot $spot_id = null;
-
-    #[ORM\ManyToOne(inversedBy: 'comment_id')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?users $user_id = null;
+    private ?Spot $spot = null;
 
     public function getId(): ?int
     {
@@ -44,38 +40,26 @@ class Comment
         return $this;
     }
 
-    public function getName(): ?users
+    public function getUsername(): ?string
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName(?users $name): static
+    public function setUsername(string $username): static
     {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
 
-    public function getSpotId(): ?spot
+    public function getSpot(): ?Spot
     {
-        return $this->spot_id;
+        return $this->spot;
     }
 
-    public function setSpotId(?spot $spot_id): static
+    public function setSpot(?Spot $spot): static
     {
-        $this->spot_id = $spot_id;
-
-        return $this;
-    }
-
-    public function getUserId(): ?users
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?users $user_id): static
-    {
-        $this->user_id = $user_id;
+        $this->spot = $spot;
 
         return $this;
     }
