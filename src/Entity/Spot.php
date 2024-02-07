@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: SpotRepository::class)]
 class Spot
@@ -16,6 +18,7 @@ class Spot
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['list_spot'], ['spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -33,6 +36,7 @@ class Spot
 
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
+
 
     #[ORM\ManyToOne(inversedBy: 'spot_id')]
     #[ORM\JoinColumn(nullable: false)]
@@ -97,7 +101,7 @@ class Spot
         return $this->address;
     }
 
-    public function setAddress(string $adress): static
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 
