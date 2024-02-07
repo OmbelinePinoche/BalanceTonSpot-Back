@@ -1,6 +1,6 @@
-# Balance Ton Spot - Backend (Symfony)
+# Balance Ton Spot - Backend
 
-Bienvenue dans le backend de l'application Balance Ton Spot ! Cette application permet aux utilisateurs de découvrir les spots de skateboard et snowboard dans les villes près de chez eux!
+Bienvenue dans le backend de l'application Balance Ton Spot ! Cette application permet aux utilisateurs de découvrir les spots de skateboard et snowboard près de chez eux!
 
 ## Prérequis
 
