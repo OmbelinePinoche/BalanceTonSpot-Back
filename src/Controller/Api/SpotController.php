@@ -38,7 +38,7 @@ class SpotController extends AbstractController
     public function listByLocation(SpotRepository $spotRepository, Spot $spot, Location $location = null): Response
     {
         if (!$spot) {
-            return $this->json(['message' => 'Aucun spot trouvé'], 404);
+            return $this->json(['message' => 'Aucun spot n\'a été trouvé'], 404);
         }
         // Get the spots from the repository searching by the param "location"
         $spotByLocation = $spotRepository->findBy(['location' => $location]);
@@ -47,28 +47,25 @@ class SpotController extends AbstractController
         return $this->json($spotByLocation, 200, [], ['groups' => 'spot_by_location']);
     }
 
-    // #[Route('/api/location/{id}/spots/snowboard', name: 'snow_spot_by_location', methods: ['GET'])]
-    // public function listSnowByLocation(int $id, SpotRepository $spotRepository, Spot $spot, $sport_id, LocationRepository $locationRepository, Location $location = null): Response
-    // {
-    //     // // Get the location from the repository
-    //     // $location = $locationRepository->find($id);
+    #[Route('/api/location/{id}/spots/snowboard', name: 'snow_spot_by_location', methods: ['GET'])]
+    public function listSnowByLocation(SpotRepository $spotRepository, Location $location): Response
+    {
+        // We check if the location exists
+        if (!$location) {
+            return $this->json(['message' => 'Lieu inconnu!'], 404);
+        }
 
-    //     // We check if the location exists
-    //     if (!$location) {
-    //         return $this->json(['message' => 'Lieu non trouvé.'], 404);
-    //     }
+        // Get snow spots associated to the given location 
+        $snowSpots = $spotRepository->getSnowSpotsByLocation($location);
 
-    //     // Get snow spots associated to the given location 
-    //     $snowSpots = $spotRepository->getSnowSpotsByLocation($location);
+        // Checks if the spots are found 
+        if (!$snowSpots) {
+            return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
+        }
 
-    //     // Checks if the spots are found 
-    //     if (!$snowSpots) {
-    //         return $this->json(['message' => 'Aucun spot n\a été trouvé!'], 404);
-    //     }
-
-    //     // Return the snow spots
-    //     return $this->json($snowSpots, 200, [], ['groups' => 'snow_spot_by_location']);
-    // }
+        // Return the snow spots according to the location
+        return $this->json($snowSpots, 200, [], ['groups' => 'snow_spot_by_location']);
+    }
 
     #[Route('/api/sport/{id}/spots', name: 'show_by_sport', methods: ['GET'])]
     public function listBySport(Sport $sport = null): Response
@@ -95,4 +92,5 @@ class SpotController extends AbstractController
 
         return $this->json($spot, 200, [], ['groups' => 'show']);
     }
+    
 }

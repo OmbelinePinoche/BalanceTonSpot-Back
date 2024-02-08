@@ -59,9 +59,10 @@ class SpotRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.location = :location')
-            ->andWhere('s.sport_id = :sport_id') 
+            ->innerJoin('s.sport_id', 'sport')
+            ->andWhere('sport.name = :name')
             ->setParameter('location', $location)
-            ->setParameter('sport_id', 'Snowboard')
+            ->setParameter('name', 'Snowboard')
             ->getQuery()
             ->getResult();
     }
