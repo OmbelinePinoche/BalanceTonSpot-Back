@@ -47,11 +47,21 @@ class SpotRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-    public function findBySport(Sport $sport): array
+
+    /**
+     * Get all the snowboard spots according the a specific location
+     *
+     * @param Location $location 
+     *
+     * @return array|null the snow spots for the given location
+     */
+    public function getSnowSpotsByLocation(Location $location): ?array
     {
         return $this->createQueryBuilder('s')
-            ->andWhere(':sport MEMBER OF s.sport_id')
-            ->setParameter('sport', $sport)
+            ->andWhere('s.location = :location')
+            ->andWhere('s.sport_id = :sport_id') 
+            ->setParameter('location', $location)
+            ->setParameter('sport_id', 'Snowboard')
             ->getQuery()
             ->getResult();
     }

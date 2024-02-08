@@ -4,6 +4,7 @@
 | --- | --- | --- | --- | --- |
 | `/api/location/{id}/spots` | GET | Snowboard | list | Lister tous les spots d’une ville |
 | `/api/location/{id}/spots/{id}` | GET | Snowboard | show | Accéder à un spot d’une ville |
+| `/api/spot/{id}` | GET | Main | list | Accéder à un spot |
 | `/api/spots` | GET | Main | list | Lister tous les spots |
 | `/api/spot/{id}/comments` | GET | Comment | listSnow | Lister les commentaires d’un spot |
 | `/api/login` | POST | User | login | Connexion d’un utilisateur |

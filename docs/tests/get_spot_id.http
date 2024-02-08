@@ -1,0 +1,5 @@
+GET http://ombeline-pinoche.vpnuser.lan:8080/api/spot/2 HTTP/1.1
+Content-Type: application/json
+
+{
+}

@@ -17,17 +17,20 @@ class Spot
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    
-    #[Groups(['show_snow'])]
+
+    #[Groups(['list_spot', 'show', 'show_snow'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
+    #[Groups(['show'])]
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
+    #[Groups(['list_spot'])]
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
+    #[Groups(['show'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
