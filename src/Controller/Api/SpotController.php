@@ -34,18 +34,18 @@ class SpotController extends AbstractController
         );
     }
 
-    // #[Route('/api/location/{id}/spots', name: 'spot_by_location', methods: ['GET'])]
-    // public function listByLocation(SpotRepository $spotRepository, Spot $spot, Location $location = null): Response
-    // {
-    //     if (!$spot) {
-    //         return $this->json(['message' => 'Aucun spot trouvé'], 404);
-    //     }
-    //     // Get the spots from the repository searching by the param "location"
-    //     $spotByLocation = $spotRepository->findBy(['location' => $location]);
+    #[Route('/api/location/{id}/spots', name: 'spot_by_location', methods: ['GET'])]
+    public function listByLocation(SpotRepository $spotRepository, Spot $spot, Location $location = null): Response
+    {
+        if (!$spot) {
+            return $this->json(['message' => 'Aucun spot trouvé'], 404);
+        }
+        // Get the spots from the repository searching by the param "location"
+        $spotByLocation = $spotRepository->findBy(['location' => $location]);
 
-    //     // Return all the spots according to the location
-    //     return $this->json($spotByLocation, 200, [], ['groups' => 'spot_by_location']);
-    // }
+        // Return all the spots according to the location
+        return $this->json($spotByLocation, 200, [], ['groups' => 'spot_by_location']);
+    }
 
     // #[Route('/api/location/{id}/spots/snowboard', name: 'snow_spot_by_location', methods: ['GET'])]
     // public function listSnowByLocation(int $id, SpotRepository $spotRepository, Spot $spot, $sport_id, LocationRepository $locationRepository, Location $location = null): Response
@@ -76,11 +76,12 @@ class SpotController extends AbstractController
         // Get the spots from the entity Sport 
         $spots = $sport->getSpotId();
         
+        // Checks if there is a spot in the requested sport
         if (!$spots) {
             return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
         }
-
-        return $this->json($spots, 200, [], ['groups' => 'show_snow']);
+        // Return the spots by sport type
+        return $this->json($spots, 200, [], ['groups' => 'show_by_sport']);
     }
     
     #[Route('/api/spot/{id}', name: 'show', methods: ['GET'])]

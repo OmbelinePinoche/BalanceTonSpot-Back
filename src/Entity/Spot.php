@@ -18,7 +18,7 @@ class Spot
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['list_spot', 'show', 'show_snow'])]
+    #[Groups(['list_spot', 'show', 'show_by_sport', 'spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
