@@ -66,4 +66,23 @@ class SpotRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Get all the skateboard spots according the a specific location
+     *
+     * @param Location $location 
+     *
+     * @return array|null the skateboard spots for the given location
+     */
+    public function getSkateSpotsByLocation(Location $location): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.location = :location')
+            ->innerJoin('s.sport_id', 'sport')
+            ->andWhere('sport.name = :name')
+            ->setParameter('location', $location)
+            ->setParameter('name', 'Skateboard')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -2,12 +2,12 @@
 
 | URL | HTTP METHOD | CONTROLLER | METHOD | COMMENTS |
 | --- | --- | --- | --- | --- |
-| `/api/location/{id}/spots` | GET | Snowboard | list | Lister tous les spots d’une ville |
-| `/api/location/{id}/spots/{id}` | GET | Snowboard | show | Accéder à un spot d’une ville |
-| `/api/spot/{id}` | GET | Main | list | Accéder à un spot |
-| `/api/spots` | GET | Main | list | Lister tous les spots |
-| `/api/location/{id}/spots/snowboard` | GET | Snowboard | list | Lister tous les spots de snowboard d’une ville |
-| `/api/location/{id}/spots/skateboard` | GET | Snowboard | list | Lister tous les spots de skateboard d’une ville |
+| `/api/location/{id}/spots` | GET | Sport | list | Lister tous les spots d’une ville |
+| `/api/location/{id}/spots/{id}` | GET | Sport | show | Accéder à un spot d’une ville |
+| `/api/spot/{id}` | GET | Spot | list | Accéder à un spot |
+| `/api/spots` | GET | Spot | list | Lister tous les spots |
+| `/api/location/{id}/spots/snowboard` | GET | Sport | list | Lister tous les spots de snowboard d’une ville |
+| `/api/location/{id}/spots/skateboard` | GET | Sport | list | Lister tous les spots de skateboard d’une ville |
 | `/api/spot/{id}/comments` | GET | Comment | listSnow | Lister les commentaires d’un spot |
 | `/api/login` | POST | User | login | Connexion d’un utilisateur |
 
@@ -15,10 +15,9 @@
 
 | URL | HTTP METHOD | CONTROLLER | METHOD | COMMENTS |
 | --- | --- | --- | --- | --- |
-| `/api/sport/{id}/spots` | POST | Snowboard | add | Ajouter un spot |
-| `/api/spot/{id}` | PUT | Snowboard | edit | Modifier un spot |
-| `/api/spot/{id}` | DELETE | Snowboard | delete | Supprimer un spot |
-| `/api/sport/{id}/spots` | POST | Skateboard | add | Ajouter un spot |
+| `/api/spots` | POST | Spot | add | Ajouter un spot |
+| `/api/spot/{id}` | PUT | Spot | edit | Modifier un spot |
+| `/api/spot/{id}` | DELETE | Spot | delete | Supprimer un spot |
 | `/api/users` | GET | User | list | Lister les utilisateurs |
 | `/api/user/{id}` | GET | User | show | Consulter un profil utilisateur |
 | `/api/user/new` | POST | User | add | Création d’un utilisateur |

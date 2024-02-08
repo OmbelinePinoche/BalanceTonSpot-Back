@@ -86,7 +86,7 @@ class SpotController extends AbstractController
         if (!$skateSpots) {
             return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
         }
-
+        
         // Return the skate spots according to the location
         return $this->json($skateSpots, 200, [], ['groups' => 'snow_spot_by_location']);
     }
@@ -96,7 +96,7 @@ class SpotController extends AbstractController
     {
         // Get the spots from the entity Sport 
         $spots = $sport->getSpotId();
-        
+
         // Checks if there is a spot in the requested sport
         if (!$spots) {
             return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
@@ -104,7 +104,7 @@ class SpotController extends AbstractController
         // Return the spots by sport type
         return $this->json($spots, 200, [], ['groups' => 'show_by_sport']);
     }
-    
+
     #[Route('/api/spot/{id}', name: 'show', methods: ['GET'])]
     public function show(SpotRepository $spotRepository, $id): Response
     {
@@ -116,8 +116,7 @@ class SpotController extends AbstractController
 
         return $this->json($spot, 200, [], ['groups' => 'show']);
     }
-    
-    
+
     #[Route('/api/spot/{id}', name: 'update_spot', methods: ['PUT'])]
     public function update(Spot $spot, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
     {
@@ -133,10 +132,10 @@ class SpotController extends AbstractController
         $updatedSpot = $serializer->deserialize($data, Spot::class, 'json', ['object_to_populate' => $spot]);
 
         $entityManager->persist($updatedSpot);
-        $entityManager->flush();  
- 
+        $entityManager->flush();
+
         // Return to the updated spot
-        return $this->json(['message' => 'Spot modifié!'], 200);
+        return $this->json(['message' => 'Spot modifié avec succès!'], 200);
     }
 
 }

@@ -37,7 +37,6 @@ class Spot
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
 
-
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
 
