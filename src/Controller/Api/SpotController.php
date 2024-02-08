@@ -8,10 +8,14 @@ use App\Entity\Spot;
 use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class SpotController extends AbstractController
 {
@@ -67,6 +71,26 @@ class SpotController extends AbstractController
         return $this->json($snowSpots, 200, [], ['groups' => 'snow_spot_by_location']);
     }
 
+    #[Route('/api/location/{id}/spots/skateboard', name: 'skate_spot_by_location', methods: ['GET'])]
+    public function listSkateByLocation(SpotRepository $spotRepository, Location $location): Response
+    {
+        // We check if the location exists
+        if (!$location) {
+            return $this->json(['message' => 'Lieu inconnu!'], 404);
+        }
+
+        // Get skate spots associated to the given location 
+        $skateSpots = $spotRepository->getSkateSpotsByLocation($location);
+
+        // Checks if the spots are found 
+        if (!$skateSpots) {
+            return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
+        }
+
+        // Return the skate spots according to the location
+        return $this->json($skateSpots, 200, [], ['groups' => 'snow_spot_by_location']);
+    }
+
     #[Route('/api/sport/{id}/spots', name: 'show_by_sport', methods: ['GET'])]
     public function listBySport(Sport $sport = null): Response
     {
@@ -93,4 +117,26 @@ class SpotController extends AbstractController
         return $this->json($spot, 200, [], ['groups' => 'show']);
     }
     
+    
+    #[Route('/api/spot/{id}', name: 'update_spot', methods: ['PUT'])]
+    public function update(Spot $spot, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
+    {
+        // Check if the spot exists
+        if (!$spot) {
+            // If not, send the message
+            return $this->json(['message' => 'Aucun spot n\a été trouvé!'], 404);
+        }
+
+        // Retrieve the data send in the request PUT
+        $data = $request->getContent();
+
+        $updatedSpot = $serializer->deserialize($data, Spot::class, 'json', ['object_to_populate' => $spot]);
+
+        $entityManager->persist($updatedSpot);
+        $entityManager->flush();  
+ 
+        // Return to the updated spot
+        return $this->json(['message' => 'Spot modifié!'], 200);
+    }
+
 }

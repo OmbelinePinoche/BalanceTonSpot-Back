@@ -15,10 +15,10 @@
 
 | URL | HTTP METHOD | CONTROLLER | METHOD | COMMENTS |
 | --- | --- | --- | --- | --- |
-| `/api/admin/sport/{id}/spots` | POST | Snowboard | add | Ajouter un spot |
-| `/api/admin/spot/{id}` | PUT | Snowboard | edit | Modifier un spot |
-| `/api/admin/spot/{id}` | DELETE | Snowboard | delete | Supprimer un spot |
-| `/api/admin/sport/{id}/spots` | POST | Skateboard | add | Ajouter un spot |
+| `/api/sport/{id}/spots` | POST | Snowboard | add | Ajouter un spot |
+| `/api/spot/{id}` | PUT | Snowboard | edit | Modifier un spot |
+| `/api/spot/{id}` | DELETE | Snowboard | delete | Supprimer un spot |
+| `/api/sport/{id}/spots` | POST | Skateboard | add | Ajouter un spot |
 | `/api/users` | GET | User | list | Lister les utilisateurs |
 | `/api/user/{id}` | GET | User | show | Consulter un profil utilisateur |
 | `/api/user/new` | POST | User | add | Création d’un utilisateur |
