@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Location;
+use App\Entity\Sport;
 use App\Entity\Spot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,4 +47,12 @@ class SpotRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function findBySport(Sport $sport): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere(':sport MEMBER OF s.sport_id')
+            ->setParameter('sport', $sport)
+            ->getQuery()
+            ->getResult();
+    }
 }

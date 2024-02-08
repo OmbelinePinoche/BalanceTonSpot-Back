@@ -17,11 +17,11 @@ class Spot
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[Groups(['list_spot'], ['spot_by_location'])]
+    
+    #[Groups(['show_snow'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
+    
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
@@ -34,9 +34,9 @@ class Spot
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
 
+
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
-
 
     #[ORM\ManyToOne(inversedBy: 'spot_id')]
     #[ORM\JoinColumn(nullable: false)]
