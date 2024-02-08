@@ -18,19 +18,19 @@ class Spot
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['list_spot', 'show', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
+    #[Groups(['list_spot', 'show', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
-    #[Groups(['show'])]
+    #[Groups(['show', 'new'])]
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
-    #[Groups(['list_spot'])]
+    #[Groups(['list_spot', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
-    #[Groups(['show'])]
+    #[Groups(['show', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
@@ -40,14 +40,14 @@ class Spot
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
 
-    #[ORM\ManyToOne(inversedBy: 'spot_id')]
+    #[ORM\ManyToOne(inversedBy: 'spot_id', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot_id')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot')]
     private Collection $comments;
 
-    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot_id')]
+    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot', orphanRemoval: true)]
     private Collection $pictures;
 
     public function __construct()

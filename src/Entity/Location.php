@@ -19,14 +19,14 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location', orphanRemoval: true)]
     private Collection $spot_id;
 
     public function __construct()
     {
         $this->spot_id = new ArrayCollection();
     }
-
+  
     public function getId(): ?int
     {
         return $this->id;

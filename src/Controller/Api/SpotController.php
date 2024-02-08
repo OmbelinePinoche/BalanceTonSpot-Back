@@ -3,6 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\Location;
+use App\Entity\Picture;
+use App\Entity\Comment;
 use App\Entity\Sport;
 use App\Entity\Spot;
 use App\Repository\LocationRepository;
@@ -86,7 +88,7 @@ class SpotController extends AbstractController
         if (!$skateSpots) {
             return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
         }
-        
+
         // Return the skate spots according to the location
         return $this->json($skateSpots, 200, [], ['groups' => 'snow_spot_by_location']);
     }
@@ -136,6 +138,22 @@ class SpotController extends AbstractController
 
         // Return to the updated spot
         return $this->json(['message' => 'Spot modifié avec succès!'], 200);
+    }
+
+    #[Route('/api/spot/{id}', name: 'delete', methods: ['DELETE'])]
+    public function remove(Spot $spot = null, EntityManagerInterface $entityManager): Response
+    {
+        // Check if the spot exists
+        if (!$spot) {
+
+            return $this->json(['message' => 'Aucun spot n\'a été trouvé'], 404);
+        }
+        // Delete the data send in the request 
+        $entityManager->remove($spot);
+        $entityManager->flush();
+
+        // Return the success message
+        return $this->json(['message' => 'Spot supprimé avec succès!'], 200);
     }
 
 }
