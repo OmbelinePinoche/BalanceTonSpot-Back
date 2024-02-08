@@ -140,6 +140,34 @@ class SpotController extends AbstractController
         return $this->json(['message' => 'Spot modifié avec succès!'], 200);
     }
 
+    #[Route('/api/spots', name: 'add_spot', methods: ['POST'])]
+    public function addSpot(Request $request, Spot $spot, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
+    {
+        // Retrieve the data send in the POST request
+        $data = json_decode($request->getContent(), true);
+        
+        // Create a new spot instance
+        $spot = new Spot();
+
+        // Set the properties from the given data
+        $spot->setName($data['name']);
+        $spot->setDescription($data['description']);
+
+        // Find the location entity by its id in the database
+        $location = $entityManager->getRepository(Location::class)->find($data['location_id']);
+
+        $spot->setLocation($location);
+        $spot->setAddress($data['address']);
+        $spot->setPicture($data['picture']);
+
+        // We need to persist the spot entity to the database to save the data
+        $entityManager->persist($spot);
+        $entityManager->flush();
+
+        return $this->json($spot, 201, [], ['groups' => 'new']);
+    }
+
+        
     #[Route('/api/spot/{id}', name: 'delete', methods: ['DELETE'])]
     public function remove(Spot $spot = null, EntityManagerInterface $entityManager): Response
     {
