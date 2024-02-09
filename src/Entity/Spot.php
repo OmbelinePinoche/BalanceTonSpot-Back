@@ -16,13 +16,14 @@ class Spot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['list_spot'])]
     private ?int $id = null;
 
     #[Groups(['list_spot', 'show', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
-    #[Groups(['show', 'new'])]
+    #[Groups(['list_spot', 'show', 'new'])]
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
@@ -30,7 +31,7 @@ class Spot
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
-    #[Groups(['show', 'new'])]
+    #[Groups(['list_spot', 'show', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 

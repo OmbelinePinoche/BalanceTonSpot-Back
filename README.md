@@ -42,18 +42,16 @@ Votre backend Symfony devrait être accessible à l'adresse http://localhost:808
 
 ## Endpoints
 
-- `/api/snowboard/spots` - GET - Récupérer la liste des spots de snowboard.
-- `/api/snowboard/spot/{id}` - GET - Accéder à un spot de snowboard spécifique.
-- `/api/admin/snowboard/spot` - POST - Ajouter un nouveau spot de snowboard.
-- `/api/admin/snowboard/spot/{id}` - PUT - Modifier les détails d'un spot de snowboard.
-- `/api/admin/snowboard/spot/{id}` - DELETE - Supprimer un spot de snowboard.
-- `/api/skateboard/spots` - GET - Récupérer la liste des spots de skateboard.
-- `/api/skateboard/spot/{id}` - GET - Accéder à un spot de skateboard spécifique.
-- `/api/admin/skateboard/spot` - POST - Ajouter un nouveau spot de skateboard.
-- `/api/admin/skateboard/spot/{id}` - PUT - Modifier les détails d'un spot de skateboard.
-- `/api/admin/skateboard/spot/{id}` - DELETE - Supprimer un spot de skateboard.
+- `/api/spot/{id}` - GET - Accéder à un spot de snowboard spécifique.
+- `/api/spots` - GET - Récupérer la liste de tous les spots.
+- `/api/sport/{id}/spots` - GET - Récupérer la liste des spots en fonction du sport.
+- `/api/location/{id}/spots` - GET - Récupérer tous les spots en fonction d'une ville
+- `/api/spots` - POST - Ajouter un nouveau spot de snowboard.
+- `/api/spot/{id}` - PUT - Modifier les détails d'un spot de snowboard.
+- `/api/spot/{id}` - DELETE - Supprimer un spot de snowboard.
+
 
 ## Documentation
 
-Vous pouvez retrouver quelques commandes pour l'installation de dépendances Symfony ou la création de classes dans le fichier `commandes.md` du dossier `docs`
+Vous pouvez retrouver quelques commandes pour l'installation de dépendances Symfony ou la création de classes dans le fichier `commandes.md` du dossier `docs`.
 Pour plus d'informations sur l'utilisation de chaque endpoint, veuillez consulter le fichier `endpoints.md`, également dans le dossier `docs`.

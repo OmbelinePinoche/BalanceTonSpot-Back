@@ -2,14 +2,16 @@
 
 | URL | HTTP METHOD | CONTROLLER | METHOD | COMMENTS |
 | --- | --- | --- | --- | --- |
-| `/api/location/{id}/spots` | GET | Sport | list | Lister tous les spots d’une ville |
-| `/api/location/{id}/spots/{id}` | GET | Sport | show | Accéder à un spot d’une ville |
-| `/api/spot/{id}` | GET | Spot | list | Accéder à un spot |
 | `/api/spots` | GET | Spot | list | Lister tous les spots |
+| `/api/location/{id}/spots` | GET | Spot | list | Lister tous les spots d’une ville |
+| `/api/location/{id}/spots/{id}` | GET | Spot | show | Accéder à un spot d’une ville |
+| `/api/spot/{id}` | GET | Spot | list | Accéder à un spot |
+| `/api/sport/{id}/spots` | GET | Sport | Lister tous les spots en fonction du sport |
 | `/api/location/{id}/spots/snowboard` | GET | Sport | list | Lister tous les spots de snowboard d’une ville |
 | `/api/location/{id}/spots/skateboard` | GET | Sport | list | Lister tous les spots de skateboard d’une ville |
 | `/api/spot/{id}/comments` | GET | Comment | listSnow | Lister les commentaires d’un spot |
-| `/api/login` | POST | User | login | Connexion d’un utilisateur |
+| `/api/login` | POST | Security | login | Connexion d’un utilisateur |
+| `/api/logout` | POST | Security | login | Déconnexion d’un utilisateur |
 
 **Routes Privées (connexion requise) :**
 
