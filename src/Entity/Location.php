@@ -6,6 +6,7 @@ use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location
@@ -18,14 +19,14 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location', orphanRemoval: true)]
     private Collection $spot_id;
 
     public function __construct()
     {
         $this->spot_id = new ArrayCollection();
     }
-
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -43,9 +44,11 @@ class Location
         return $this;
     }
 
+
     /**
      * @return Collection<int, Spot>
      */
+   
     public function getSpotId(): Collection
     {
         return $this->spot_id;

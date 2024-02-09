@@ -4,8 +4,8 @@ Bienvenue dans le backend de l'application Balance Ton Spot ! Cette application 
 
 ## Prérequis
 
-- PHP
-- Symfony 5.4
+- PHP 5.4
+- Symfony 7.0
 - Base de données (MySQL)
 
 ## Installation
@@ -19,39 +19,39 @@ Bienvenue dans le backend de l'application Balance Ton Spot ! Cette application 
 2. Installez les dépendances avec Composer:
 
     ```bash
-    composer install ou composer update
+    composer install
     ```
 
-3. Configurez votre base de données en copiant le fichier `.env.example` en `.env` et en modifiant les paramètres de connexion à la base de données.
+3. Configurez votre base de données en copiant le fichier `.env.example` en `.env` et en modifiant les paramètres de connexion à la base de données si besoin.
 
 4. Créez la base de données et effectuez les migrations:
 
     ```bash
     php bin/console doctrine:database:create
+    php bin/console make:migration
     php bin/console doctrine:migrations:migrate
     ```
 
 5. Lancez le serveur de développement:
 
     ```bash
-    php -S 0.0.0.0:8000 -t public
+    php -S 0.0.0.0:8080 -t public
     ```
 
-Votre backend Symfony devrait être accessible à l'adresse http://localhost:8000.
+Votre backend Symfony devrait être accessible à l'adresse http://localhost:8080.
 
 ## Endpoints
 
-- `/api/snowboard/spots` - GET - Récupérer la liste des spots de snowboard.
-- `/api/snowboard/spot/{id}` - GET - Accéder à un spot de snowboard spécifique.
-- `/admin/snowboard/spot` - POST - Ajouter un nouveau spot de snowboard.
-- `/admin/snowboard/spot/{id}` - PUT - Modifier les détails d'un spot de snowboard.
-- `/admin/snowboard/spot/{id}` - DELETE - Supprimer un spot de snowboard.
-- `/api/skateboard/spots` - GET - Récupérer la liste des spots de skateboard.
-- `/api/skateboard/spot/{id}` - GET - Accéder à un spot de skateboard spécifique.
-- `/admin/skateboard/spot` - POST - Ajouter un nouveau spot de skateboard.
-- `/admin/skateboard/spot/{id}` - PUT - Modifier les détails d'un spot de skateboard.
-- `/admin/skateboard/spot/{id}` - DELETE - Supprimer un spot de skateboard.
+- `/api/spot/{id}` - GET - Accéder à un spot de snowboard spécifique.
+- `/api/spots` - GET - Récupérer la liste de tous les spots.
+- `/api/sport/{id}/spots` - GET - Récupérer la liste des spots en fonction du sport.
+- `/api/location/{id}/spots` - GET - Récupérer tous les spots en fonction d'une ville
+- `/api/spots` - POST - Ajouter un nouveau spot de snowboard.
+- `/api/spot/{id}` - PUT - Modifier les détails d'un spot de snowboard.
+- `/api/spot/{id}` - DELETE - Supprimer un spot de snowboard.
+
 
 ## Documentation
 
-Pour plus d'informations sur l'utilisation de chaque endpoint, veuillez consulter le fichier `endpoints.md` dans le dossier `docs`.
+Vous pouvez retrouver quelques commandes pour l'installation de dépendances Symfony ou la création de classes dans le fichier `commandes.md` du dossier `docs`.
+Pour plus d'informations sur l'utilisation de chaque endpoint, veuillez consulter le fichier `endpoints.md`, également dans le dossier `docs`.

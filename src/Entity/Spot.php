@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: SpotRepository::class)]
 class Spot
@@ -14,17 +16,22 @@ class Spot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['list_spot'])]
     private ?int $id = null;
 
+    #[Groups(['list_spot', 'show', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
+    
+    #[Groups(['list_spot', 'show', 'new'])]
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
+    #[Groups(['list_spot', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
+    #[Groups(['list_spot', 'show', 'new'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
@@ -34,14 +41,14 @@ class Spot
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
 
-    #[ORM\ManyToOne(inversedBy: 'spot_id')]
+    #[ORM\ManyToOne(inversedBy: 'spot_id', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot_id')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot')]
     private Collection $comments;
 
-    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot_id')]
+    #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot', orphanRemoval: true)]
     private Collection $pictures;
 
     public function __construct()
@@ -97,7 +104,7 @@ class Spot
         return $this->address;
     }
 
-    public function setAddress(string $adress): static
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 

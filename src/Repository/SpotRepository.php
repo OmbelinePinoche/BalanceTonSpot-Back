@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Location;
+use App\Entity\Sport;
 use App\Entity\Spot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,28 +23,66 @@ class SpotRepository extends ServiceEntityRepository
         parent::__construct($registry, Spot::class);
     }
 
-//    /**
-//     * @return Spot[] Returns an array of Spot objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Spot[] Returns an array of Spot objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Spot
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Spot
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    /**
+     * Get all the snowboard spots according the a specific location
+     *
+     * @param Location $location 
+     *
+     * @return array|null the snow spots for the given location
+     */
+    public function getSnowSpotsByLocation(Location $location): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.location = :location')
+            ->innerJoin('s.sport_id', 'sport')
+            ->andWhere('sport.name = :name')
+            ->setParameter('location', $location)
+            ->setParameter('name', 'Snowboard')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get all the skateboard spots according the a specific location
+     *
+     * @param Location $location 
+     *
+     * @return array|null the skateboard spots for the given location
+     */
+    public function getSkateSpotsByLocation(Location $location): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.location = :location')
+            ->innerJoin('s.sport_id', 'sport')
+            ->andWhere('sport.name = :name')
+            ->setParameter('location', $location)
+            ->setParameter('name', 'Skateboard')
+            ->getQuery()
+            ->getResult();
+    }
 }
