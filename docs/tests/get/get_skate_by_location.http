@@ -1,4 +1,4 @@
-GET http://ombeline-pinoche.vpnuser.lan:8080/api/location/1/spots/skateboard HTTP/1.1
+GET http://ombelinepinoche-server.eddi.cloud:8443/api/location/1/spots/skateboard HTTP/1.1
 Content-Type: application/json
 
 {

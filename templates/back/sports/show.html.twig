@@ -1,0 +1,28 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Sport{% endblock %}
+
+{% block main %}
+    <h1>Sport</h1>
+
+    <table class="table">
+        <tbody>
+           
+            <tr>
+                <th>Nom du sport</th>
+                <td>{{ sport.name }}</td>
+            </tr>
+            <tr>
+                <th>Identification du sport</th>
+                <td>{{ sport.spot_id }}</td>
+            </tr>
+           
+        </tbody>
+    </table>
+
+    <a href="{{ path('browse_sport') }}">Retour à la liste</a>
+
+    <a href="">Modifier</a>
+
+    {# {{ include('back/sport/_delete_form.html.twig') }} #}
+{% endblock %}

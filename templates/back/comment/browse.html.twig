@@ -1,0 +1,36 @@
+{# {% extends 'base.html.twig' %} #}
+{% block main %}
+<h1>Liste des commentaires</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Content</th>
+                <th>Username</th>
+                <th>Spot</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                     
+                <td>{{ comment.content }}</td>
+                <td>{{ comment.username }}</td>
+                <td>{{ comment.spot }}</td>
+
+                <td><a href="{{ path('show_comment', {id : comment.id})}}">Liste des commentaires</a></td>
+                <td><a href="{{ path('edit_comment', {id : comment.id})}}">Modifier</a></td>  
+
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="10">Aucun commentaire trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('create_comment')}}">Créer un nouveau commentaire</a>
+{% endblock %}

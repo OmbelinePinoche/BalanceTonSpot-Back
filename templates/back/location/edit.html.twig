@@ -1,0 +1,10 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Modifier un spot{% endblock %}
+
+{% block main %}
+    <h1>Modifier un spot</h1>
+    {{ form(form) }}
+    <a href="{{ path('browse_spot') }}">Retour à la liste</a>
+    <a href="{{ path('remove_spot', {id:spot.id}) }}">Supprimer un spot</a>
+{% endblock %}
