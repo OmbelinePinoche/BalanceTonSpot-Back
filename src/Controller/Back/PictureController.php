@@ -4,7 +4,7 @@ namespace App\Controller\Back;
 
 use App\Entity\Picture;
 use App\Form\PictureType;
-use App\Repository\pictureRepository;
+use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +21,10 @@ class PictureController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'list_picture')]
-    public function browse(PictureRepository $pictureRepository): Response
+    public function browse(PictureRepository $PictureRepository): Response
     {
         // 1st step is getting all the pictures from the repository
-        $pictures = $pictureRepository->findAll();
+        $pictures = $PictureRepository->findAll();
        
         return $this->render('back/picture/browse.html.twig', [
             'pictures' => $pictures,
@@ -38,10 +38,10 @@ class PictureController extends AbstractController
      * @return Response
      */
     #[Route('/show/{id}', name: 'show_picture')]
-    public function show(PictureRepository $pictureRepository, $picture,  $id): Response
+    public function show(PictureRepository $PictureRepository, $picture,  $id): Response
     {
         // Get the picture by his ID
-        $picture = $pictureRepository->find($id);
+        $picture = $PictureRepository->find($id);
         
         // Return all the picture in the view
         return $this->render('back/picture/show.html.twig', [
@@ -59,7 +59,7 @@ class PictureController extends AbstractController
     {
         // Create a instance for the entity picture
         
-        $picture = new picture();
+        $picture = new Picture();
         // Create a form
 
         $form = $this->createForm(pictureType::class, $picture); 
@@ -75,7 +75,7 @@ class PictureController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the picture has been created.
             $this->addFlash(
                 'succès',
-                'Le picture '.$picture->getName().'a bien été créée !'
+                'La représentation visuelle '.$picture->getName().'a bien été créée !'
             );
             return $this->redirectToRoute('browse_picture');
           }
@@ -111,7 +111,7 @@ class PictureController extends AbstractController
           /*   We will display a 'flash message' which will allow us to display whether or not the picture has been created. */
             $this->addFlash(
                 'succès',
-                'Le picture '.$picture->getName().' a bien été modifié !'
+                'La représentation visuelle '.$picture->getName().' a bien été modifié !'
             );
             return $this->redirectToRoute('browse_picture');
         }
@@ -127,7 +127,7 @@ class PictureController extends AbstractController
      * @return Response
      */
     #[Route('/remove/{id}', name: 'remove_picture')]
-    public function remove(picture $picture, pictureRepository $pictureRepository, Request $request, EntityManagerInterface  $entityManager): Response
+    public function remove(picture $picture, PictureRepository $PictureRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want delete a picture so no need to create anything.
      /*    The picture exists already */

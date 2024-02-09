@@ -1,5 +1,6 @@
+{# {% extends 'base.html.twig' %} #}
 {% block main %}
-<h1>Spot list</h1>
+<h1>Liste des spots</h1>
 
     <table class="table">
         <thead>
@@ -21,7 +22,7 @@
                 <td>{{ spot.description }}</td>
                 <td>{{ spot.picture }}</td>
                 <td>{{ spot.address }}</td>
-                <td><a href="{{ path('show_spot', {id : spot.id})}}">Liste</a></td>
+                <td><a href="{{ path('show_spot', {id : spot.id})}}">Liste des spots</a></td>
                 <td><a href="{{ path('edit_spot', {id : spot.id})}}">Modifier</a></td>  
 
             </tr>
