@@ -1,0 +1,10 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Modifier un sport{% endblock %}
+
+{% block main %}
+    <h1>Modifier un sport</h1>
+    {{ form(form) }}
+    <a href="{{ path('browse_sport') }}">Retour à la liste</a>
+    <a href="{{ path('remove_sport', {id:sport.id}) }}">Supprimer un sport</a>
+{% endblock %}

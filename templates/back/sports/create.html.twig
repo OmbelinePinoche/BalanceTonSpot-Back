@@ -1,0 +1,11 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Nouveau sport{% endblock %}
+
+{% block main %}
+    <h1>Créer un nouveau sport</h1>
+
+    {{ form(form) }}
+
+    <a href="{{ path('browse_sport') }}">Retour à la liste</a>
+{% endblock %}
