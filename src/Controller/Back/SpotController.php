@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Spot;
+use App\Form\SpotType;
 use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -11,10 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * All routes in this class will start with back/spot
- */
-#[Route('/back/spot')]
+
 class SpotController extends AbstractController
 {
     /**
@@ -27,7 +25,7 @@ class SpotController extends AbstractController
     {
         // 1st step is getting all the spots from the repository
         $spots = $spotRepository->findAll();
-        // 
+       
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
         ]);
@@ -57,7 +55,7 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/create', name: 'create_spot')]
-    public function create(SpotRepository $SpotRepository, Request $request, EntityManagerInterface  $entityManager): Response
+    public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Create a instance for the entity spot
         
@@ -92,8 +90,8 @@ class SpotController extends AbstractController
      * Modify a spot via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_Spot')]
-    public function edit(Spot $spot, spotRepository $spotRepository, Request $request, EntityManagerInterface  $entityManager): Response
+    #[Route('/edit/{id}', name: 'edit_spot')]
+    public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager): Response
     {
          // Here , we want edit a spot so no need to create anything.
      /*    The spot exists already */
