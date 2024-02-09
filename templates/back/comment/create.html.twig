@@ -1,0 +1,11 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Nouveau commentaire{% endblock %}
+
+{% block main %}
+    <h1>Créer un nouveau commentaire</h1>
+
+    {{ form(form) }}
+
+    <a href="{{ path('browse_comment') }}">Retour à la liste</a>
+{% endblock %}

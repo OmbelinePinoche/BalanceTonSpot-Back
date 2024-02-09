@@ -1,0 +1,10 @@
+{# {% extends 'base.html.twig' %} #}
+
+{% block title %}Modifier un commentaire{% endblock %}
+
+{% block main %}
+    <h1>Modifier un commentaire</h1>
+    {{ form(form) }}
+    <a href="{{ path('browse_comment') }}">Retour à la liste</a>
+    <a href="{{ path('remove_comment', {id:comment.id}) }}">Supprimer un commentaire</a>
+{% endblock %}

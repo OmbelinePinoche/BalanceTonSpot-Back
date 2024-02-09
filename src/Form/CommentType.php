@@ -2,20 +2,20 @@
 
 namespace App\Form;
 
-use App\Entity\Picture;
+use App\Entity\Comment;
 use App\Entity\Spot;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PictureType extends AbstractType
+class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('path')
+            ->add('content')
+            ->add('username')
             ->add('spot', EntityType::class, [
                 'class' => Spot::class,
 'choice_label' => 'id',
@@ -26,7 +26,7 @@ class PictureType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Picture::class,
+            'data_class' => Comment::class,
         ]);
     }
 }

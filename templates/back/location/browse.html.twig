@@ -1,0 +1,39 @@
+{# {% extends 'base.html.twig' %} #}
+{% block main %}
+<h1>Liste des spots</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Picture</th>
+                <th>Address</th>
+        
+            </tr>
+        </thead>
+        <tbody>
+        {% for spot in spots %}
+            <tr>
+                     
+                <td>{{ spot.id }}</td>
+                <td>{{ spot.name }}</td>
+                <td>{{ spot.description }}</td>
+                <td>{{ spot.picture }}</td>
+                <td>{{ spot.address }}</td>
+                <td><a href="{{ path('show_spot', {id : spot.id})}}">Liste des spots</a></td>
+                <td><a href="{{ path('edit_spot', {id : spot.id})}}">Modifier</a></td>  
+
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="10">Aucun spot trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('create_spot')}}">Créer un nouveau spot</a>
+{% endblock %}
