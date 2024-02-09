@@ -19,19 +19,19 @@ class Spot
     #[Groups(['list_spot'])]
     private ?int $id = null;
 
-    #[Groups(['list_spot', 'show', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'new'])]
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
-    #[Groups(['list_spot', 'show', 'new'])]
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
-    #[Groups(['list_spot', 'new'])]
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
-    #[Groups(['list_spot', 'show', 'new'])]
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
