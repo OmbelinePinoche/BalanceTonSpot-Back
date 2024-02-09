@@ -6,7 +6,7 @@ composer create-project symfony/skeleton (nomduprojet)
 ```bash
 composer require symfony/apache-pack 
 ```
-## commande pour créer des controller : 
+## commande pour créer des controllers : 
 ```bash
 composer require --dev symfony/maker-bundle 
 ```
