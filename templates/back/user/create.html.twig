@@ -1,11 +1,10 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
-{% block title %}nouvel utilisateur{% endblock %}
 
 {% block main %}
-    <h1>Créer un nouvel utilisateur</h1>
+    <h1 class="text-muted fw-bold mb-4">AJouter un nouvel utilisateur</h1>
 
     {{ form(form) }}
-
-    <a href="{{ path('browse_user') }}">Retour à la liste</a>
+</br>
+    <a href="{{ path('list_user') }}">Retour à la liste</a>
 {% endblock %}

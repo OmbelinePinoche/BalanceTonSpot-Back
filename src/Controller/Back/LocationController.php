@@ -5,6 +5,8 @@ namespace App\Controller\Back;
 use App\Entity\Location;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
+use App\Repository\SportRepository;
+use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,37 +14,40 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+#[Route('/location')]
 class LocationController extends AbstractController
 {
     /**
      * Shows all locations in the backoffice
-     * Don't forget that the route above ('/back/location') will be the start of all the routes created below
      * @return Response
      */
     #[Route('/', name: 'list_location')]
-    public function browse(LocationRepository $LocationRepository): Response
+    public function browse(LocationRepository $LocationRepository, SpotRepository $spotRepository): Response
     {
         // 1st step is getting all the locations from the repository
-        $locations = $LocationRepository->findAll();
-       
+        $location = $LocationRepository->findAll();
+        $spots = $spotRepository->findAll();
         return $this->render('back/location/browse.html.twig', [
-            'locations' => $locations,
+            'location' => $location, 'spots' => $spots
         ]);
     }
 
     /**
      *  Shows a location by ID in the backoffice
-     *  Don't forget that the route above ('/back/location') will be the start of all the routes created below
      *
      * @return Response
      */
     #[Route('/show/{id}', name: 'show_location')]
-    public function show(LocationRepository $LocationRepository, $location,  $id): Response
+    public function show(LocationRepository $LocationRepository, $id): Response
     {
-        // Get the location by his ID
+        // Get the location by its ID
         $location = $LocationRepository->find($id);
-        
+
+        // Checks if the location exists
+        if (!$location) {
+            throw $this->createNotFoundException('Aucune ville ne répond à cet ID!');
+        }
+
         // Return all the location in the view
         return $this->render('back/location/show.html.twig', [
             'location' => $location,
@@ -54,15 +59,13 @@ class LocationController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/create', name: 'create_location')]
+    #[Route('/new', name: 'add_location')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Create a instance for the entity location
-        
+        // Create an instance for the entity location
         $location = new Location();
         // Create a form
-
-        $form = $this->createForm(LocationType::class, $location); 
+        $form = $this->createForm(LocationType::class, $location);
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
@@ -75,10 +78,10 @@ class LocationController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the location has been created.
             $this->addFlash(
                 'succès',
-                'La représentation visuelle '.$location->getName().'a bien été créée !'
+                'La ville' . $location->getName() . 'a bien été créée !'
             );
-            return $this->redirectToRoute('browse_location');
-          }
+            return $this->redirectToRoute('list_location');
+        }
 
         // Return the locations in the view
         return $this->render('back/location/create.html.twig', [
@@ -93,8 +96,8 @@ class LocationController extends AbstractController
     #[Route('/edit/{id}', name: 'edit_location')]
     public function edit(location $location, Request $request, EntityManagerInterface  $entityManager): Response
     {
-         // Here , we want edit a location so no need to create anything.
-     /*    The location exists already */
+        // Here we want to edit a location so no need to create anything.
+        /*    The location exists already */
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(LocationType::class, $location);
@@ -102,20 +105,22 @@ class LocationController extends AbstractController
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
-        // checks if the form has been submitted and if it is valid
+        // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-           // Here, no need to persist because it already exists so no need to recreate it 
-        
-            $entityManager->flush(); 
+            // Here, no need to persist because it already exists so no need to recreate it 
 
-          /*   We will display a 'flash message' which will allow us to display whether or not the location has been created. */
+            $entityManager->flush();
+
+            /*   We will display a 'flash message' which will allow us to display whether or not the location has been created. */
             $this->addFlash(
                 'succès',
-                'La représentation visuelle '.$location->getName().' a bien été modifié !'
+                'La ville' . $location->getName() . ' a bien été modifiée !'
             );
-            return $this->redirectToRoute('browse_location');
+
+            // I return all the locations in the view
+            return $this->redirectToRoute('list_location');
         }
-        // Je passe tous les locations à ma vue
+
         return $this->render('back/location/edit.html.twig', [
             'form' => $form,
             'location' => $location
@@ -129,14 +134,35 @@ class LocationController extends AbstractController
     #[Route('/remove/{id}', name: 'remove_location')]
     public function remove(location $location, LocationRepository $LocationRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here , we want delete a location so no need to create anything.
-     /*    The location exists already */
+        // Here we want delete a location so no need to create anything.
 
         // Delete the location
         $entityManager->remove($location);
         $entityManager->flush();
-        
+
         // Return user to the home page
-        return $this->redirectToRoute('browse_location');
+        return $this->redirectToRoute('list_location');
+    }
+
+    #[Route('/{id}/spots', name: 'show_by_location', methods: ['GET'])]
+    public function showByLocation(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Location $location = null)
+    {
+        // Checks if the given id location exists
+        if (!$location) {
+            return $this->json(['message' => 'Aucun emplacement n\'a été trouvé'], 404);
+        }
+        // Get all the locations
+        $locations = $locationRepository->findAll();
+        // Search the spots from the repository with the param "location"
+        $spots = $spotRepository->findBy(['location' => $location]);
+        $sports = $sportRepository->findAll();
+
+        // Return  to the view all the spots according to the location
+        return $this->render('back/spot/browse.html.twig', [
+            'spots' => $spots,
+            'sports' => $sports,
+            'location' => $location,
+            'locations' => $locations,
+        ]);
     }
 }

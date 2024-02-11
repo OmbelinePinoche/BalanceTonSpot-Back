@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1 class="text-muted fw-bold mb-4">Ajouter un nouveau sport</h1>
+
+    {{ form(form) }}
+</br>
+    <a href="{{ path('list_sport') }}">Retour à la liste</a>
+{% endblock %}

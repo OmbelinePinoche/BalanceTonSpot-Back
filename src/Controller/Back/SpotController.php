@@ -2,8 +2,11 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Location;
 use App\Entity\Spot;
 use App\Form\SpotType;
+use App\Repository\LocationRepository;
+use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,13 +24,19 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'list_spot')]
-    public function browse(SpotRepository $spotRepository): Response
+    public function browse(SpotRepository $spotRepository, LocationRepository $locationRepository, SportRepository $sportRepository): Response
     {
         // 1st step is getting all the spots from the repository
         $spots = $spotRepository->findAll();
-       
+        // Also all the locations
+        $locations = $locationRepository->findAll();
+        // And all the sports
+        $sports = $sportRepository->findAll();
+
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
+            'locations' => $locations,
+            'sports' => $sports
         ]);
     }
 
@@ -38,11 +47,16 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/show/{id}', name: 'show_spot')]
-    public function show(SpotRepository $SpotRepository, $spot,  $id): Response
+    public function show(SpotRepository $SpotRepository, $id): Response
     {
-        // Get the spot by his ID
+        // Get the spot by its ID
         $spot = $SpotRepository->find($id);
-        
+
+        // Checks if the spot exists
+        if (!$spot) {
+            throw $this->createNotFoundException('Aucun spot ne répond à cet ID!');
+        }
+
         // Return all the spot in the view
         return $this->render('back/spot/show.html.twig', [
             'spot' => $spot,
@@ -54,20 +68,18 @@ class SpotController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/create', name: 'create_spot')]
+    #[Route('/new', name: 'add_spot')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Create a instance for the entity spot
-        
+        // Create an instance for the entity spot
         $spot = new Spot();
         // Create a form
-
-        $form = $this->createForm(SpotType::class, $spot); 
+        $form = $this->createForm(SpotType::class, $spot);
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
 
-        //checks if the form has been submitted and if it is valid
+        // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($spot);
             $entityManager->flush();
@@ -75,12 +87,13 @@ class SpotController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the spot has been created.
             $this->addFlash(
                 'succès',
-                'Le spot '.$spot->getName().'a bien été créée !'
+                'Le spot ' . $spot->getName() . 'a bien été créé !'
             );
-            return $this->redirectToRoute('browse_spot');
-          }
 
-        // Return the spots in the view
+            // Return the spots in the view
+            return $this->redirectToRoute('list_spot');
+        }
+
         return $this->render('back/spot/create.html.twig', [
             'form' => $form,
         ]);
@@ -93,8 +106,8 @@ class SpotController extends AbstractController
     #[Route('/edit/{id}', name: 'edit_spot')]
     public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager): Response
     {
-         // Here , we want edit a spot so no need to create anything.
-     /*    The spot exists already */
+        // Here we want to edit a spot so no need to create anything.
+
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(SpotType::class, $spot);
@@ -104,16 +117,16 @@ class SpotController extends AbstractController
         $form->handleRequest($request);
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-           // Here, no need to persist because it already exists so no need to recreate it 
-        
-            $entityManager->flush(); 
+            // Here, no need to persist because it already exists so no need to recreate it 
 
-          /*   We will display a 'flash message' which will allow us to display whether or not the spot has been created. */
+            $entityManager->flush();
+
+            // We will display a 'flash message' which will allow us to display whether or not the spot has been created
             $this->addFlash(
                 'succès',
-                'Le spot '.$spot->getName().' a bien été modifié !'
+                'Le spot ' . $spot->getName() . ' a bien été modifié !'
             );
-            return $this->redirectToRoute('browse_spot');
+            return $this->redirectToRoute('list_spot');
         }
         // Je passe tous les spots à ma vue
         return $this->render('back/spot/edit.html.twig', [
@@ -129,14 +142,14 @@ class SpotController extends AbstractController
     #[Route('/remove/{id}', name: 'remove_spot')]
     public function remove(Spot $spot, spotRepository $spotRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here , we want delete a spot so no need to create anything.
-     /*    The spot exists already */
+        // Here we want delete a spot so no need to create anything
 
         // Delete the spot
         $entityManager->remove($spot);
         $entityManager->flush();
-        
+
         // Return user to the home page
-        return $this->redirectToRoute('browse_spot');
+        return $this->redirectToRoute('list_spot');
     }
+
 }
