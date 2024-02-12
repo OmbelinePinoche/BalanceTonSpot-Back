@@ -16,7 +16,7 @@ class Spot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['list_spot'])]
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     private ?int $id = null;
 
     #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
@@ -28,28 +28,36 @@ class Spot
     private ?string $description = null;
 
     #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 500)]
     private ?string $picture = null;
 
     #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
 
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
 
+    #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
     #[ORM\ManyToOne(inversedBy: 'spot_id', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Location $location = null;
 
+    #[Groups(['show'])]
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot')]
     private Collection $comments;
 
+    #[Groups(['show'])]
     #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot', orphanRemoval: true)]
     private Collection $pictures;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -215,6 +223,18 @@ class Spot
                 $picture->setSpot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

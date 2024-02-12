@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+#[Route('/comments')]
 class CommentController extends AbstractController
 {
     /**
@@ -25,9 +25,9 @@ class CommentController extends AbstractController
     {
         // 1st step is getting all the comments from the repository
         $comments = $CommentRepository->findAll();
-       
+
         return $this->render('back/comment/browse.html.twig', [
-            'comments' => $comments,
+            'comments' => $comments
         ]);
     }
 
@@ -38,11 +38,16 @@ class CommentController extends AbstractController
      * @return Response
      */
     #[Route('/show/{id}', name: 'show_comment')]
-    public function show(CommentRepository $CommentRepository, $comment,  $id): Response
+    public function show(CommentRepository $CommentRepository, $id): Response
     {
         // Get the comment by his ID
         $comment = $CommentRepository->find($id);
-        
+
+        // Condition if the given comment id doesn't exist
+        if (!$comment) {
+            throw $this->createNotFoundException('Aucun commentaire ne répond à cet ID!');
+        }
+
         // Return all the comment in the view
         return $this->render('back/comment/show.html.twig', [
             'comment' => $comment,
@@ -54,15 +59,13 @@ class CommentController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/create', name: 'create_comment')]
+    #[Route('/new', name: 'add_comment')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Create a instance for the entity comment
-        
+        // Create an instance for the entity comment
         $comment = new Comment();
         // Create a form
-
-        $form = $this->createForm(commentType::class, $comment); 
+        $form = $this->createForm(commentType::class, $comment);
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
@@ -75,10 +78,10 @@ class CommentController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the comment has been created.
             $this->addFlash(
                 'succès',
-                'Le commentaire '.$comment->getContent().'a bien été créée !'
+                'Le commentaire ' . $comment->getContent() . 'a bien été créé !'
             );
-            return $this->redirectToRoute('browse_comment');
-          }
+            return $this->redirectToRoute('list_comment');
+        }
 
         // Return the comments in the view
         return $this->render('back/comment/create.html.twig', [
@@ -93,8 +96,8 @@ class CommentController extends AbstractController
     #[Route('/edit/{id}', name: 'edit_comment')]
     public function edit(comment $comment, Request $request, EntityManagerInterface  $entityManager): Response
     {
-         // Here , we want edit a comment so no need to create anything.
-     /*    The comment exists already */
+        // Here we want to edit a comment so no need to create anything.
+        /*    The comment exists already */
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(commentType::class, $comment);
@@ -102,20 +105,22 @@ class CommentController extends AbstractController
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
-        // checks if the form has been submitted and if it is valid
+        // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-           // Here, no need to persist because it already exists so no need to recreate it 
-        
-            $entityManager->flush(); 
+            // Here, no need to persist because it already exists so no need to recreate it 
 
-          /*   We will display a 'flash message' which will allow us to display whether or not the comment has been created. */
+            $entityManager->flush();
+
+            /*   We will display a 'flash message' which will allow us to display whether or not the comment has been created. */
             $this->addFlash(
                 'succès',
-                'Le commentaire '.$comment->getContent().' a bien été modifié !'
+                'Le commentaire ' . $comment->getContent() . ' a bien été modifié !'
             );
-            return $this->redirectToRoute('browse_comment');
+
+            // I return all the comments in the view
+            return $this->redirectToRoute('list_comment');
         }
-        // Je passe tous les comments à ma vue
+
         return $this->render('back/comment/edit.html.twig', [
             'form' => $form,
             'comment' => $comment
@@ -130,13 +135,12 @@ class CommentController extends AbstractController
     public function remove(comment $comment, CommentRepository $CommentRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want delete a comment so no need to create anything.
-     /*    The comment exists already */
 
         // Delete the comment
         $entityManager->remove($comment);
         $entityManager->flush();
-        
+
         // Return user to the home page
-        return $this->redirectToRoute('browse_comment');
+        return $this->redirectToRoute('list_comment');
     }
 }

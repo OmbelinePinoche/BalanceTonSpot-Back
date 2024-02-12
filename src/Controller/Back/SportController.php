@@ -4,15 +4,17 @@ namespace App\Controller\Back;
 
 use App\Entity\Sport;
 use App\Form\SportType;
+use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
+use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
-
+#[Route('/sports')]
 class SportController extends AbstractController
 {
     /**
@@ -25,7 +27,7 @@ class SportController extends AbstractController
     {
         // 1st step is getting all the sports from the repository
         $sports = $SportRepository->findAll();
-       
+
         return $this->render('back/sport/browse.html.twig', [
             'sports' => $sports,
         ]);
@@ -37,12 +39,17 @@ class SportController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/show/{id}', name: 'show_sport')]
-    public function show(SportRepository $SportRepository, $sport,  $id): Response
+    #[Route('/show/{slug}', name: 'show_sport')]
+    public function show(SportRepository $SportRepository,  $id): Response
     {
-        // Get the sport by his ID
+        // Get the sport by its ID
         $sport = $SportRepository->find($id);
-        
+
+        // Checks if the sport exists
+        if (!$sport) {
+            throw $this->createNotFoundException('Aucun sport ne répond à cet ID!');
+        }
+
         // Return all the sport in the view
         return $this->render('back/sport/show.html.twig', [
             'sport' => $sport,
@@ -54,33 +61,38 @@ class SportController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/create', name: 'create_sport')]
-    public function create(Request $request, EntityManagerInterface  $entityManager): Response
+    #[Route('/new', name: 'add_sport')]
+    public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
-        // Create a instance for the entity sport
-        
+        // Create an instance for the entity sport
         $sport = new Sport();
         // Create a form
-
-        $form = $this->createForm(SportType::class, $sport); 
+        $form = $this->createForm(SportType::class, $sport);
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
 
-        //checks if the form has been submitted and if it is valid
+        // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Generate the slug using the Slugger service
+            $slug = $form->get('name')->getData() ?? ''; // Use the sport name by default if "name" field is available
+            $slug = $slugger->slug($slug);
+            $sport->setSlug($slug);
+
             $entityManager->persist($sport);
             $entityManager->flush();
 
             // We will display a flash message which will allow us to display whether or not the sport has been created.
             $this->addFlash(
                 'succès',
-                'Le sport '.$sport->getName().'a bien été créée !'
+                'Le sport ' . $sport->getName() . 'a bien été créé !'
             );
-            return $this->redirectToRoute('browse_sport');
-          }
 
-        // Return the sports in the view
+            // Return the sports in the view
+            return $this->redirectToRoute('list_sport');
+        }
+
         return $this->render('back/sport/create.html.twig', [
             'form' => $form,
         ]);
@@ -90,11 +102,11 @@ class SportController extends AbstractController
      * Modify a sport via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_sport')]
+    #[Route('/edit/{slug}', name: 'edit_sport')]
     public function edit(sport $sport, Request $request, EntityManagerInterface  $entityManager): Response
     {
-         // Here , we want edit a sport so no need to create anything.
-     /*    The sport exists already */
+        // Here we want to edit a sport so no need to create anything.
+        /*    The sport exists already */
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(SportType::class, $sport);
@@ -102,20 +114,21 @@ class SportController extends AbstractController
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
-        // checks if the form has been submitted and if it is valid
+        // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-           // Here, no need to persist because it already exists so no need to recreate it 
-        
-            $entityManager->flush(); 
+            // Here, no need to persist because it already exists so no need to recreate it 
 
-          /*   We will display a 'flash message' which will allow us to display whether or not the sport has been created. */
+            $entityManager->flush();
+
+            /*   We will display a 'flash message' which will allow us to display whether or not the sport has been created. */
             $this->addFlash(
                 'succès',
-                'Le sport '.$sport->getName().' a bien été modifié !'
+                'Le sport ' . $sport->getName() . ' a bien été modifié !'
             );
-            return $this->redirectToRoute('browse_sport');
+
+            // I return all the sports in the view
+            return $this->redirectToRoute('list_sport');
         }
-        // Je passe tous les sports à ma vue
         return $this->render('back/sport/edit.html.twig', [
             'form' => $form,
             'sport' => $sport
@@ -129,14 +142,36 @@ class SportController extends AbstractController
     #[Route('/remove/{id}', name: 'remove_sport')]
     public function remove(sport $sport, SportRepository $SportRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here , we want delete a sport so no need to create anything.
-     /*    The sport exists already */
+        // Here we want delete a sport so no need to create anything.
 
         // Delete the sport
         $entityManager->remove($sport);
         $entityManager->flush();
-        
+
         // Return user to the home page
-        return $this->redirectToRoute('browse_sport');
+        return $this->redirectToRoute('list_sport');
+    }
+
+    #[Route('/{slug}/spots', name: 'spot_by_sport', methods: ['GET'])]
+    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Sport $sport, $slug)
+    {
+        // Checks if the given id sport exists
+        if (!$sport) {
+            return $this->json(['message' => 'Aucun sport n\'a été trouvé'], 404);
+        }
+
+        // Search the spots from the repository with the param "sport"
+        $spots = $spotRepository->findBy(['sport_id' => $sport]);
+        $locations = $locationRepository->findAll();
+        // Get all the sports
+        $sports = $sportRepository->findAllBy(['slug' => $slug]);
+
+        // Return  to the view all the spots according to the sport
+        return $this->render('back/spot/browse.html.twig', [
+            'spots' => $spots,
+            'sports' => $sports,
+            'sport_id' => $sport,
+            'locations' => $locations,
+        ]);
     }
 }

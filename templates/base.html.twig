@@ -1,16 +1,75 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html></html>
+<html lang="en">
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Balance Ton Spot - BackOffice</title>
+
+		<!-- Getting bootstrap (and reboot.css) -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous"/>
+
+	</head>
+	<body>
+		<!-- Navigation bar -->
+		<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+			<div class="container">
+
+				<a class="navbar-brand" href="{{path('list_spot')}}">Balance Ton Spot</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('list_location')}}">Villes</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('list_sport')}}">Sports</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('list_comment')}}">Commentaires</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('list_user')}}">Utilisateurs</a>
+						</li>
+
+					</ul>
+				</div>
+
+               {# We display the dropdown menu only if the user is logged in #}
+                {# {% if is_granted('IS_AUTHENTICATED_FULLY') %} #}
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            {# We display the "username" property from the user object #}
+                            <span></span>
+                            <i class="bi bi-person-square"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="">Profil</a></li>                            
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="">Déconnexion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {# If the user is not logged in #}
+                {# {% else %} #}
+                <a href=""><button type="button" class="btn btn-danger me-2">Connexion</button></a>
+                {# {% endif %} #}
+
+			</div>
+		</nav>
+
+
+			{% block main %}
+				{# Here we call the content <body> in all the views which extend base.html.twig #}
+			{% endblock %}
+		</div>
+	</body>
+</html></body></html>

@@ -1,10 +1,13 @@
-{# {% extends 'base.html.twig' %} #}
-
-{% block title %}Modifier un spot{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>Modifier un spot</h1>
-    {{ form(form) }}
-    <a href="{{ path('browse_spot') }}">Retour à la liste</a>
-    <a href="{{ path('remove_spot', {id:spot.id}) }}">Supprimer un spot</a>
+
+	<h2 class="text-muted fw-bold mb-4">Modifier la ville:
+		{{ location.name }}</h2>
+
+{{ form(form) }}
+</br>
+<a href="{{ path('list_location') }}">Retour à la liste</a>
+<a href="{{ path('remove_location', {id:location.id}) }}">Supprimer cette ville</a>
+
 {% endblock %}

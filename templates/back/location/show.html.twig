@@ -1,39 +1,19 @@
-{# {% extends 'base.html.twig' %} #}
-
-{% block title %}Spot{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>Spot</h1>
+   <h2 class="text-muted fw-bold mb-4">{{ location.name }} </h2>
 
-    <table class="table">
+    <table class="table table-hover mt-4">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ spot.id }}</td>
+                <th>Nom</th>
+                <td>{{ location.name }}</td>
             </tr>
-            <tr>
-                <th>Nom du spot</th>
-                <td>{{ spot.name }}</td>
-            </tr>
-            <tr>
-                <th>Description du spot</th>
-                <td>{{ spot.description }}</td>
-            </tr>
-            <tr>
-                <th>Image du spot</th>
-                <td>{{ spot.picture }}</td>
-            </tr>
-            <tr>
-                <th>Adresse du spot</th>
-                <td>{{ spot.address }}</td>
-            </tr>
-    
         </tbody>
     </table>
 
-    <a href="{{ path('browse_spot') }}">Retour à la liste</a>
+    <td><a href="{{ path('list_location') }}">Retour à la liste</a></td>
 
-    <a href="">Modifier</a>
+   <td><a href="{{ path('edit_location', {'id': location.id}) }}">Modifier</a></td>
 
-    {# {{ include('back/spot/_delete_form.html.twig') }} #}
 {% endblock %}

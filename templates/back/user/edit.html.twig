@@ -1,10 +1,9 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
-{% block title %}Modifier un utilisateur{% endblock %}
 
 {% block main %}
-    <h1>Modifier un utilisateur</h1>
+   <h2 class="text-muted fw-bold mb-4">Modifier l'utilisateur {{ user.username }}</h1>
     {{ form(form) }}
-    <a href="{{ path('browse_comment') }}">Retour à la liste</a>
-    <a href="{{ path('remove_comment', {id:comment.id}) }}">Supprimer un utilisateur</a>
+    <a href="{{ path('list_user') }}">Retour à la liste</a>
+    <a href="{{ path('remove_user', {id:user.id}) }}">Supprimer cet utilisateur</a>
 {% endblock %}

@@ -1,39 +1,87 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
+
 {% block main %}
-<h1>Liste des spots</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Picture</th>
-                <th>Address</th>
-        
-            </tr>
-        </thead>
-        <tbody>
-        {% for spot in spots %}
-            <tr>
-                     
-                <td>{{ spot.id }}</td>
-                <td>{{ spot.name }}</td>
-                <td>{{ spot.description }}</td>
-                <td>{{ spot.picture }}</td>
-                <td>{{ spot.address }}</td>
-                <td><a href="{{ path('show_spot', {id : spot.id})}}">Liste des spots</a></td>
-                <td><a href="{{ path('edit_spot', {id : spot.id})}}">Modifier</a></td>  
+	<!-- main -->
 
-            </tr>
+	<div class="container my-4">
+		<p class="display-5">
+			Bienvenue dans le backOffice de
+			<strong>Balance Ton Spot</strong>, la référence des passionnés de sports de glisse!
+		</p>
 
-        {% else %}
-            <tr>
-                <td colspan="10">Aucun spot trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		<div class="container-xl bg-light p-5 border-top">
+			<div class="row mb-2">
+				<div class="col-12 col-lg-3">
+					<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
+						<h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
+						{% set displayed_locations = [] %}
+						{% for location in locations %}
+							{% if location.name not in displayed_locations %}
+								<a href="{{ path('show_by_location', {'id': location.id}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</a>
+								{% set displayed_locations = displayed_locations|merge([location.name]) %}
+							{% endif %}
+						{% endfor %}
 
-    <a href="{{ path('create_spot')}}">Créer un nouveau spot</a>
-{% endblock %}
+					</br>
+					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
+					{% set displayed_sports = [] %}
+					{% for sport in sports %}
+						{% if sport.name not in displayed_sports %}
+							<a href="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
+							{% set displayed_sports = displayed_sports|merge([sport.name]) %}
+						{% endif %}
+					{% endfor %}
+				</br>
+			</div>
+			<div class="col-12 col-lg-9">
+				<h2 class="text-muted fw-bold mb-4">Les spots
+					{# {% if is_granted('ROLE_MANAGER') %} #}
+					<a href="{{path('add_spot')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
+					{# {% endif %} #}
+				</h2>
+
+
+				<table class="table table-hover mt-4">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Description</th>
+							<th>Image</th>
+							<th>Ville</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for spot in spots %}
+							<tr>
+								<td>{{ spot.name }}</td>
+								<td>{{ spot.description }}</td>
+								<td>
+									{% if spot.picture %}
+										{% set fileName = spot.picture|split('/')|last %}
+										<img src="{{ asset('uploads/spots/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+									{% else %}
+										Aucune image disponible
+									{% endif %}
+								</td>
+								<td>{{ spot.location.name }}</td>
+								<td>
+									<a href="{{ path('show_spot', {slug : spot.slug})}}">Voir</a>
+								</td>
+								{# {% if is_granted('ROLE_MANAGER') %} #}
+								<td>
+									<a href="{{ path('edit_spot', {slug : spot.slug})}}">Modifier</a>
+								</td>
+								{# {% endif %} #}
+							</tr>
+
+						{% else %}
+							<tr>
+								<td colspan="10">Aucun spot trouvé</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+			{% endblock %}

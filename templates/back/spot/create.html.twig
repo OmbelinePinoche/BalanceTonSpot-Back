@@ -1,11 +1,10 @@
-{# {% extends 'base.html.twig' %} #}
-
-{% block title %}Nouveau Spot{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>Créer un nouveau spot</h1>
+
+    <h1 class="text-muted fw-bold mb-4">Ajouter un nouveau spot</h1>
 
     {{ form(form) }}
-
-    <a href="{{ path('browse_spot') }}">Retour à la liste</a>
+</br>
+    <a href="{{ path('list_spot') }}">Retour à la liste</a>
 {% endblock %}

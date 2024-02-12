@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
-class userController extends AbstractController
+#[Route('/users')]
+class UserController extends AbstractController
 {
     /**
      * Shows all users in the backoffice
@@ -38,11 +38,16 @@ class userController extends AbstractController
      * @return Response
      */
     #[Route('/show/{id}', name: 'show_user')]
-    public function show(UserRepository $UserRepository, $user,  $id): Response
+    public function show(UserRepository $UserRepository,  $id): Response
     {
-        // Get the user by his ID
+        // Get the user by its ID
         $user = $UserRepository->find($id);
         
+        // Checks if the user exists
+        if (!$user) {
+            throw $this->createNotFoundException('Aucun utilisateur ne répond à cet ID!');
+        }
+
         // Return all the user in the view
         return $this->render('back/user/show.html.twig', [
             'user' => $user,
@@ -54,20 +59,18 @@ class userController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/create', name: 'create_user')]
+    #[Route('/new', name: 'add_user')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Create a instance for the entity user
-        
+        // Create an instance for the entity user
         $user = new user();
         // Create a form
-
         $form = $this->createForm(UserType::class, $user); 
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
 
-        //checks if the form has been submitted and if it is valid
+        // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
@@ -75,12 +78,13 @@ class userController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the user has been created.
             $this->addFlash(
                 'succès',
-                'L utilisateur '.$user->getEmail().'a bien été créée !'
+                'L\'utilisateur '.$user->getEmail().'a bien été créé !'
             );
-            return $this->redirectToRoute('browse_user');
+            
+            // Return the users in the view
+            return $this->redirectToRoute('list_user');
           }
 
-        // Return the users in the view
         return $this->render('back/user/create.html.twig', [
             'form' => $form,
         ]);
@@ -93,8 +97,7 @@ class userController extends AbstractController
     #[Route('/edit/{id}', name: 'edit_user')]
     public function edit(user $user, Request $request, EntityManagerInterface  $entityManager): Response
     {
-         // Here , we want edit a user so no need to create anything.
-     /*    The user exists already */
+        // Here , we want edit a user so no need to create anything.
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(UserType::class, $user);
@@ -108,12 +111,12 @@ class userController extends AbstractController
         
             $entityManager->flush(); 
 
-          /*   We will display a 'flash message' which will allow us to display whether or not the user has been created. */
+        // We will display a 'flash message' which will allow us to display whether or not the user has been created
             $this->addFlash(
                 'succès',
                 'L utilisateur '.$user->getEmail().' a bien été modifié !'
             );
-            return $this->redirectToRoute('browse_user');
+            return $this->redirectToRoute('list_user');
         }
         // Je passe tous les users à ma vue
         return $this->render('back/user/edit.html.twig', [
@@ -129,14 +132,14 @@ class userController extends AbstractController
     #[Route('/remove/{id}', name: 'remove_user')]
     public function remove(user $user, UserRepository $UserRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here , we want delete a user so no need to create anything.
-     /*    The user exists already */
+        // Here we want delete a user so no need to create anything.
+        // The user exists already 
 
         // Delete the user
         $entityManager->remove($user);
         $entityManager->flush();
         
         // Return user to the home page
-        return $this->redirectToRoute('browse_user');
+        return $this->redirectToRoute('list_user');
     }
 }

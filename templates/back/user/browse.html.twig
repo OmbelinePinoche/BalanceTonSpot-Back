@@ -1,36 +1,55 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
+
 {% block main %}
-<h1>Liste des utilisateurs</h1>
+	<div class="container-xl bg-light p-5 border-top">
+		<div class="row mb-2">
+			<div class="col-12 col-lg-3">
+				<ul
+					class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
+				</br>
+			</br>
+		</br>
+		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
+		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par email</a>
+		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par rôle</a>
+	</br>
+</div>
+<div class="col-12 col-lg-9">
+	<h2 class="text-muted fw-bold mb-4">Les utilisateurs
+		{# {% if is_granted('ROLE_MANAGER') %} #}
+		<a href="{{path('add_user')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un utilisateur</a>
+		{# {% endif %} #}
+	</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
-               
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                     
-                <td>{{ user.content }}</td>
-                <td>{{ user.roles }}</td>
-                <td>{{ user.password }}</td>
+	<table class="table table-hover mt-4">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Pseudo</th>
+				<th>Email</th>
+				<th>Rôle</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.id }}</td>
+					<td>{{ user.username }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.role }}</td>
+					<td>
+						<a href="{{ path('show_user', {id : user.id})}}">Voir</a>
+					</td>
+					<td>
+						<a href="{{ path('edit_user', {id : user.id})}}">Modifier</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="10">Aucun utilisateur trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-                <td><a href="{{ path('show_user', {id : user.id})}}">Liste des utilisateurs</a></td>
-                <td><a href="{{ path('edit_user', {id : user.id})}}">Modifier</a></td>  
-
-            </tr>
-
-        {% else %}
-            <tr>
-                <td colspan="10">Aucun utilisateur trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('create_user')}}">Créer un nouveau utilisateur</a>
 {% endblock %}

@@ -1,4 +1,4 @@
--- Adminer 4.8.1 MySQL 10.11.6-MariaDB-1:10.11.6+maria~ubu2004 dump
+-- Adminer 4.8.1 MySQL 10.11.3-MariaDB-1:10.11.3+maria~ubu2004 dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -12,34 +12,38 @@ CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `spot_id` int(11) NOT NULL,
+  `spot_id` int(255) NOT NULL,
+  `date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_9474526C2DF1D37C` (`spot_id`),
   CONSTRAINT `FK_9474526C5B05007F` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `comment` (`id`, `content`, `username`, `spot_id`, `date`) VALUES
+(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	'lapinocherie',	1,	'2023-02-12');
 
 DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `location` (`id`, `name`) VALUES
-(1,	'Isola'),
-(2,	'Vars'),
-(3,	'LCZ'),
-(4,	'Paris'),
-(5,	'Nantes'),
-(6,	'Bordeaux'),
-(7,	'Le Havre'),
-(8,	'Nancy'),
-(9,	'Strasbourg'),
-(10,	'Lyon'),
-(11,	'Les 2 Alpes'),
-(12,	'Serre-Chevalier'),
-(13,	'Le Grand Bornand');
+INSERT INTO `location` (`id`, `name`, `slug`) VALUES
+(1,	'Isola',	'isola'),
+(2,	'Vars',	'vars'),
+(3,	'La Cluzaz',	'la-cluzaz'),
+(4,	'Paris',	'paris'),
+(5,	'Nantes',	'nantes'),
+(6,	'Bordeaux',	'bordeaux'),
+(7,	'Le Havre',	'le-havre'),
+(8,	'Nancy',	'nancy'),
+(9,	'Strasbourg',	'strasbourg'),
+(10,	'Lyon',	'lyon'),
+(11,	'Les 2 Alpes',	'les-2-alpes'),
+(12,	'Serre-Chevalier',	'serre-chevalier'),
+(13,	'Le Grand Bornand',	'le-grand-bornand');
 
 DROP TABLE IF EXISTS `picture`;
 CREATE TABLE `picture` (
@@ -53,29 +57,27 @@ CREATE TABLE `picture` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
-(1,	'Isola',	'https://isola2000.com/wp-content/uploads/2022/09/pano-cime-1920x960-1-1280x640.jpeg',	1),
-(2,	'Vars',	'https://cdn-s-www.ledauphine.com/images/0B4C75D1-BE1B-47ED-9CDF-B171D74277BD/NW_raw/le-snowpark-de-vars-s-etale-sur-plus-de-1-000-metres-de-denivele-c-est-ce-qui-fait-sa-singularite-et-sa-notoriete-qui-depassent-aujourd-hui-les-frontieres-europeennes-1390340766.jpg',	2),
-(3,	'La_Cluzaz',	'https://static.savoie-mont-blanc.com/wp-content/uploads/external/e132d5d4d725e4a69beabf7bcc818ecf-3800129-1745x1163.jpg',	3),
-(4,	'Bercy',	'https://cdn.paris.fr/paris/2021/03/17/huge-fe8b8dec36a98d44ea22fadfc2a095d1.jpg',	4),
-(5,	'Paris ',	'https://media.manawa.com/cache/activity_gallery_zoom_770x500/media/2019/01/99ed4a58c0595a482a40ddb65f406feb.jpeg',	5),
-(6,	'Jemmapes',	'https://skateparks.fr/wp-content/uploads/2020/11/jemmapes-01.jpg',	6),
-(7,	'Nantes',	'https://static.wixstatic.com/media/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg/v1/fill/w_2500,h_1502,al_c/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg',	7),
-(8,	'Bordeaux',	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/90/a7/7b/fb-img-1478629979136.jpg?w=1200&h=-1&s=1',	8),
-(9,	'Le_Havre',	'https://3.bp.blogspot.com/-I5nw9gx752o/V2rQZWsyXuI/AAAAAAAAPvg/Z_iWEgI-5jwSYtnGBSVziBG9jeUp9guAQCLcB/s1600/Skatepark%2BLe%2BHavre%2B2.jpg',	9),
-(10,	'Rives_de_Meurthe',	'https://numero4skateshop.com/product_images/uploaded_images/skatepark-de-nancy-rives-de-meurthe-n4-skateshop.jpg',	10),
-(11,	'La_Rotonde',	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7og6Z_GJeVIV2v76kj5pnwwnobUVuHwRzcDFr39CPTQ&s',	11),
-(12,	'Sergent_Blandan',	'https://lh5.googleusercontent.com/p/AF1QipOiqox3mm8s1YMUuVtqWbVu5aK4M5XljtRD170=w408-h272-k-no',	12),
-(13,	'2_Alpes',	'https://reservation.les2alpes.com/medias/images/perrine/snowpark_hiv_paysage_2.jpg',	13),
-(14,	'Serre-Chevalier',	'https://www.skiresort.fr/fileadmin/_processed_/c3/34/42/25/81527b2b3f.jpg',	14),
-(15,	'Grand_Bornand',	'https://www.snowsurf.com/media/__NEWS/news_2019/rs%202019/park%20check%20grand%20bo/snowpark%20gb%20grand%20bornand%202019%20ligne%20kickers.jpg',	15),
+(1,	'Isola.jpeg',	'https://isola2000.com/wp-content/uploads/2022/09/pano-cime-1920x960-1-1280x640.jpeg',	1),
+(3,	'La_Cluzaz.jpg',	'https://static.savoie-mont-blanc.com/wp-content/uploads/external/e132d5d4d725e4a69beabf7bcc818ecf-3800129-1745x1163.jpg',	3),
+(4,	'Bercy.jpg',	'https://cdn.paris.fr/paris/2021/03/17/huge-fe8b8dec36a98d44ea22fadfc2a095d1.jpg',	4),
+(5,	'EGP18.jpeg',	'https://media.manawa.com/cache/activity_gallery_zoom_770x500/media/2019/01/99ed4a58c0595a482a40ddb65f406feb.jpeg',	5),
+(6,	'Jemmapes.jpg',	'https://skateparks.fr/wp-content/uploads/2020/11/jemmapes-01.jpg',	6),
+(7,	'Le_Hangar.jpg',	'https://static.wixstatic.com/media/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg/v1/fill/w_2500,h_1502,al_c/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg',	7),
+(8,	'HDS.jpg',	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/90/a7/7b/fb-img-1478629979136.jpg?w=1200&h=-1&s=1',	8),
+(9,	'Le_Havre.jpg',	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/02/29/30/skatepark.jpg',	9),
+(10,	'Rives_de_Meurthe.jpg',	'https://numero4skateshop.com/product_images/uploaded_images/skatepark-de-nancy-rives-de-meurthe-n4-skateshop.jpg',	10),
+(11,	'La_Rotonde.jpeg',	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7og6Z_GJeVIV2v76kj5pnwwnobUVuHwRzcDFr39CPTQ&s',	11),
+(12,	'Sergent_Blandan.jpg',	'https://lh5.googleusercontent.com/p/AF1QipOiqox3mm8s1YMUuVtqWbVu5aK4M5XljtRD170=w408-h272-k-no',	12),
+(13,	'2_Alpes.jpg',	'https://reservation.les2alpes.com/medias/images/perrine/snowpark_hiv_paysage_2.jpg',	13),
+(14,	'Serre-Chevalier.jpg',	'https://www.skiresort.fr/fileadmin/_processed_/c3/34/42/25/81527b2b3f.jpg',	14),
+(15,	'Grand_Bornand.jpg',	'https://www.barnes-montblanc.com/uploads/sectors/36/hero_pictures/53984/show.jpg?1573573424',	15),
 (16,	'Isola_2',	'https://www.nicecotedazur.org/wp-content/uploads/2020/12/isola3-1210x635.jpg',	1),
-(17,	'Vars_2',	'https://woody.cloudly.space/app/uploads/vars/2023/02/thumbs/snowpark-vars-640x640.png',	2),
 (18,	'La_Cluzaz_2',	'https://www.laclusaz.com/app/uploads/apidae/7138618-diaporama-890x500.jpg',	3),
 (19,	'Bercy_2',	'https://1.bp.blogspot.com/-JNu_6Kli_u4/U016v6FQ7xI/AAAAAAAAE5A/nLEuU9Aanc4/s1600/Skatepark+Bercy+1+bis.jpg',	4),
 (20,	'EG18_2',	'https://skateparks.fr/wp-content/uploads/2023/11/EGP-18-Paris-05.jpg',	5),
 (21,	'Jemmapes_2',	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfmNnFGkHylqHiHXkP436XfYp3GrDG2UkCqA&usqp=CAU',	6),
 (22,	'Le_Hangar_2',	'https://www.rollerenligne.com/wp-content/uploads/skatepark-hangar-nantes-04-copyrigt-hangar.jpg',	7),
-(23,	'HD2__2',	'https://darwin.camp/wp-content/uploads/2015/09/12194614_890543381041055_1273745160829784654_o.jpg',	8),
+(23,	'HDS_2',	'https://darwin.camp/wp-content/uploads/2015/09/12194614_890543381041055_1273745160829784654_o.jpg',	8),
 (24,	'Le_Havre_2',	'https://3.bp.blogspot.com/-I5nw9gx752o/V2rQZWsyXuI/AAAAAAAAPvg/Z_iWEgI-5jwSYtnGBSVziBG9jeUp9guAQCLcB/s1600/Skatepark%2BLe%2BHavre%2B2.jpg',	9),
 (25,	'Rives_de_Meurthe_2',	'https://tuyo.fr/uploads/events/big/skatepark-rives-de-meurthe-594999.jpg',	10),
 (26,	'La_Rotonde_2',	'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0uHMuN7TFMBa5wCqCkLdFgKW6p9PwD8I47938lLNWgvVBfSIQ5x9DxwV87bfQukPPd1yx91SjVB0PgGwpZzREbFR9XCJR0uKweGtxqi1Ce06UBp02T9bVCKfDG7BGfk3hobUWS6hMehsK32yjbKh9Be_or8t_o0QkyPi28Q2BezOxT6Le388nIAtKXsQ/s4000/Skatepark%20Strasbourg%20(9).jpg',	11),
@@ -84,7 +86,6 @@ INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
 (29,	'Serre-Chevalier_2',	'https://www.skiresort.fr/fileadmin/_processed_/a3/3c/c8/89/19f0e50d64.jpg',	14),
 (30,	'Grand_Bornand_2',	'https://www.legrandbornand.com/medias/images/prestations/snowpark-2023-j-cathala-ot-lg-5-1455919.jpg',	15),
 (31,	'Isola_3',	'https://isola2000.com/wp-content/uploads/2023/11/isola-zoom-snowpark-2017-2018-v4-hd.png',	1),
-(32,	'Vars_3',	'https://woody.cloudly.space/app/uploads/vars/2021/09/thumbs/2020-150120113539-remi-morel-640x640.jpg',	2),
 (33,	'La_Cluzaz_3',	'https://www.snowpark-shop.com/upload/le-snowpark-de-la-clusaz-1633676444-43157.jpg',	3),
 (34,	'Bercy_3',	'https://ridemypark.com/wp-content/uploads/listing-uploads/gallery/2022/08/IMG-20220821-WA0006.jpg',	4),
 (35,	'EG18_3',	'https://ridemypark.com/wp-content/uploads/2021/03/7ddb4dc5ab3670654bad290bbebe9bc2_clementfemenias_43854_gallery_-1.jpeg',	5),
@@ -103,43 +104,45 @@ DROP TABLE IF EXISTS `sport`;
 CREATE TABLE `sport` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `sport` (`id`, `name`) VALUES
-(1,	'Skateboard'),
-(2,	'Snowboard');
+INSERT INTO `sport` (`id`, `name`, `slug`) VALUES
+(1,	'Skateboard',	'skateboard'),
+(2,	'Snowboard',	'snowboard');
 
 DROP TABLE IF EXISTS `spot`;
 CREATE TABLE `spot` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `picture` varchar(255) NOT NULL,
-  `adress` varchar(255) NOT NULL,
+  `description` varchar(1000) NOT NULL,
+  `picture` varchar(500) NOT NULL,
+  `address` varchar(255) NOT NULL,
   `rating` decimal(2,1) DEFAULT NULL,
   `location_id` int(11) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_B9327A7364D218E` (`location_id`),
-  CONSTRAINT `FK_B9327A7364D218E` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
+  CONSTRAINT `spot_ibfk_7` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `adress`, `rating`, `location_id`) VALUES
-(1,	'Isola 2000',	'Le snowpark d\'Isola 2000 vous propose une expérience exceptionnelle à 2300 mètres d’altitude sur le secteur Marmotte. Découvrez de nouvelles sensations de glisse tous les jours de 10h à 16h dans cet espace ludique et technique, entretenu quotidiennement pour votre plaisir.',	'https://isola2000.com/wp-content/uploads/2022/09/pano-cime-1920x960-1-1280x640.jpeg',	'Station d\'Isola',	5.4,	1),
-(2,	'Vars Park',	'Il y en a pour tout le monde. Le Varspark met un point d\'honneur à démocratiser la pratique du freestyle aussi bien pour les débutants que les spécialistes de la discipline.',	'https://cdn-s-www.ledauphine.com/images/0B4C75D1-BE1B-47ED-9CDF-B171D74277BD/NW_raw/le-snowpark-de-vars-s-etale-sur-plus-de-1-000-metres-de-denivele-c-est-ce-qui-fait-sa-singularite-et-sa-notoriete-qui-depassent-aujourd-hui-les-frontieres-europeennes-1390340766.jpg',	'Station de Vars',	5.4,	2),
-(3,	'LCZ Park',	'Le snowpark de La Cluzaz propose un espace ludique à tous les amateurs de freestyle ! Une multitude de modules est à disposition durant toute la saison pour permettre aux skieurs les plus fous d’exprimer toute leur créativité.',	'https://static.savoie-mont-blanc.com/wp-content/uploads/external/e132d5d4d725e4a69beabf7bcc818ecf-3800129-1745x1163.jpg',	'Station de La Clusaz',	5.4,	3),
-(4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'https://cdn.paris.fr/paris/2021/03/17/huge-fe8b8dec36a98d44ea22fadfc2a095d1.jpg',	'Rue Raymond Aron, 75012 Paris',	5.4,	4),
-(5,	'EGP18',	'C\'est désormais le plus gros skatepark parisien. Il se compose de parks, de 2  bowls en béton et d\'une fin-box permettant à des patineurs de niveaux variés de rider en indoor pour urface totale de 3545 m².',	'https://media.manawa.com/cache/activity_gallery_zoom_770x500/media/2019/01/99ed4a58c0595a482a40ddb65f406feb.jpeg',	'Imp. des Fillettes, 75018 Paris',	5.4,	4),
-(6,	'Jemmapes',	'Bien connu de la faune locale à roulettes, le skatepark du quai de Jemmapes fait partie des spots parisiens incontournables. Plutôt pas trop mal situé au bord du canal Saint Martin, assez ensoleillé, bien fréquenté en journée, ce petit park de ville aura de quoi vous combler pour démarrer/clôturer votre session entre potos.',	'https://skateparks.fr/wp-content/uploads/2020/11/jemmapes-01.jpg',	'140 quai de Jemmapes, 75010 Paris',	5.4,	4),
-(7,	'Le Hangar',	'Un skatepark indoor conçu à partir de matériaux de récupération pour rider proprement sur un florilège de modules : bowl en bois, big ramp, street area… Au Hangar, il y a de quoi faire le plein de sensations ou de frayeurs, ça dépendra de vous.',	'https://static.wixstatic.com/media/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg/v1/fill/w_2500,h_1502,al_c/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg',	'9 allée des Vinaigriers - 44300 Nantes',	5.4,	5),
-(8,	'Hangar Darwin Skatepark',	'Le skatepark Le Hangar est un skatepark couvert associatif de 5300 m², géré par la Ligue de l\'Enseignement - FAL 44. Accueillant des particuliers et des groupes, il propose des stages, des cours et organise des événements.',	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/90/a7/7b/fb-img-1478629979136.jpg?w=1200&h=-1&s=1',	'87 Quai des Queyries, 33100 Bordeaux',	5.4,	6),
-(9,	'Skatepark du Havre',	'C\'est le plus grand skatepark gratuit à ciel ouvert en France. Elaboré par des spécialistes, le skatepark a été pensé pour offrir une aire de jeux adaptée se prêtant au mieux à l\'exercice de la glisse. Il peut se vanter d\'offrir une aire de street de 600 m² avec des plans inclinés, mais aussi un bowl de 1200 m², soit une aire totale de 1800 m² pour s\'amuser, quelque soit son niveau ou sa pratique.',	'https://3.bp.blogspot.com/-I5nw9gx752o/V2rQZWsyXuI/AAAAAAAAPvg/Z_iWEgI-5jwSYtnGBSVziBG9jeUp9guAQCLcB/s1600/Skatepark%2BLe%2BHavre%2B2.jpg',	'27 Boulevard Albert 1er, 76600 Le Havre',	5.4,	7),
-(10,	'Skatepark Rives de Meurthe',	'Le skatepark des Rives de Meurthe est l\'un des spots de skate les plus populaires de Nancy. Avec ses différentes structures, il offre aux skateurs un lieu idéal pour pratiquer leur sport et développer leur talent.',	'https://numero4skateshop.com/product_images/uploaded_images/skatepark-de-nancy-rives-de-meurthe-n4-skateshop.jpg',	'Av. Charles Etienne Collignon, 54000 Nancy',	5.4,	8),
-(11,	'Skatepark de la Rotonde',	'C\'est l\'un des plus réussis de l\'agglomération Strasbourgoise. Il est d\'ailleurs fréquenté par les BMX, skateboards et rollers. Il a été conçu et dessiné par David Mougin, le petit frère de Nicolas Mougin, champion du monde amateur 2003/2004 en rampe.',	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7og6Z_GJeVIV2v76kj5pnwwnobUVuHwRzcDFr39CPTQ&s',	'Rue Pierre Nuss, 67200 Strasbourg',	5.4,	9),
-(12,	'Skatepark Sergent Blandan',	'Très typé street (avec quand même deux trois courbes bien raides par ci par là), il est rempli de belles idées. Il faudra quand même un bon niveau pour vraiment en profiter.',	'https://lh5.googleusercontent.com/p/AF1QipOiqox3mm8s1YMUuVtqWbVu5aK4M5XljtRD170=w408-h272-k-no',	'Rue de l\'Epargne, 69007 Lyon',	5.4,	10),
-(13,	'Les 2 Alpes',	'Station de ski phare du département de l’Isère, Les 2 Alpes jouit d’une réputation internationale. Elle est située au cœur du massif des Ecrins, dans l’Oisans. Avec une neige naturelle garantie grâce au domaine de haute altitude culminant à 3600m, vous avez l’assurance de skier en toute saison.',	'https://reservation.les2alpes.com/medias/images/perrine/snowpark_hiv_paysage_2.jpg',	'Station des Deux Alpes',	5.4,	11),
-(14,	'Serre-Chevalier',	'Plus grand domaine skiable des Alpes du Sud, Serre Chevalier est aussi l\'un des plus grands domaines d\'Europe avec ses 3 901 hectares. Débutant ou expert, découvrez tout un domaine XXL, par les forêts de mélèzes ou par les sommets offrant des panoramas de montagne exceptionnels.',	'https://www.skiresort.fr/fileadmin/_processed_/c3/34/42/25/81527b2b3f.jpg',	'Station de Serre-Chevalier',	5.4,	12),
-(15,	'Le Grand Bornand',	'Elle propose un domaine skiable préservé dans lequel vous pouvez pratiquer de nombreuses disciplines : ski alpin, ski nordique, biathlon, snowboard, ski de randonnée, raquettes, marche nordique, luge.',	'https://www.snowsurf.com/media/__NEWS/news_2019/rs%202019/park%20check%20grand%20bo/snowpark%20gb%20grand%20bornand%202019%20ligne%20kickers.jpg',	'Station du Grand Bornand',	5.4,	13);
+INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `address`, `rating`, `location_id`, `slug`) VALUES
+(1,	'Isola 2000',	'Le snowpark d\'Isola 2000 vous propose une expérience exceptionnelle à 2300 mètres d’altitude sur le secteur Marmotte. Découvrez de nouvelles sensations de glisse tous les jours de 10h à 16h dans cet espace ludique et technique, entretenu quotidiennement pour votre plaisir.',	'https://isola2000.com/wp-content/uploads/2022/09/pano-cime-1920x960-1-1280x640.jpeg',	'Station d\'Isola',	5.4,	1,	'isola-2000'),
+(2,	'Vars Park',	'Il y en a pour tout le monde. Le Varspark met un point d\'honneur à démocratiser la pratique du freestyle aussi bien pour les débutants que les spécialistes de la discipline.',	'https://cdn-s-www.ledauphine.com/images/0B4C75D1-BE1B-47ED-9CDF-B171D74277BD/NW_raw/le-snowpark-de-vars-s-etale-sur-plus-de-1-000-metres-de-denivele-c-est-ce-qui-fait-sa-singularite-et-sa-notoriete-qui-depassent-aujourd-hui-les-frontieres-europeennes-1390340766.jpg',	'Station de Vars',	5.4,	2,	'vars-park'),
+(3,	'LCZ Park',	'Le snowpark de La Cluzaz propose un espace ludique à tous les amateurs de freestyle ! Une multitude de modules est à disposition durant toute la saison pour permettre aux skieurs les plus fous d’exprimer toute leur créativité.',	'https://static.savoie-mont-blanc.com/wp-content/uploads/external/e132d5d4d725e4a69beabf7bcc818ecf-3800129-1745x1163.jpg',	'Station de La Clusaz',	5.4,	3,	'lcz-park'),
+(4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'https://cdn.paris.fr/paris/2021/03/17/huge-fe8b8dec36a98d44ea22fadfc2a095d1.jpg',	'Rue Raymond Aron, 75012 Paris',	5.4,	4,	'bercy'),
+(5,	'EGP18',	'C\'est désormais le plus gros skatepark parisien. Il se compose de parks, de 2  bowls en béton et d\'une fin-box permettant à des patineurs de niveaux variés de rider en indoor pour urface totale de 3545 m².',	'https://media.manawa.com/cache/activity_gallery_zoom_770x500/media/2019/01/99ed4a58c0595a482a40ddb65f406feb.jpeg',	'Imp. des Fillettes, 75018 Paris',	5.4,	4,	'egp18'),
+(6,	'Jemmapes',	'Bien connu de la faune locale à roulettes, le skatepark du quai de Jemmapes fait partie des spots parisiens incontournables. Plutôt pas trop mal situé au bord du canal Saint Martin, assez ensoleillé, bien fréquenté en journée, ce petit park de ville aura de quoi vous combler pour démarrer/clôturer votre session entre potos.',	'https://skateparks.fr/wp-content/uploads/2020/11/jemmapes-01.jpg',	'140 quai de Jemmapes, 75010 Paris',	5.4,	4,	'jemmapes'),
+(7,	'Le Hangar',	'Un skatepark indoor conçu à partir de matériaux de récupération pour rider proprement sur un florilège de modules : bowl en bois, big ramp, street area… Au Hangar, il y a de quoi faire le plein de sensations ou de frayeurs, ça dépendra de vous.',	'https://static.wixstatic.com/media/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg/v1/fill/w_2500,h_1502,al_c/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg',	'9 allée des Vinaigriers - 44300 Nantes',	5.4,	5,	'le-hangar'),
+(8,	'Hangar Darwin Skatepark',	'Le skatepark Le Hangar est un skatepark couvert associatif de 5300 m², géré par la Ligue de l\'Enseignement - FAL 44. Accueillant des particuliers et des groupes, il propose des stages, des cours et organise des événements.',	'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/90/a7/7b/fb-img-1478629979136.jpg?w=1200&h=-1&s=1',	'87 Quai des Queyries, 33100 Bordeaux',	5.4,	6,	'hangar-darwin-skatepark'),
+(9,	'Skatepark du Havre',	'C\'est le plus grand skatepark gratuit à ciel ouvert en France. Elaboré par des spécialistes, le skatepark a été pensé pour offrir une aire de jeux adaptée se prêtant au mieux à l\'exercice de la glisse. Il peut se vanter d\'offrir une aire de street de 600 m² avec des plans inclinés, mais aussi un bowl de 1200 m², soit une aire totale de 1800 m² pour s\'amuser, quelque soit son niveau ou sa pratique.',	'https://www.normandie-tourisme.fr/wp-content/uploads/wpetourisme/Skate-Park---Le-Havre.jpg',	'27 Boulevard Albert 1er, 76600 Le Havre',	5.4,	7,	'skatepark-du-havre'),
+(10,	'Rives de Meurthe',	'Le skatepark des Rives de Meurthe est l\'un des spots de skate les plus populaires de Nancy. Avec ses différentes structures, il offre aux skateurs un lieu idéal pour pratiquer leur sport et développer leur talent.',	'https://numero4skateshop.com/product_images/uploaded_images/skatepark-de-nancy-rives-de-meurthe-n4-skateshop.jpg',	'Av. Charles Etienne Collignon, 54000 Nancy',	5.4,	8,	'rives-de-meurthe'),
+(11,	'La Rotonde',	'C\'est l\'un des skateparks les plus réussis de l\'agglomération Strasbourgoise. Il est d\'ailleurs fréquenté par les BMX, skateboards et rollers. Il a été conçu et dessiné par David Mougin, le petit frère de Nicolas Mougin, champion du monde amateur 2003/2004 en rampe.',	'https://numero4skateshop.com/product_images/uploaded_images/strasbourg-skatepark-la-rotonde-n4-skateshop.jpeg',	'Rue Pierre Nuss, 67200 Strasbourg',	5.4,	9,	'la-rotonde'),
+(12,	'Sergent Blandan',	'Très typé street (avec quand même deux trois courbes bien raides par ci par là), ce skatepark est rempli de belles idées. Il faudra quand même un bon niveau pour vraiment en profiter.',	'https://skateparks.fr/wp-content/uploads/2020/11/sergent-blandan-skatepark-full.jpg',	'Rue de l\'Epargne, 69007 Lyon',	5.4,	10,	'sergent-blandan'),
+(13,	'Les 2 Alpes',	'Station de ski phare du département de l’Isère, Les 2 Alpes jouit d’une réputation internationale. Elle est située au cœur du massif des Ecrins, dans l’Oisans. Avec une neige naturelle garantie grâce au domaine de haute altitude culminant à 3600m, vous avez l’assurance de skier en toute saison.',	'https://reservation.les2alpes.com/medias/images/perrine/snowpark_hiv_paysage_2.jpg',	'Station des Deux Alpes',	5.4,	11,	'2-Alpes'),
+(14,	'Serre-Chevalier',	'Plus grand domaine skiable des Alpes du Sud, Serre Chevalier est aussi l\'un des plus grands domaines d\'Europe avec ses 3 901 hectares. Débutant ou expert, découvrez tout un domaine XXL, par les forêts de mélèzes ou par les sommets offrant des panoramas de montagne exceptionnels.',	'https://www.skiresort.fr/fileadmin/_processed_/c3/34/42/25/81527b2b3f.jpg',	'Station de Serre-Chevalier',	5.4,	12,	'serre-chevalier'),
+(15,	'Le Grand Bornand',	'Cette station propose un domaine skiable préservé dans lequel vous pouvez pratiquer de nombreuses disciplines : ski alpin, ski nordique, biathlon, snowboard, ski de randonnée, raquettes, marche nordique, luge.',	'https://www.barnes-montblanc.com/uploads/sectors/36/hero_pictures/53984/show.jpg?1573573424',	'Station du Grand Bornand',	5.4,	13,	'le-grand-bornand');
 
 DROP TABLE IF EXISTS `spot_sport`;
 CREATE TABLE `spot_sport` (
@@ -172,15 +175,15 @@ INSERT INTO `spot_sport` (`spot_id`, `sport_id`) VALUES
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(180) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `firstname` varchar(255) DEFAULT NULL,
   `lastname` varchar(255) DEFAULT NULL,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
-  `picture` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- 2024-02-06 13:49:04
+-- 2024-02-12 01:20:24

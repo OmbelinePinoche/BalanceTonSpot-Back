@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+	<h2 class="text-muted fw-bold mb-4">{{ sport.name }} </h2>
+
+	<table class="table table-hover mt-4">
+		<tbody>
+			<tr>
+				<th>Nom</th>
+				<td>{{ sport.name }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('list_sport') }}">Retour à la liste</a>
+
+	<a href="{{ path('edit_sport', {'slug': sport.slug}) }}">Modifier</a>
+
+{% endblock %}
