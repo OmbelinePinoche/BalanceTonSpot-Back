@@ -18,7 +18,7 @@
 						{% set displayed_locations = [] %}
 						{% for location in locations %}
 							{% if location.name not in displayed_locations %}
-								<a href="{{ path('show_by_location', {'id': location.id}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</a>
+								<a href="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</a>
 								{% set displayed_locations = displayed_locations|merge([location.name]) %}
 							{% endif %}
 						{% endfor %}
@@ -28,7 +28,7 @@
 					{% set displayed_sports = [] %}
 					{% for sport in sports %}
 						{% if sport.name not in displayed_sports %}
-							<a href="{{ path('show_by_sport', {'id': sport.id}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
+							<a href="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
 							{% set displayed_sports = displayed_sports|merge([sport.name]) %}
 						{% endif %}
 					{% endfor %}
@@ -67,11 +67,13 @@
 								</td>
 								<td>{{ spot.location.name }}</td>
 								<td>
-									<a href="{{ path('show_spot', {id : spot.id})}}">Voir</a>
+									<a href="{{ path('show_spot', {slug : spot.slug})}}">Voir</a>
 								</td>
+								{# {% if is_granted('ROLE_MANAGER') %} #}
 								<td>
-									<a href="{{ path('edit_spot', {id : spot.id})}}">Modifier</a>
+									<a href="{{ path('edit_spot', {slug : spot.slug})}}">Modifier</a>
 								</td>
+								{# {% endif %} #}
 							</tr>
 
 						{% else %}

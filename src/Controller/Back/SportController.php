@@ -2,14 +2,12 @@
 
 namespace App\Controller\Back;
 
-use App\Entity\Location;
 use App\Entity\Sport;
 use App\Form\SportType;
 use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,7 +38,7 @@ class SportController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/show/{id}', name: 'show_sport')]
+    #[Route('/show/{slug}', name: 'show_sport')]
     public function show(SportRepository $SportRepository,  $id): Response
     {
         // Get the sport by its ID
@@ -97,7 +95,7 @@ class SportController extends AbstractController
      * Modify a sport via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_sport')]
+    #[Route('/edit/{slug}', name: 'edit_sport')]
     public function edit(sport $sport, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a sport so no need to create anything.
@@ -147,8 +145,8 @@ class SportController extends AbstractController
         return $this->redirectToRoute('list_sport');
     }
 
-    #[Route('/{id}/spots', name: 'spot_by_sport', methods: ['GET'])]
-    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Sport $sport)
+    #[Route('/{slug}/spots', name: 'spot_by_sport', methods: ['GET'])]
+    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Sport $sport, $slug)
     {
         // Checks if the given id sport exists
         if (!$sport) {
@@ -159,7 +157,8 @@ class SportController extends AbstractController
         $spots = $spotRepository->findBy(['sport_id' => $sport]);
         $locations = $locationRepository->findAll();
         // Get all the sports
-        $sports = $sportRepository->findAll();
+        $sports = $sportRepository->findAllBy(['slug' => $slug]);
+
         // Return  to the view all the spots according to the sport
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,

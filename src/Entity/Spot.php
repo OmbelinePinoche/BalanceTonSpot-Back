@@ -28,7 +28,7 @@ class Spot
     private ?string $description = null;
 
     #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 500)]
     private ?string $picture = null;
 
     #[Groups(['list_spot', 'show', 'new', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location'])]
@@ -50,6 +50,9 @@ class Spot
 
     #[ORM\OneToMany(targetEntity: Picture::class, mappedBy: 'spot', orphanRemoval: true)]
     private Collection $pictures;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -215,6 +218,18 @@ class Spot
                 $picture->setSpot(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

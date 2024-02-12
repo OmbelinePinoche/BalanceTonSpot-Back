@@ -22,6 +22,9 @@ class Location
     #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location', orphanRemoval: true)]
     private Collection $spot_id;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->spot_id = new ArrayCollection();
@@ -72,6 +75,18 @@ class Location
                 $spotId->setLocation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

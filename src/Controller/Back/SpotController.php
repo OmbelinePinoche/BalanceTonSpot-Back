@@ -2,22 +2,27 @@
 
 namespace App\Controller\Back;
 
-use App\Entity\Location;
 use App\Entity\Spot;
 use App\Form\SpotType;
 use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SpotController extends AbstractController
 {
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     /**
      * Shows all spots in the backoffice
      * Don't forget that the route above ('/back/spot') will be the start of all the routes created below
@@ -46,11 +51,11 @@ class SpotController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/show/{id}', name: 'show_spot')]
-    public function show(SpotRepository $SpotRepository, $id): Response
+    #[Route('/show/{slug}', name: 'show_spot')]
+    public function show(SpotRepository $spotRepository, $slug): Response
     {
-        // Get the spot by its ID
-        $spot = $SpotRepository->find($id);
+        // Get the spot by its slug
+        $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
         // Checks if the spot exists
         if (!$spot) {
@@ -103,7 +108,7 @@ class SpotController extends AbstractController
      * Modify a spot via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_spot')]
+    #[Route('/edit/{slug}', name: 'edit_spot')]
     public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a spot so no need to create anything.
@@ -128,6 +133,7 @@ class SpotController extends AbstractController
             );
             return $this->redirectToRoute('list_spot');
         }
+
         // Je passe tous les spots à ma vue
         return $this->render('back/spot/edit.html.twig', [
             'form' => $form,
@@ -151,5 +157,4 @@ class SpotController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list_spot');
     }
-
 }

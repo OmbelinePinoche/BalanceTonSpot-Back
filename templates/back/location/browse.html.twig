@@ -34,7 +34,7 @@
 								<td>{{ location.id }}</td>
 								<td>{{ location.name }}</td>
 								<td>
-									<a href="{{ path('edit_location', {id : location.id})}}">Modifier</a>
+									<a href="{{ path('edit_location', {slug : location.slug})}}">Modifier</a>
 								</td>
 								<td>
 									<a href="{{ path('remove_location', {id : location.id})}}">Supprimer</a>
