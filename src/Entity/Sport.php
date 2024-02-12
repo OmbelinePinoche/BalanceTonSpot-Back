@@ -24,7 +24,7 @@ class Sport
     #[ORM\ManyToMany(targetEntity: Spot::class, mappedBy: 'sport_id')]
     private Collection $spot_id;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
     public function __construct()

@@ -25,7 +25,7 @@ class SpotController extends AbstractController
         $this->slugger = $slugger;
     }
 
-    #[Route('/api/spots', name: 'list_spot', methods: ['GET'])]
+    #[Route('/api/spots', name: 'list', methods: ['GET'])]
     public function list(SpotRepository $spotRepository): Response
     {
         // 1st step is getting all the spots from the repository

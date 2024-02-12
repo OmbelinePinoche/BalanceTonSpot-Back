@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `slug` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -104,7 +104,7 @@ DROP TABLE IF EXISTS `sport`;
 CREATE TABLE `sport` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `slug` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -121,7 +121,7 @@ CREATE TABLE `spot` (
   `address` varchar(255) NOT NULL,
   `rating` decimal(2,1) DEFAULT NULL,
   `location_id` int(11) NOT NULL,
-  `slug` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_B9327A7364D218E` (`location_id`),
   CONSTRAINT `spot_ibfk_7` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
@@ -186,4 +186,4 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- 2024-02-12 01:17:46
+-- 2024-02-12 01:20:24
