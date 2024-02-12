@@ -74,7 +74,7 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/new', name: 'add_spot')]
-    public function create(Request $request, EntityManagerInterface  $entityManager): Response
+    public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity spot
         $spot = new Spot();
@@ -86,6 +86,12 @@ class SpotController extends AbstractController
 
         // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Generate the slug using the Slugger service
+            $slug = $form->get('name')->getData() ?? ''; // Use the spot name by default if "name" field is available
+            $slug = $slugger->slug($slug);
+            $spot->setSlug($slug);
+
             $entityManager->persist($spot);
             $entityManager->flush();
 

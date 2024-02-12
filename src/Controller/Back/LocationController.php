@@ -93,7 +93,7 @@ class LocationController extends AbstractController
      * Modify a location via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{slug}', name: 'edit_location')]
+    #[Route('/edit/{id}', name: 'edit_location')]
     public function edit(location $location, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a location so no need to create anything.
@@ -144,7 +144,7 @@ class LocationController extends AbstractController
         return $this->redirectToRoute('list_location');
     }
 
-    #[Route('/{slug}/spots', name: 'show_by_location', methods: ['GET'])]
+    #[Route('/{id}/spots', name: 'show_by_location', methods: ['GET'])]
     public function showByLocation(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Location $location = null)
     {
         // Checks if the given id location exists

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/sports')]
 class SportController extends AbstractController
@@ -61,7 +62,7 @@ class SportController extends AbstractController
      * @return Response
      */
     #[Route('/new', name: 'add_sport')]
-    public function create(Request $request, EntityManagerInterface  $entityManager): Response
+    public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity sport
         $sport = new Sport();
@@ -73,6 +74,12 @@ class SportController extends AbstractController
 
         // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Generate the slug using the Slugger service
+            $slug = $form->get('name')->getData() ?? ''; // Use the sport name by default if "name" field is available
+            $slug = $slugger->slug($slug);
+            $sport->setSlug($slug);
+
             $entityManager->persist($sport);
             $entityManager->flush();
 
