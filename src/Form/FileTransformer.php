@@ -15,7 +15,6 @@ class FileTransformer implements DataTransformerInterface
         if ($value instanceof File) {
             return $value->getPathname();
         }
-
         return null;
     }
 
@@ -25,7 +24,6 @@ class FileTransformer implements DataTransformerInterface
         if (!empty($value)) {
             return new File($value);
         }
-
         return null;
     }
 }

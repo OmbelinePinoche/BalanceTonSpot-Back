@@ -105,8 +105,6 @@ class SportController extends AbstractController
     #[Route('/edit/{slug}', name: 'edit_sport')]
     public function edit(sport $sport, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here we want to edit a sport so no need to create anything.
-        /*    The sport exists already */
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(SportType::class, $sport);
@@ -152,7 +150,7 @@ class SportController extends AbstractController
         return $this->redirectToRoute('list_sport');
     }
 
-    #[Route('/{slug}/spots', name: 'spot_by_sport', methods: ['GET'])]
+    #[Route('/{slug}/spots', name: 'show_by_sport', methods: ['GET'])]
     public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Sport $sport, $slug)
     {
         // Checks if the given id sport exists
@@ -162,7 +160,9 @@ class SportController extends AbstractController
 
         // Search the spots from the repository with the param "sport"
         $spots = $spotRepository->findBy(['sport_id' => $sport]);
+        
         $locations = $locationRepository->findAll();
+
         // Get all the sports
         $sports = $sportRepository->findAllBy(['slug' => $slug]);
 

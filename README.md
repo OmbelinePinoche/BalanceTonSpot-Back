@@ -42,14 +42,15 @@ Votre backend Symfony devrait être accessible à l'adresse http://localhost:808
 
 ## Endpoints
 
-- `/api/spot/{id}` - GET - Accéder à un spot de snowboard spécifique.
-- `/api/spots` - GET - Récupérer la liste de tous les spots.
-- `/api/sport/{id}/spots` - GET - Récupérer la liste des spots en fonction du sport.
-- `/api/location/{id}/spots` - GET - Récupérer tous les spots en fonction d'une ville
-- `/api/spots` - POST - Ajouter un nouveau spot de snowboard.
-- `/api/spot/{id}` - PUT - Modifier les détails d'un spot de snowboard.
-- `/api/spot/{id}` - DELETE - Supprimer un spot de snowboard.
-
+- `/api/spot/{slug}` - GET - Accéder à un spot de snowboard spécifique
+| `/api/sport/{slug}` - GET - Accéder à un sport 
+| `/api/location/{slug}` - GET - Accéder à une ville 
+- `/api/spots` - GET - Récupérer la liste de tous les spots
+- `/api/sport/{slug}/spots` - GET - Récupérer la liste des spots en fonction du sport
+- `/api/location/{slug}/spots` - GET - Récupérer tous les spots en fonction d'une ville
+- `/api/spots` - POST - Ajouter un nouveau spot de snowboard
+- `/api/spot/{slug}` - PUT - Modifier les détails d'un spot de snowboard
+- `/api/spot/{id}` - DELETE - Supprimer un spot de snowboard
 
 ## Documentation
 

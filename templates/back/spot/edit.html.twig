@@ -3,6 +3,6 @@
 {% block main %}
     <h2 class="text-muted fw-bold mb-4">Modifier le spot: {{ spot.name }}</h2>
     {{ form(form) }}
-    <a href="{{ path('list_spot') }}">Retour à la liste</a>
-    <a href="{{ path('remove_spot', {id:spot.id}) }}">Supprimer ce spot</a>
+    <a href="{{ path('list') }}">Retour à la liste</a>
+    <a href="{{ path('remove', {id:spot.id}) }}">Supprimer ce spot</a>
 {% endblock %}

@@ -27,7 +27,7 @@ class SpotType extends AbstractType
                 'class' => Sport::class,
                 'choice_label' => 'name',
                 'label' => 'Sport concerné',
-                'multiple' => true, // Assuming it's a ManyToMany relationship
+                'multiple' => true,
             ])
             ->add('location', EntityType::class, [
                 'class' => Location::class,
