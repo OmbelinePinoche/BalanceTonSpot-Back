@@ -18,11 +18,10 @@
 						{% for location in locations %}
 								<a href="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</a>
 						{% endfor %}
-
 					</br>
 					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
 					{% for sport in sports %}
-							<a href="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
+							<a href="{{ path('api_show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
 					{% endfor %}
 				</br>
 			</div>
