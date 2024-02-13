@@ -32,20 +32,20 @@ class UserController extends AbstractController
     }
 
     /**
-     *  Shows a user by ID in the backoffice
+     *  Shows a user by its slug in the backoffice
      *  Don't forget that the route above ('/back/user') will be the start of all the routes created below
      *
      * @return Response
      */
-    #[Route('/show/{id}', name: 'show_user')]
-    public function show(UserRepository $UserRepository,  $id): Response
+    #[Route('/show/{slug}', name: 'show_user')]
+    public function show(UserRepository $userRepository,  $slug): Response
     {
-        // Get the user by its ID
-        $user = $UserRepository->find($id);
+        // Get the user by its slug
+        $user = $userRepository->findOneBy(['slug' => $slug]);
         
         // Checks if the user exists
         if (!$user) {
-            throw $this->createNotFoundException('Aucun utilisateur ne répond à cet ID!');
+            throw $this->createNotFoundException('Aucun utilisateur ne répond à ce nom!');
         }
 
         // Return all the user in the view
@@ -91,10 +91,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Modify a user via its ID in a form in the back office
+     * Modify a user via its slug in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_user')]
+    #[Route('/edit/{slug}', name: 'edit_user')]
     public function edit(user $user, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want edit a user so no need to create anything.

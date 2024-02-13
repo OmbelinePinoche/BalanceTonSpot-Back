@@ -28,7 +28,7 @@ class SpotController extends AbstractController
      * Don't forget that the route above ('/back/spot') will be the start of all the routes created below
      * @return Response
      */
-    #[Route('/', name: 'list_spot')]
+    #[Route('/', name: 'list')]
     public function browse(SpotRepository $spotRepository, LocationRepository $locationRepository, SportRepository $sportRepository): Response
     {
         // 1st step is getting all the spots from the repository
@@ -51,7 +51,7 @@ class SpotController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/show/{slug}', name: 'show_spot')]
+    #[Route('/show/{slug}', name: 'show')]
     public function show(SpotRepository $spotRepository, $slug): Response
     {
         // Get the spot by its slug
@@ -73,7 +73,7 @@ class SpotController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add_spot')]
+    #[Route('/new', name: 'add')]
     public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity spot
@@ -114,11 +114,9 @@ class SpotController extends AbstractController
      * Modify a spot via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{slug}', name: 'edit_spot')]
+    #[Route('/edit/{slug}', name: 'edit')]
     public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here we want to edit a spot so no need to create anything.
-
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(SpotType::class, $spot);
@@ -129,7 +127,6 @@ class SpotController extends AbstractController
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
             // Here, no need to persist because it already exists so no need to recreate it 
-
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the spot has been created
@@ -151,7 +148,7 @@ class SpotController extends AbstractController
      *  Modify a spot via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/remove/{id}', name: 'remove_spot')]
+    #[Route('/remove/{id}', name: 'remove')]
     public function remove(Spot $spot, spotRepository $spotRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a spot so no need to create anything

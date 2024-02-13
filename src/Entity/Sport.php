@@ -12,18 +12,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Sport
 {
 
-    #[Groups(['snow_spots'])]
+    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
     
+    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport', 'api_list', 'api_show'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport'])]
     #[ORM\ManyToMany(targetEntity: Spot::class, mappedBy: 'sport_id')]
     private Collection $spot_id;
 
+    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 

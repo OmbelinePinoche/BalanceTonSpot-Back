@@ -16,6 +16,7 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_show_by_sport', 'show_by_sport'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
