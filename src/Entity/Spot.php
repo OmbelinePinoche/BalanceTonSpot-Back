@@ -16,30 +16,30 @@ class Spot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_spot_by_location', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
     private ?int $id = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_sport', 'api_list_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_spot_by_location', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_sport', 'api_list_location'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
-    #[Groups(['list', 'show', 'api_list',  'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list',  'api_show', 'api_spot_by_location', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
     #[ORM\Column(length: 1000)]
     private ?string $description = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_spot_by_location', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
     #[ORM\Column(length: 500)]
     private ?string $picture = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_spot_by_location', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_spot_by_location', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_spot_by_location', 'spot_by_location'])]
     #[ORM\ManyToMany(targetEntity: Sport::class, inversedBy: 'spot_id')]
     private Collection $sport_id;
 
