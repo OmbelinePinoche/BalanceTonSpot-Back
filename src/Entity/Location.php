@@ -21,7 +21,6 @@ class Location
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Groups(['api_list_location', 'api_show_location'])]
     #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location', orphanRemoval: true)]
     private Collection $spot_id;
 

@@ -22,11 +22,9 @@ class Sport
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport'])]
     #[ORM\ManyToMany(targetEntity: Spot::class, mappedBy: 'sport_id')]
     private Collection $spot_id;
 
-    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 

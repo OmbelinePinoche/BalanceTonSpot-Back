@@ -19,7 +19,7 @@ class Spot
     #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
     private ?int $id = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_sport', 'api_list_location', 'api_show_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_sport', 'api_list_location'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
