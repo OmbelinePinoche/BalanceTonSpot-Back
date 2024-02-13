@@ -10,25 +10,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
+
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['api_list_comment', 'api_show_comment', 'api_show_by_comment'])]
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
-    #[Groups(['api_list_comment', 'api_show_comment', 'api_show_by_comment'])]
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
+    #[Groups(['api_list_comment', 'api_show_comment'])]
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Spot $spot = null;
 
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
+
 
     public function getId(): ?int
     {
@@ -82,4 +87,6 @@ class Comment
 
         return $this;
     }
+
+    
 }

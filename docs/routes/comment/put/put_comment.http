@@ -1,0 +1,7 @@
+PUT http://0.0.0.0:8080/api/comment/4 HTTP/1.1
+Content-Type: application/json
+
+{
+    "spot_id": 3
+}
+
