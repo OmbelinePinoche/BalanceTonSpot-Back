@@ -11,15 +11,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location
 {
+    #[Groups(['api_list_location', 'api_show_location'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_show_by_sport', 'show_by_sport'])]
+    #[Groups(['api_list_location', 'api_show_location', 'list', 'show', 'api_list', 'api_show', 'api_show_by_sport', 'show_by_sport'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(['api_list_location', 'api_show_location'])]
     #[ORM\OneToMany(targetEntity: Spot::class, mappedBy: 'location', orphanRemoval: true)]
     private Collection $spot_id;
 
