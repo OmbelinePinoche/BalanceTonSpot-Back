@@ -2,6 +2,13 @@ PUT http://0.0.0.0:8080/api/comment/4 HTTP/1.1
 Content-Type: application/json
 
 {
-    "spot_id": 3
+	"id": 4,
+	"content": "On m'avait recommandée ce spot de fou furieux",
+	"username": "lapinocherie",
+	"spot": {
+		"name": "Isola 2000"
+	},
+	"date": "2023-02-12T00:00:00+00:00"
 }
+
 

@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Comment;
 use App\Form\FileTransformer;
 use App\Repository\SpotRepository;
+use App\Repository\UserRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,57 +89,63 @@ class CommentController extends AbstractController
         return $this->json($comments, 200, [], ['groups' => 'api_comment_by_spot']);
     }
 
+    
     #[Route('/api/comments', name: 'api_add_comment', methods: ['POST'])]
     public function addComment(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer les données envoyées dans la requête POST
+        // Retrieve the data send in the POST request
         $data = json_decode($request->getContent(), true);
+
 
         if (!isset($data['content'], $data['username'], $data['spot'])) {
             return $this->json(['message' => 'Données manquantes'], 400);
         }
 
-        // Créer une nouvelle instance de commentaire
+        // Create a new Comment instance
         $comment = new Comment();
 
-        // Définir le contenu et le nom d'utilisateur du commentaire
+        // Set the properties from the given data
         $comment->setContent($data['content']);
         $comment->setUsername($data['username']);
         $spot= $entityManager->getRepository(Spot::class)->find($data['spot']);
         $comment->setSpot($spot);
     
-        //if (!$user) {
-           // return $this->json(['message' => 'Utilisateur introuvable'], 404);
-        //}
+        
 
-        // Persister le commentaire dans la base de données
+      // We need to persist the COMMENT entity to the database to save the data
         $entityManager->persist($comment);
         $entityManager->flush();
 
-        // Retourner le commentaire créé avec le statut HTTP 201 Created
+        // Return the comment create with the status http 201
         return $this->json(['message' => 'Commentaire ajouté avec succès'], 201);
-    }
+    } 
+
 
 
     #[Route('/api/comment/{id}', name: 'update_comment', methods: ['PUT'])]
-    public function update(Comment $comment, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, $id): Response
+    public function update(CommentRepository $commentRepository, Request $request, EntityManagerInterface $entityManager, $id): Response
     {
+        // 
+        $comment = $commentRepository->find($id);
+    
         // Check if the comment exists
         if (!$comment) {
-            // If not, send the message
-            return $this->json(['message' => 'Aucun commentaire n\a été trouvé!'], 404);
+            return $this->json(['message' => 'Aucun commentaire trouvé pour l\'ID donné'], 404);
         }
-
+    
         // Retrieve the data send in the request PUT
-        $data = $request->getContent();
-
-        $updatedComment = $serializer->deserialize($data, Comment::class, 'json', ['object_to_populate' => $comment]);
-
-        $entityManager->persist($updatedComment);
+        $data = json_decode($request->getContent(), true);
+    
+        //Update the properties of comment 
+        if (isset($data['content'])) {
+            $comment->setContent($data['content']);
+        }
+    
+        // Persist the update
         $entityManager->flush();
-
-        // Return to the updated comment
-        return $this->json(['message' => 'Commentaire modifié avec succès!'], 200);
+    
+        // Return a response
+        return $this->json(['message' => 'Commentaire mis à jour avec succès'], 200);
     }
 
     #[Route('/api/comment/{id}', name: 'api_comment_delete', methods: ['DELETE'])]

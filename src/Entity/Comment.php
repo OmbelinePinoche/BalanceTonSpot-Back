@@ -25,7 +25,7 @@ class Comment
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
-    #[Groups(['api_list_comment', 'api_show_comment'])]
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Spot $spot = null;
@@ -33,6 +33,7 @@ class Comment
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
+
 
 
     public function getId(): ?int
@@ -88,5 +89,6 @@ class Comment
         return $this;
     }
 
+ 
     
 }

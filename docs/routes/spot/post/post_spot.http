@@ -1,4 +1,4 @@
-POST http://ombelinepinoche-server.eddi.cloud:8443/api/spots HTTP/1.1
+POST http://localhost/Symfony/BTSback/projet-04-balance-ton-spot-back/ HTTP/1.1
 Content-Type: application/json
 
 {
@@ -8,3 +8,4 @@ Content-Type: application/json
     "address" : "29 boulevard foch",
     "location_id" :  5
 }
+
