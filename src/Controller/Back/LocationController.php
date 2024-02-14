@@ -59,7 +59,7 @@ class LocationController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add_location')]
+    #[Route('/admin/new', name: 'add_location')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Create an instance for the entity location
@@ -93,7 +93,7 @@ class LocationController extends AbstractController
      * Modify a location via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{slug}', name: 'edit_location')]
+    #[Route('/admin/edit/{slug}', name: 'edit_location')]
     public function edit(location $location, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a location so no need to create anything.
@@ -131,7 +131,7 @@ class LocationController extends AbstractController
      *  Modify a location via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/remove/{id}', name: 'remove_location')]
+    #[Route('/admin/remove/{id}', name: 'remove_location')]
     public function remove(location $location, LocationRepository $LocationRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a location so no need to create anything.
