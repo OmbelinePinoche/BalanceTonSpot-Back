@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+	<h2 class="text-muted fw-bold mb-4">Modifier la ville:
+		{{ location.name }}</h2>
+
+{{ form(form) }}
+</br>
+<a href="{{ path('list_location') }}">Retour à la liste</a>
+<a href="{{ path('remove_location', {id:location.id}) }}">Supprimer cette ville</a>
+
+{% endblock %}
