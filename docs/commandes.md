@@ -46,3 +46,11 @@ composer require fakerphp/faker
 ```bash
 composer require symfony/form php bin/console make:form
 ```
+## commande pour faire une migration
+```bash
+php bin/console make:migration
+```
+## commande pour ouvrir le serveur
+```bash
+php -S 0.0.0.0:8080 -t public
+```

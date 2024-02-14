@@ -2,32 +2,39 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
+
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['show', 'api_show'])]
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(length: 255)]
     private ?string $content = null;
 
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Spot $spot = null;
 
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
+
+
 
     public function getId(): ?int
     {
@@ -81,4 +88,7 @@ class Comment
 
         return $this;
     }
+
+ 
+    
 }
