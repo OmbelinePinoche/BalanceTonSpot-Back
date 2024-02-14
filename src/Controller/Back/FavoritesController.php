@@ -10,88 +10,87 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Gère les favoris
+ * 
  */
 class FavoritesController extends AbstractController
 {
     /**
-     * Affiche les spots favoris de la session
+     * Shows favorite spots of the session
      *
-     * $request => sert à avoir des informations sur la requête
+     * 
      * @return Response
      */
     #[Route('/favoris/list', name: 'favoris_list')]
     public function list(Request $request): Response
     {
-        // Je recupere les données de la session grace a $request->getSession()
+        // I recover the data from the session thanks to $request->getSession()
         $session = $request->getSession();
-        // Je recupere la valeur associés à la clé 'favoris' dans ma session
-        // $session->set('favoris', ['toto', 'tata']);
+        // I retrieve the value associated with the 'favorites' key in my session
         $favoris = $session->get('favoris');
 
         // dd($favoris);
         return $this->render('back/favoris/list.html.twig', [
-            // Je passe la liste des favoris à ma vue
+            // I pass the list of favorites to my view
             'favoris' => $favoris
         ]);
     }
 
     /**
-     * Ajoute un film dans la liste des favoris
+     * Add a spot in the favoris list
      *
      * @return void
      */
     #[Route('/favoris/add/{id}', name: 'favoris_add')]
     public function add(Request $request, Spot $Spot, FavorisManager $favorisManager)
     {
-        // Je recupere l'id du $Spot
+        // Recover the spot id
         $id = $Spot->getId();
 
-        // $session->remove('favoris');
+       
         $favorisManager->add($id, $Spot);
-        // On redirige vers la liste des spots
-        // J'envoie un message flash qui dit que le film a bien été ajouté aux favoris
+        // I send a flash message saying that the spot has been added to favorites
         $this->addFlash(
             'Trop classe',
-            'Le film '.$Spot->getName().' a bien été ajouté dans les favoris !'
+            'Le spot '.$Spot->getName().' a bien été ajouté dans les favoris !'
         );
+     
         return $this->redirectToRoute('favoris_list');
     }
 
     /**
-     * Fonction qui vide la liste des favoris
+     * Function that empties the favorites list
      *
      * @return void
      */
     #[Route('/favoris/clear', name: 'favoris_clear')]
     public function clear(Request $request)
     {
-        // Je recupere les données de la session grace a $request->getSession()
+        //  I recover the data from the session thanks to $request->getSession()
         $session = $request->getSession();
-        // Je vide l'element qui a pour nom de clé 'favoris' (pour vider les favoris)
+        // I empty the element whose key name is 'favorites' (to empty the favorites)
         $session->remove('favoris');
-        // Je redirige sur la liste des spots (vide maintenant)
+        // I redirect to the list of spots (empty now)
         return $this->redirectToRoute('favoris_list');
     }
 
      /**
-     * Fonction qui supprime un film de la liste des favoris
+     * Function that removes a spot from the favorites list
      *
      * @return void
      */
     #[Route('/favoris/remove/{id}', name: 'favoris_remove')]
     public function remove(Request $request, $id)
     {
-        // Je recupere les données de la session grace a $request->getSession()
+        // I recover the data from the session thanks to $request->getSession()
         $session = $request->getSession();
-        // Je recupere favoris de la session, sous forme de tableau 
+        // I recover favorites from the session, in table form
         $favoris = $session->get('favoris', []);
-        // J'enleve l'element qui a pour index $id
+        // I remove the element whose index is $
         // unset : https://stackoverflow.com/questions/369602/deleting-an-element-from-an-array-in-php
         unset($favoris[$id]);
-        // Je mets a jour favoris avec le Spot en moins (qu'on a supprimé)
+        // I update my favorites without the Spot (which was deleted)
         $session->set('favoris', $favoris);
-        // Je redirige sur la liste des spots (vide maintenant)
+        // I redirect to the list of spots (empty now)
         return $this->redirectToRoute('favoris_list');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Spot;
 use App\Entity\Sport;
 use App\Entity\Location;
-use App\Form\DataTransformer\FileTransformer;
+use App\Form\FileTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Front;
 
-use App\Entity\Spot;
+use App\Entity\Movie;
 use App\Service\FavoritesManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class FavoritesController extends AbstractController
 {
     /**
-     * Affiche les spots favoris de la session
+     * Affiche les films favoris de la session
      *
      * $request => sert à avoir des informations sur la requête
      * @return Response
@@ -42,18 +42,18 @@ class FavoritesController extends AbstractController
      * @return void
      */
     #[Route('/favorites/add/{id}', name: 'favorites_add')]
-    public function add(Request $request, Spot $Spot, FavoritesManager $favoritesManager)
+    public function add(Request $request, Movie $movie, FavoritesManager $favoritesManager)
     {
-        // Je recupere l'id du $Spot
-        $id = $Spot->getId();
+        // Je recupere l'id du $movie
+        $id = $movie->getId();
 
         // $session->remove('favorites');
-        $favoritesManager->add($id, $Spot);
-        // On redirige vers la liste des spots
+        $favoritesManager->add($id, $movie);
+        // On redirige vers la liste des films
         // J'envoie un message flash qui dit que le film a bien été ajouté aux favoris
         $this->addFlash(
             'success',
-            'Le film '.$Spot->getTitle().' a bien été ajouté dans les favoris !'
+            'Le film '.$movie->getTitle().' a bien été ajouté dans les favoris !'
         );
         return $this->redirectToRoute('favorites_list');
     }
@@ -70,7 +70,7 @@ class FavoritesController extends AbstractController
         $session = $request->getSession();
         // Je vide l'element qui a pour nom de clé 'favorites' (pour vider les favoris)
         $session->remove('favorites');
-        // Je redirige sur la liste des spots (vide maintenant)
+        // Je redirige sur la liste des films (vide maintenant)
         return $this->redirectToRoute('favorites_list');
     }
 
@@ -89,9 +89,9 @@ class FavoritesController extends AbstractController
         // J'enleve l'element qui a pour index $id
         // unset : https://stackoverflow.com/questions/369602/deleting-an-element-from-an-array-in-php
         unset($favorites[$id]);
-        // Je mets a jour favorites avec le Spot en moins (qu'on a supprimé)
+        // Je mets a jour favorites avec le movie en moins (qu'on a supprimé)
         $session->set('favorites', $favorites);
-        // Je redirige sur la liste des spots (vide maintenant)
+        // Je redirige sur la liste des films (vide maintenant)
         return $this->redirectToRoute('favorites_list');
     }
 }

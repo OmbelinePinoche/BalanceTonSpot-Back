@@ -2,9 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\Location;
-use App\Entity\Sport;
 use App\Entity\Spot;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,20 +14,16 @@ class FavorisType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description')
-            ->add('picture')
-            ->add('address')
-            ->add('rating')
-            ->add('slug')
-            ->add('sport_id', EntityType::class, [
-                'class' => Sport::class,
+            ->add('email')
+            ->add('roles')
+            ->add('password')
+            ->add('username')
+            ->add('firstname')
+            ->add('lastname')
+            ->add('favorites', EntityType::class, [
+                'class' => Spot::class,
 'choice_label' => 'id',
 'multiple' => true,
-            ])
-            ->add('location', EntityType::class, [
-                'class' => Location::class,
-'choice_label' => 'id',
             ])
         ;
     }
@@ -36,7 +31,7 @@ class FavorisType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Spot::class,
+            'data_class' => User::class,
         ]);
     }
 }

@@ -13,20 +13,20 @@ class FavorisManager
         $this->requestStack = $requestStack;
     }
     /**
-     * Fonction qui ajoute un film dans la session
+     *
+     * Function that adds a spot into the session
      *
      * @return string
      */
     public function add(int $id, Spot $spot)
     {
-        // Je recupere la session
+        // I recover the session
         $session = $this->requestStack->getSession();
-        // Je recupere favorites de la session, sous forme de tableau 
+        // I retrieve the session favorites, in table form
         $favorites = $session->get('favorites', []);
-        // On va ajouter dans ce tableau le $spot ajouté à l'index $id, comme ca on est sûr qu'il n'y ait pas de doublons
-        // Ainsi, je n'aurais pas 2 fois le meme film dans mes favoris
+        // Add the spot with the id so as not to have a duplicate
         $favorites[$id] = $spot;
-        // Je mets à jour $favorites dans la session
+        // Update 'favorites'
         $session->set('favorites', $favorites);
     }
 }
