@@ -20,7 +20,14 @@ CREATE TABLE `comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `comment` (`id`, `content`, `username`, `spot_id`, `date`) VALUES
-(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	'lapinocherie',	1,	'2023-02-12');
+(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	'lapinocherie',	1,	'2023-02-12'),
+(7,	'C\'est quoi cette blague lol',	'adrileclown',	4,	'2024-02-14'),
+(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	'DiegrossePochasse',	3,	'2024-02-14'),
+(9,	'Là je dis oui!',	'adrileclown',	5,	'2024-02-14'),
+(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	'lavocat',	1,	'2024-02-01'),
+(11,	'Ça ride à fond par ici j\'aimeuh bieng',	'DiegrossePochasse',	6,	'2024-02-11'),
+(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	'lapinocherie',	13,	'2024-02-05'),
+(13,	'ils sont toujours en travaux ils abusent pffff',	'lavocat',	10,	'2024-01-19');
 
 DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (

@@ -33,6 +33,11 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{{path('list_comment')}}">Commentaires</a>
 						</li>
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+							<li class="nav-item">
+								<a class="nav-link" href="">Mes spots</a>
+							</li>
+						{% endif %}
 						{% if is_granted('ROLE_ADMIN') %}
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('list_user')}}">Utilisateurs</a>
@@ -42,32 +47,23 @@
 				</div>
 
 				{# We display the dropdown menu only if the user is logged in #}
-				{# {% if is_granted('IS_AUTHENTICATED_FULLY') %} #}
-				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-					<li class="nav-item dropdown">
-						<a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-							{# We display the "username" property from the user object #}
-							<span></span>
-							<i class="bi bi-person-square"></i>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a class="dropdown-item" href="">Profil</a>
-							</li>
-							<hr class="dropdown-divider"></li>
-					</li>
-					<li>
-						<a class="dropdown-item" href="">Déconnexion</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		{# If the user is not logged in #}
-		{# {% else %} #}
-		<a href="{{ path('app_login')}}">
-			<button type="button" class="btn btn-danger me-2">Connexion</button>
-		</a>
-		{# {% endif %} #}
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					{% if app.user %}
+						<div class="nav-link" style="color: white;">
+							Vous êtes connecté en tant que
+							{{ app.user.username }}
+						</div>
+					{% endif %}
+					<a href="{{ path('app_logout')}}">
+						<button type="button" class="btn btn-danger me-2">Déconnexion</button>
+					</a>
+					{# If the user is not logged in #}
+				{% else %}
+					<a href="{{ path('app_login')}}">
+						<button type="button" class="btn btn-danger me-2">Connexion</button>
+					</a>
+				{% endif %}
+			</body>
+		</body>
 	</body>
 </html></div></body></html></nav>{% block main %}{# Here we call the content <body> in all the views which extend base.html.twig #}{% endblock %}</div></body></html></body></html>

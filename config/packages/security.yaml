@@ -40,8 +40,9 @@ security:
         - { path: ^/admin/edit, roles: ROLE_ADMIN }
         - { path: ^/admin/new, roles: ROLE_ADMIN }
         - { path: ^/admin/remove, roles: ROLE_ADMIN }
-        - { path: ^/show, roles: ROLE_USER }
-        - { path: ^/comment, roles: ROLE_USER }
+        - { path: ^/user/edit, roles: ROLE_USER }
+        - { path: ^/user/new, roles: ROLE_USER }
+        - { path: ^/user/remove, roles: ROLE_USER }
 
     role_hierarchy:
         # ROLE_ADMIN has all ROLE_USER's rights + his own

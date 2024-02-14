@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-6">
@@ -9,7 +8,7 @@
 
 				<form
 					method="post">
-					{# If error in authentication #}
+					{# If error when authenticating #}
 					{% if error %}
 						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 					{% endif %}
@@ -32,7 +31,7 @@
 					</div>
 
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-					<button class="btn btn-danger me-2" type="submit">Se connecter</button>
+					<button class="btn btn-danger me-2" type="submit">Lancer la ride!</button>
 				</form>
 			</br>
 			<p>Pas encore de compte? Inscris-toi
@@ -40,5 +39,4 @@
 
 		</br>
 	</div>
-
 {% endblock %}
