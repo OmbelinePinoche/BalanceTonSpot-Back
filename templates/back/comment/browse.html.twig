@@ -25,9 +25,9 @@
 			<tr>
 				<th>Id</th>
 				<th>Spot</th>
-				<th>Visité le</th>
-				<th>Par</th>
 				<th>Contenu du commentaire</th>
+				<th>Date d'ajout</th>
+				<th>Rider</th>
 
 			</tr>
 		</thead>
@@ -36,6 +36,7 @@
 				<tr>
 					<td>{{ comment.id }}</td>
 					<td>{{comment.spot.name }}</td>
+					<td>{{ comment.content }}</td>
 					<td>
 						{% if comment.date is not null %}
 							{{ comment.date.format('d-m-Y') }}
@@ -44,7 +45,7 @@
 						{% endif %}
 					</td>
 					<td>{{ comment.username }}</td>
-					<td>{{ comment.content }}</td>
+
 
 					<td>
 						<a href="{{ path('show_comment', {id : comment.id}) }}">Voir</a>

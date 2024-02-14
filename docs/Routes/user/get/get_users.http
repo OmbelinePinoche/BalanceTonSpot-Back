@@ -1,4 +1,4 @@
-GET http://0.0.0.0:8080/api/users HTTP/1.1
+GET http://ombelinepinoche-server.eddi.cloud:8443/api/users HTTP/1.1
 Content-Type: application/json
 
 {

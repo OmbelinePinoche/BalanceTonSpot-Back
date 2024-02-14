@@ -15,6 +15,12 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('firstname', TypeTextType::class, [
+                'label' => 'Prénom: '
+            ])
+            ->add('lastname', TypeTextType::class, [
+                'label' => 'Nom: '
+            ])
             ->add('username', TypeTextType::class, [
                 'label' => 'Pseudo'
             ])

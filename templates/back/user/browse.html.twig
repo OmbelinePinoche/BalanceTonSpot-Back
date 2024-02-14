@@ -4,9 +4,7 @@
 	<div class="container-xl bg-light p-5 border-top">
 		<div class="row mb-2">
 			<div class="col-12 col-lg-3">
-				<ul
-					class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
-				</br>
+				<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center"></br>
 			</br>
 		</br>
 		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
@@ -36,12 +34,22 @@
 					<td>{{ user.id }}</td>
 					<td>{{ user.username }}</td>
 					<td>{{ user.email }}</td>
-					<td>{{ user.role }}</td>
 					<td>
-						<a href="{{ path('show_user', {id : user.id})}}">Voir</a>
+						{% if user.roles is defined %}
+							{% for role in user.roles %}
+								{{ role }}
+								{% if not loop.last %},
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							Aucun rôle défini
+						{% endif %}
 					</td>
 					<td>
-						<a href="{{ path('edit_user', {id : user.id})}}">Modifier</a>
+						<a href="{{ path('show_user', {username : user.username})}}">Voir</a>
+					</td>
+					<td>
+						<a href="{{ path('edit_user', {username : user.username})}}">Modifier</a>
 					</td>
 				</tr>
 			{% else %}

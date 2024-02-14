@@ -16,7 +16,6 @@
 | `/api/comment/{id}` | GET | Comment | show | Accéder à un commentaires |
 | `/api/spot/{slug}/comments` | GET | Comment | listBySpot | Lister les commentaires d’un spot |
 | `/api/login` | POST | Security | login | Connexion d’un utilisateur |
-| `/api/logout` | POST | Security | login | Déconnexion d’un utilisateur |
 
 **Routes Privées (connexion requise) :**
 

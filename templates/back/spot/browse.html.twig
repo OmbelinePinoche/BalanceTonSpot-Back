@@ -27,9 +27,9 @@
 			</div>
 			<div class="col-12 col-lg-9">
 				<h2 class="text-muted fw-bold mb-4">Les spots
-					{# {% if is_granted('ROLE_MANAGER') %} #}
+					{% if is_granted('ROLE_ADMIN') %}
 					<a href="{{path('add')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
-					{# {% endif %} #}
+					{% endif %}
 				</h2>
 
 
@@ -60,11 +60,11 @@
 								<td>
 									<a href="{{ path('show', {slug : spot.slug})}}">Voir</a>
 								</td>
-								{# {% if is_granted('ROLE_MANAGER') %} #}
+								{% if is_granted('ROLE_ADMIN') %}
 								<td>
 									<a href="{{ path('edit', {slug : spot.slug})}}">Modifier</a>
 								</td>
-								{# {% endif %} #}
+								{% endif %}
 							</tr>
 
 						{% else %}

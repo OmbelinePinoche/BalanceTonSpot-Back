@@ -102,7 +102,7 @@ class SpotController extends AbstractController
             );
 
             // Return the spots in the view
-            return $this->redirectToRoute('list_spot');
+            return $this->redirectToRoute('list');
         }
 
         return $this->render('back/spot/create.html.twig', [
@@ -158,6 +158,6 @@ class SpotController extends AbstractController
         $entityManager->flush();
 
         // Return user to the home page
-        return $this->redirectToRoute('list_spot');
+        return $this->redirectToRoute('list');
     }
 }

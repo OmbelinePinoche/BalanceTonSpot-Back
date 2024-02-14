@@ -52,4 +52,6 @@ class LocationController extends AbstractController
         return $this->json($location,200, [], ['groups' => 'api_show_location']
         );
     }
+
+    
 }

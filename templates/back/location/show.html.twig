@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-   <h2 class="text-muted fw-bold mb-4">{{ location.name }} </h2>
+<h2 class="text-muted fw-bold mb-4">{{ location.name }}
+</h2>
 
-    <table class="table table-hover mt-4">
-        <tbody>
-            <tr>
-                <th>Nom</th>
-                <td>{{ location.name }}</td>
-            </tr>
-        </tbody>
-    </table>
+<table class="table table-hover mt-4">
+	<tbody>
+		<tr>
+			<th>Nom</th>
+			<td>{{ location.name }}</td>
+		</tr>
+	</tbody>
+</table>
 
-    <td><a href="{{ path('list_location') }}">Retour à la liste</a></td>
-
-   <td><a href="{{ path('edit_location', {'slug': location.slug}) }}">Modifier</a></td>
+	<a href="{{ path('list_location') }}">Retour à la liste</a>
+	{% if is_granted('ROLE_ADMIN') %}
+	<a href="{{ path('edit_location', {'slug': location.slug}) }}">Modifier</a>
+	{% endif %}
 
 {% endblock %}

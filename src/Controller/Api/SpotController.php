@@ -3,10 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\Location;
-use App\Entity\Sport;
 use App\Entity\Spot;
 use App\Repository\LocationRepository;
-use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,28 +40,6 @@ class SpotController extends AbstractController
             // 4th param: groups (defines which elements of the entity we want to display)
             ['groups' => 'api_list']
         );
-    }
-
-    #[Route('/api/location/{slug}/spots', name: 'api_spot_by_location', methods: ['GET'])]
-    public function spotByLocation(LocationRepository $locationRepository, $slug, Location $location = null): Response
-    {
-        // Get the spots from the entity Location
-        $spots = $location->getSpotId();
-
-        $location = $locationRepository->findOneBy(['slug' => $slug]);
-
-        // Checks if the location exists
-        if (!$location) {
-            return $this->json(['message' => 'Lieu inconnu!'], 404);
-        }
-
-        // Checks if there is a spot in the requested location
-        if (!$spots) {
-            return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
-        }
-
-        // Return all the spots according to the location
-        return $this->json($spots, 200, [], ['groups' => 'api_spot_by_location']);
     }
     
     #[Route('/api/spot/{slug}', name: 'api_show', methods: ['GET'])]
@@ -135,16 +111,14 @@ class SpotController extends AbstractController
         $entityManager->persist($spot);
         $entityManager->flush();
 
-        return $this->json($spot, 201, [], ['groups' => 'api_add_spot']);
+        return $this->json(['message' => 'Spot créé avec succès!'], 201,);
     }
-
 
     #[Route('/api/spot/{id}', name: 'api_delete', methods: ['DELETE'])]
     public function delete(Spot $spot = null, EntityManagerInterface $entityManager): Response
     {
         // Check if the spot exists
         if (!$spot) {
-
             return $this->json(['message' => 'Aucun spot n\'a été trouvé'], 404);
         }
         // Delete the data send in the request 
@@ -154,4 +128,27 @@ class SpotController extends AbstractController
         // Return the success message
         return $this->json(['message' => 'Spot supprimé avec succès!'], 200);
     }
+
+    #[Route('/api/location/{slug}/spots', name: 'api_spot_by_location', methods: ['GET'])]
+    public function spotByLocation(LocationRepository $locationRepository, $slug, Location $location = null): Response
+    {
+        // Get the spots from the entity Location
+        $spots = $location->getSpotId();
+
+        $location = $locationRepository->findOneBy(['slug' => $slug]);
+
+        // Checks if the location exists
+        if (!$location) {
+            return $this->json(['message' => 'Lieu inconnu!'], 404);
+        }
+
+        // Checks if there is a spot in the requested location
+        if (!$spots) {
+            return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
+        }
+
+        // Return all the spots according to the location
+        return $this->json($spots, 200, [], ['groups' => 'api_spot_by_location']);
+    }
+
 }

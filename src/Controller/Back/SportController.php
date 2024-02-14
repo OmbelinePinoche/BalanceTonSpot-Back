@@ -40,10 +40,10 @@ class SportController extends AbstractController
      * @return Response
      */
     #[Route('/show/{slug}', name: 'show_sport')]
-    public function show(SportRepository $SportRepository,  $id): Response
+    public function show(SportRepository $sportRepository,  $slug): Response
     {
-        // Get the sport by its ID
-        $sport = $SportRepository->find($id);
+        // Get the sport by its slug
+        $sport = $sportRepository->findOneBy(['slug' => $slug]);
 
         // Checks if the sport exists
         if (!$sport) {

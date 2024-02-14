@@ -23,14 +23,14 @@ class CommentType extends AbstractType
                 'class' => Spot::class,
                 'choice_label' => 'name', 'label' => 'Spot concerné'
             ])
+            ->add('content', TextareaType::class, [
+                'label' => 'Commentaire'
+            ])
             ->add('date', DateType::class, [
-                'label' => 'Visité le'
+                'label' => 'Ajouté le'
             ])
             ->add('username', TypeTextType::class, [
                 'label' => 'Par'
-            ])
-            ->add('content', TextareaType::class, [
-                'label' => 'Commentaire'
             ])
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],

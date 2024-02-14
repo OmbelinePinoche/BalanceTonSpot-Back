@@ -7,11 +7,19 @@
 	<table class="table table-hover mt-4">
 		<tbody>
 			<tr>
-				<th>Spot</th>
-				<td>{{ comment.spot.name }}</td>
+				<th>Id</th>
+				<td>{{comment.id }}</td>
 			</tr>
 			<tr>
-				<th>Visité le</th>
+				<th>Spot</th>
+				<td>{{comment.spot.name }}</td>
+			</tr>
+			<tr>
+				<th>Contenu</th>
+				<td>{{ comment.content }}</td>
+			</tr>
+			<tr>
+				<th>Ajouté le</th>
 				<td>
 					{% if comment.date is not null %}
 						{{ comment.date.format('d-m-Y') }}
@@ -23,10 +31,6 @@
 			<tr>
 				<th>Par</th>
 				<td>{{ comment.username }}</td>
-			</tr>
-			<tr>
-				<th>Commentaire</th>
-				<td>{{ comment.content }}</td>
 			</tr>
 		</tbody>
 	</table>
