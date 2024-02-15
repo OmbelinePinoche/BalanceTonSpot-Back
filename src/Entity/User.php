@@ -34,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    private ?string $pseudo = null;
 
     #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 255, nullable: true)]
@@ -114,14 +114,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsername(): ?string
+    public function getPseudo(): ?string
     {
-        return $this->username;
+        return $this->pseudo;
     }
 
-    public function setUsername(string $username): static
+    public function setPseudo(string $pseudo): static
     {
-        $this->username = $username;
+        $this->pseudo = $pseudo;
 
         return $this;
     }
