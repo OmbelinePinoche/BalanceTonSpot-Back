@@ -59,11 +59,15 @@ class Spot
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Favorites')]
+    private Collection $user_favorite;
+
     public function __construct()
     {
         $this->sport_id = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->pictures = new ArrayCollection();
+        $this->user_favorite = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,6 +239,33 @@ class Spot
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUserFavorite(): Collection
+    {
+        return $this->user_favorite;
+    }
+
+    public function addUserFavorite(User $userFavorite): static
+    {
+        if (!$this->user_favorite->contains($userFavorite)) {
+            $this->user_favorite->add($userFavorite);
+            $userFavorite->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFavorite(User $userFavorite): static
+    {
+        if ($this->user_favorite->removeElement($userFavorite)) {
+            $userFavorite->removeFavorite($this);
+        }
 
         return $this;
     }

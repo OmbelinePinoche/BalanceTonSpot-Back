@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Spot;
 use App\Entity\Sport;
 use App\Entity\Location;
-use App\Form\DataTransformer\FileTransformer as FormFileTransformer;
+use App\Form\FileTransformer as FormFileTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,7 +45,7 @@ class SpotType extends AbstractType
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],
             ]);
-        $builder->get('picture')->addModelTransformer(new FileTransformer());
+        $builder->get('picture')->addModelTransformer(new FormFileTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver): void

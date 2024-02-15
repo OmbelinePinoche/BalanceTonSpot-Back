@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,6 +45,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
+
+    #[ORM\ManyToMany(targetEntity: Spot::class, inversedBy: 'user_favorite')]
+    private Collection $favorites;
+
+    public function __construct()
+    {
+        $this->favorites = new ArrayCollection();
+    }
+
+
+
+ 
 
     public function getId(): ?int
     {
@@ -149,4 +163,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Spot>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Spot $favorite): static
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites->add($favorite);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Spot $favorite): static
+    {
+        $this->favorites->removeElement($favorite);
+
+        return $this;
+    }
+
+
+
+    
 }
