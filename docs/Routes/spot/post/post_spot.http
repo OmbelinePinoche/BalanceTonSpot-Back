@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 POST http://localhost/Symfony/BTSback/projet-04-balance-ton-spot-back/ HTTP/1.1
+=======
+POST http://localhost/APO/projet-04-balance-ton-spot-back/public/api/spots HTTP/1.1
+>>>>>>> User
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDc5OTQ0ODQsImV4cCI6MTcwNzk5ODA4NCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluIn0.uB8IcmxPPhs8toV2V8dTiKBylPTkhdIR52R8RTnk4n9cddANR1g-cCJ-jAIRWpHW-8oVFriOcQG6jeRMipGnA-CMHNpcNJSu-ZOYEGMVz2Cr5wzJJ01tNeGws85bdBD2PuyJ1Pu3-eLecvXHycbVNtF2U9kBAhPXKCJD4cD8qe0KepjANkV8yb_gNLAVUBIbqhVjasBLfnz5XaHpX8fnuD30een0lrUxSWSFisCi9rFb53oicq7aWKlvHnl2Btowl97iLS6MOaLYh4F4Gv2wY96f_BwyAe46e4QGwtB33z66XNlBPZV6l7bhjvWjzk0-kc5ftyNYMfAxqhTtzkd5Ug
 
 {
     "name": "DouchePark",

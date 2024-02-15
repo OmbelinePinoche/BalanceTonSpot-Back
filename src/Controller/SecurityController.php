@@ -17,8 +17,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        
-
+    
         if($this->getUser()){
             return $this->forward('App\Controller\Back\SpotController::browse');
         }
