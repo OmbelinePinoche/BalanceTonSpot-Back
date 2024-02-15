@@ -76,6 +76,8 @@ class SportController extends AbstractController
 
         // Return the spots associated with the sport
         return $this->json($spots, 200, [], ['groups' => 'api_show_by_sport']);
+
+        
     }
    
     #[Route('/api/location/{slug}/spots/snowboard', name: 'api_snow_spot_by_location', methods: ['GET'])]

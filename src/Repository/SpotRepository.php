@@ -85,4 +85,20 @@ class SpotRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Get all the spots according the a specific location
+     *
+     * @param Location $location 
+     *
+     * @return array|null the spots for the given location
+     */
+    public function getSpotsByLocation(Location $location): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.location = :location')
+            ->setParameter('location', $location)
+            ->getQuery()
+            ->getResult();
+    }
 }

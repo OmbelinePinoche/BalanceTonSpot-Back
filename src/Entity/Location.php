@@ -17,7 +17,7 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
     
-    #[Groups(['api_list_location','api_show_location', 'api_list'])]
+    #[Groups(['api_list_location','api_show_location', 'api_list', 'api_show_location'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 

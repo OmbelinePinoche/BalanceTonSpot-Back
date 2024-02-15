@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Location;
 use App\Repository\LocationRepository;
 use App\Form\FileTransformer;
+use App\Repository\SpotRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -53,5 +54,27 @@ class LocationController extends AbstractController
         );
     }
 
+    #[Route('/api/location/{slug}/spots', name: 'api_spot_by_location', methods: ['GET'])]
+    public function listByLocation(SpotRepository $spotRepository, $slug, LocationRepository $locationRepository): Response
+    {
+        // Find the location with the slug
+        $location = $locationRepository->findOneBy(['slug' => $slug]);
+
+        // Checks if the location exists
+        if (!$location) {
+            return $this->json(['message' => 'Localisation inconnue!'], 404);
+        }
+
+        //  Get the spots associated to the location
+        $spot = $spotRepository->getSpotsByLocation($location);
+
+        // Checks if any spots are found
+        if (!$spot) {
+            return $this->json(['message' => 'Aucun spot trouvé dans la localisation demandée'], 404);
+        }
+
+        //  Return the spots associated to the location
+        return $this->json($spot, 200, [], ['groups' => 'api_spot_by_location']);
+    }
     
 }
