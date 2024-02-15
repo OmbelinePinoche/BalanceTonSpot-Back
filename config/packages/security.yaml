@@ -12,7 +12,18 @@ security:
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+            security: false          
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
         main:
             lazy: true
             provider: app_user_provider
@@ -21,7 +32,6 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
-
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
@@ -37,12 +47,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: ROLE_USER }
         - { path: ^/admin/edit, roles: ROLE_ADMIN }
         - { path: ^/admin/new, roles: ROLE_ADMIN }
         - { path: ^/admin/remove, roles: ROLE_ADMIN }
-        - { path: ^/user/edit, roles: ROLE_USER }
-        - { path: ^/user/new, roles: ROLE_USER }
-        - { path: ^/user/remove, roles: ROLE_USER }
 
     role_hierarchy:
         # ROLE_ADMIN has all ROLE_USER's rights + his own
