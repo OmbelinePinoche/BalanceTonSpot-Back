@@ -184,7 +184,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(180) NOT NULL,
-  `username` varchar(255) NOT NULL,
+  `pseudo` varchar(255) NOT NULL,
   `firstname` varchar(255) DEFAULT NULL,
   `lastname` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -193,9 +193,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `user` (`id`, `email`, `username`, `firstname`, `lastname`, `password`, `roles`) VALUES
+INSERT INTO `user` (`id`, `email`, `pseudo`, `firstname`, `lastname`, `password`, `roles`) VALUES
 (1,	'admin@admin.fr',	'admin',	NULL,	NULL,	'$2y$13$mdsmlovcKOASxW9qzUZIve13As7kZ4k6g3wicFYWXPLYpVe5.nMvy',	'[\"ROLE_ADMIN\"]'),
 (2,	'rider@user.fr',	'rider',	NULL,	NULL,	'$2y$13$GE9o.xomhmJX.fNeyAb5zekh4gynBhUwehnb7vvp99HbMvdWoT5..',	'[\"ROLE_USER\"]');
-
-
 -- 2024-02-13 11:31:41
