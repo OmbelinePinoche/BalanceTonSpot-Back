@@ -16,10 +16,10 @@ class Spot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_favorites','api_add_favorites'])]
     private ?int $id = null;
 
-    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_sport', 'api_list_location'])]
+    #[Groups(['list', 'show', 'api_list', 'api_show', 'api_snow_spot_by_location','api_skate_spot_by_location', 'api_show_by_sport', 'show_by_sport', 'spot_by_location', 'snow_spot_by_location', 'skate_spot_by_location', 'api_list_sport', 'api_list_location', 'api_list_favorites','api_add_favorites'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
     
@@ -59,6 +59,9 @@ class Spot
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+
+
+    #[Groups(['api_list_favorites','api_add_favorites'])]
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Favorites')]
     private Collection $user_favorite;
 
