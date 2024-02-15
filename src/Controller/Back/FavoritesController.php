@@ -20,7 +20,7 @@ class FavoritesController extends AbstractController
      * 
      * @return Response
      */
-        #[Route('/favoris/list', name: 'favorites_list')]
+        #[Route('/favorites/list', name: 'favorites_list')]
         public function list(Request $request): Response
         {
             // Retrieve the session from the request
@@ -41,7 +41,7 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favoris/add/{id}', name: 'favorites_add')]
+    #[Route('/favorite/add/{id}', name: 'favorite_add')]
     public function add(Request $request, Spot $Spot, FavorisManager $favorisManager): Response
     {
         // Recover the spot id
@@ -70,7 +70,7 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favoris/clear', name: 'favorites_clear')]
+    #[Route('/favorites/clear', name: 'favorites_clear')]
     public function clear(Request $request)
     {
         //  I recover the data from the session thanks to $request->getSession()
@@ -86,7 +86,7 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favoris/remove/{id}', name: 'favorites_remove')]
+    #[Route('/favorite/remove/{id}', name: 'favorites_remove')]
     public function remove(Request $request, $id)
     {
         // I recover the data from the session thanks to $request->getSession()
