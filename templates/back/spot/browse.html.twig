@@ -64,9 +64,11 @@
 										<a href="{{ path('edit', {slug : spot.slug}) }}">Modifier</a>
 									</td>
 								{% endif %}
+								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 								<td>
 									<a href="{{path('add_favorite', {id: spot.id}) }}">Ajouter aux favoris</a>
 								</td>
+								{% endif %}
 							</tr>
 
 						{% else %}
