@@ -23,7 +23,7 @@ class FavoritesController extends AbstractController
         $this->slugger = $slugger;
     }
 
-    #[Route('/api/favoris', name: 'api_list_favorites', methods: ['GET'])]
+    #[Route('/api/favorites', name: 'api_list_favorites', methods: ['GET'])]
     public function list(UserRepository $userRepository, User $user): Response
     {
         // 1st step is getting all the users from the repository
@@ -44,7 +44,7 @@ class FavoritesController extends AbstractController
 
    
 
-    #[Route('/api/favori/{userId}/{spotId}', name: 'api_update_favorites', methods: ['POST'])]
+    #[Route('/api/favorite/{userId}/{spotId}', name: 'api_update_favorites', methods: ['POST'])]
     public function updateFavorite(Request $request, EntityManagerInterface $entityManager, $userId, $spotId): Response
     {
         // Retrieve the user from their ID
@@ -75,7 +75,7 @@ class FavoritesController extends AbstractController
     }
 
 
-    #[Route('/api/favori/{userId}/{spotId}', name: 'api_favorites_delete', methods: ['DELETE'])]
+    #[Route('/api/favorite/{userId}/{spotId}', name: 'api_favorites_delete', methods: ['DELETE'])]
     public function removefavorite(EntityManagerInterface $entityManager, $favoris = null): Response
     {
         // Check if the favoris exists
