@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 
 use App\Entity\Spot;
 use App\Entity\User;
-
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FavoritesController extends AbstractController
 {
+
+
     #[Route('/api/favorites', name: 'api_list_favorites', methods: ['GET'])]
     public function list(UserRepository $userRepository, User $user): Response
     {
@@ -34,8 +35,8 @@ class FavoritesController extends AbstractController
             ['groups' => 'api_list_favorites',]
         );
     }
-#[Route('/api/favorite/{userId}/{spotId}', name: 'api_add_to_favorites', methods: ['POST'])]
-    public function updateFavorite(EntityManagerInterface $entityManager, $userId, $spotId): Response
+#[Route('/api/favorite/{userId}/{spotId}', name: 'api_update_favorites', methods: ['POST'])]
+    public function updateFavorite(Request $request, EntityManagerInterface $entityManager, $userId, $spotId): Response
     {
         // Retrieve the user from their ID
         $user = $entityManager->getRepository(User::class)->find($userId);
@@ -56,7 +57,7 @@ class FavoritesController extends AbstractController
 
             // add a favorite in the list
             $user->addFavorite($spot);
-            $message = 'Spot ajouté aux favoris avec succès.';
+            $message = 'Favori ajouté avec succès.';
 
 
         $entityManager->flush();
@@ -71,14 +72,15 @@ class FavoritesController extends AbstractController
         // Check if the favoris exists
         if (!$favoris) {
 
-            return $this->json(['message' => 'Aucun spot en favoris'], 404);
+            return $this->json(['message' => 'Aucun favori trouvé'], 404);
         }
         // Delete the data send in the request 
         $entityManager->remove($favoris);
         $entityManager->flush();
 
         // Return the success message
-        return $this->json(['message' => 'Spot supprimé des favoris avec succès!'], 200);
+        return $this->json(['message' => 'favori supprimé avec succès!'], 200);
     }
+
 
 }

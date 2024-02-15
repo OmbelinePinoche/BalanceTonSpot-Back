@@ -20,41 +20,49 @@ class FavoritesController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/favoris/list', name: 'favoris_list')]
-    public function list(Request $request): Response
-    {
-        // I recover the data from the session thanks to $request->getSession()
-        $session = $request->getSession();
-        // I retrieve the value associated with the 'favorites' key in my session
-        $favoris = $session->get('favoris');
-
-        // dd($favoris);
-        return $this->render('back/favoris/list.html.twig', [
-            // I pass the list of favorites to my view
-            'favoris' => $favoris
-        ]);
-    }
+        #[Route('/favorites/list', name: 'favorites_list')]
+        public function list(Request $request): Response
+        {
+            // Retrieve the session from the request
+            $session = $request->getSession();
+            
+            // Retrieve the value associated with the 'favoris' key in the session
+            $favoris = $session->get('favoris', []);
+    
+            // Pass the list of favorites to the view
+            return $this->render('back/favoris/list.html.twig', [
+                'favoris' => $favoris
+            ]);
+        }
+    
 
     /**
      * Add a spot in the favoris list
      *
      * @return void
      */
-    #[Route('/favoris/add/{id}', name: 'favoris_add')]
-    public function add(Request $request, Spot $Spot, FavorisManager $favorisManager)
+    #[Route('/favorite/add/{id}', name: 'favorite_add')]
+    public function add(Request $request, Spot $Spot, FavorisManager $favorisManager): Response
     {
         // Recover the spot id
         $id = $Spot->getId();
 
-       
+        // Check if the spot exists
+        if (!$Spot) {
+            throw $this->createNotFoundException('Spot non trouvé');
+        }
+
+        // Add the spot to favorites using FavorisManager
         $favorisManager->add($id, $Spot);
-        // I send a flash message saying that the spot has been added to favorites
+
+        // Add a flash message indicating the spot has been added to favorites
         $this->addFlash(
-            'Trop classe',
-            'Le spot '.$Spot->getName().' a bien été ajouté dans les favoris !'
+            'success',
+            'Le spot ' . $Spot->getName() . ' a bien été ajouté dans les favoris !'
         );
-     
-        return $this->redirectToRoute('favoris_list');
+
+        // Redirect back to the favorites list page
+        return $this->redirectToRoute('favorites_list');
     }
 
     /**
@@ -62,7 +70,7 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favoris/clear', name: 'favoris_clear')]
+    #[Route('/favorites/clear', name: 'favorites_clear')]
     public function clear(Request $request)
     {
         //  I recover the data from the session thanks to $request->getSession()
@@ -70,7 +78,7 @@ class FavoritesController extends AbstractController
         // I empty the element whose key name is 'favorites' (to empty the favorites)
         $session->remove('favoris');
         // I redirect to the list of spots (empty now)
-        return $this->redirectToRoute('favoris_list');
+        return $this->redirectToRoute('favorites_list');
     }
 
      /**
@@ -78,7 +86,7 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favoris/remove/{id}', name: 'favoris_remove')]
+    #[Route('/favorite/remove/{id}', name: 'favorites_remove')]
     public function remove(Request $request, $id)
     {
         // I recover the data from the session thanks to $request->getSession()
@@ -91,6 +99,6 @@ class FavoritesController extends AbstractController
         // I update my favorites without the Spot (which was deleted)
         $session->set('favoris', $favoris);
         // I redirect to the list of spots (empty now)
-        return $this->redirectToRoute('favoris_list');
+        return $this->redirectToRoute('favorites_list');
     }
 }
