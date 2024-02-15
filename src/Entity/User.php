@@ -13,14 +13,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
-
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column]
-    #[Groups(['api_list_favorites','api_add_favorites'])]
     private ?int $id = null;
 
     #[Groups(['api_user_list', 'api_show_user'])]
@@ -57,10 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->favorites = new ArrayCollection();
     }
-
-
-
- 
 
     public function getId(): ?int
     {
@@ -191,8 +183,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-
-
     
 }

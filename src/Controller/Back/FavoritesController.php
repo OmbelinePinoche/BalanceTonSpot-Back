@@ -20,45 +20,54 @@ class FavoritesController extends AbstractController
      * 
      * @return Response
      */
-        #[Route('/favorites/list', name: 'list_favorites')]
-        public function list(Request $request): Response
-        {
-            // Retrieve the session from the request
-            $session = $request->getSession();
-            
-            // Retrieve the value associated with the 'favoris' key in the session
-            $favoris = $session->get('favoris', []);
-    
-            // Pass the list of favorites to the view
-            return $this->render('back/favoris/list.html.twig', [
-                'favoris' => $favoris
-            ]);
-        }
-    
+    #[Route('/favorites/list', name: 'list_favorites')]
+    public function list(Request $request): Response
+    {
+        // Retrieve the session from the request
+        $session = $request->getSession();
+
+        // Retrieve the value associated with the 'favorites' key in the session
+        $favorites = $session->get('favoris');
+
+        // Pass the list of favorites to the view
+        return $this->render('back/favorites/list.html.twig', [
+            'favorites' => $favorites
+        ]);
+    }
 
     /**
-     * Add a spot in the favoris list
+     * Add a spot in the favorites list
      *
      * @return void
      */
     #[Route('/favorite/add/{id}', name: 'add_favorite')]
-    public function add(Spot $Spot, FavorisManager $favorisManager): Response
+    public function add(Spot $spot, FavorisManager $favorisManager, Request $request): Response
     {
         // Recover the spot id
-        $id = $Spot->getId();
+        $id = $spot->getId();
 
         // Check if the spot exists
-        if (!$Spot) {
+        if (!$spot) {
             throw $this->createNotFoundException('Spot non trouvé');
         }
 
-        // Add the spot to favorites using FavorisManager
-        $favorisManager->add($id, $Spot);
+        // Get the session data
+        $session = $request->getSession();
+
+        // Get the session favorites in a array
+        $favorites = $session->get('favoris', []);
+
+        // We add the object $spot to this array
+        // This way we won't have twice the same spot in the list
+        $favorites[$id] = $spot;
+
+        // We update the favorites in the session
+        $session->set('favoris', $favorites);
 
         // Add a flash message indicating the spot has been added to favorites
         $this->addFlash(
             'success',
-            'Le spot ' . $Spot->getName() . ' a bien été ajouté dans les favoris !'
+            'Le spot ' . $spot->getName() . ' a bien été ajouté dans les favoris !'
         );
 
         // Redirect back to the favorites list page

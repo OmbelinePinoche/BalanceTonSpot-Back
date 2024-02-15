@@ -15,33 +15,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FavoritesController extends AbstractController
 {
-
-
-    #[Route('/api/favorites', name: 'api_list_favorites', methods: ['GET'])]
-    public function list(UserRepository $userRepository, User $user): Response
+    #[Route('/api/favorites', name: 'api_favorites_list', methods: ['GET'])]
+    public function list(User $user): Response
     {
-        // 1st step is getting all the users from the repository
-        $favoris = $user->getFavorites();
-        // We want to return the users to the view
+        // 1st step is getting all the favorites from the repository
+        $favorites = $user->getFavorites();
+        // We want to return the favorites to the view
         // $this->json method allows the conversion of a PHP object to a JSON object
         return $this->json(
             // 1st param: what we want to display
-            $favoris,
+            $favorites,
             // 2nd param: status code
             200,
             // 3rd param: header
             [],
             // 4th param: groups (defines which elements of the entity we want to display)
-            ['groups' => 'api_list_favorites',]
+            ['groups' => 'api_favorites_list',]
         );
     }
-#[Route('/api/favorite/{userId}/{spotId}', name: 'api_update_favorites', methods: ['POST'])]
-    public function updateFavorite(Request $request, EntityManagerInterface $entityManager, $userId, $spotId): Response
+
+    #[Route('/api/favorite/{userId}/{spotId}', name: 'api_add_to_favorites', methods: ['POST'])]
+    public function addToFavorites(Request $request, EntityManagerInterface $entityManager, $userId, $spotId): Response
     {
-        // Retrieve the user from their ID
+        // Retrieves the user from their ID
         $user = $entityManager->getRepository(User::class)->find($userId);
 
-        // Check if the user exists
+        // Checks if the user exists
         if (!$user) {
             return $this->json(['message' => 'Utilisateur non trouvé'], 404);
         }
@@ -49,20 +48,18 @@ class FavoritesController extends AbstractController
         // Retrieve the spot from their ID
         $spot = $entityManager->getRepository(Spot::class)->find($spotId);
 
-        // Check if the spot exists
+        // Checks if the spot exists
         if (!$spot) {
             return $this->json(['message' => 'Spot non trouvé'], 404);
         }
 
+        // Adds a spot in the favorites list
+        $user->addFavorite($spot);
 
-            // add a favorite in the list
-            $user->addFavorite($spot);
-            $message = 'Favori ajouté avec succès.';
-
-
+        $entityManager->persist($spot);
         $entityManager->flush();
 
-        return $this->json(['message' => $message], 200);
+        return $this->json(['message' => 'Spot ajouté aux favoris!'], 200);
     }
 
 
@@ -81,6 +78,4 @@ class FavoritesController extends AbstractController
         // Return the success message
         return $this->json(['message' => 'favori supprimé avec succès!'], 200);
     }
-
-
 }
