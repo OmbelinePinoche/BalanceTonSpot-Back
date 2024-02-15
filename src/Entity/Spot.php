@@ -59,6 +59,9 @@ class Spot
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+
+
+    #[Groups(['api_list_favorites','api_add_favorites'])]
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Favorites')]
     private Collection $user_favorite;
 
