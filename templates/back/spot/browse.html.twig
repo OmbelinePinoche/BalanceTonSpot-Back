@@ -16,22 +16,21 @@
 					<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
 						<h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
 						{% for location in locations %}
-								<a href="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</a>
+							<a href="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</a>
 						{% endfor %}
 					</br>
 					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
 					{% for sport in sports %}
-							<a href="{{ path('api_show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
+						<a href="{{ path('api_show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
 					{% endfor %}
 				</br>
 			</div>
 			<div class="col-12 col-lg-9">
 				<h2 class="text-muted fw-bold mb-4">Les spots
 					{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{path('add')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
+						<a href="{{path('add')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
 					{% endif %}
 				</h2>
-
 
 				<table class="table table-hover mt-4">
 					<thead>
@@ -58,13 +57,16 @@
 								</td>
 								<td>{{ spot.location.name }}</td>
 								<td>
-									<a href="{{ path('show', {slug : spot.slug})}}">Voir</a>
+									<a href="{{ path('show', {slug : spot.slug}) }}">Voir</a>
 								</td>
 								{% if is_granted('ROLE_ADMIN') %}
-								<td>
-									<a href="{{ path('edit', {slug : spot.slug})}}">Modifier</a>
-								</td>
+									<td>
+										<a href="{{ path('edit', {slug : spot.slug}) }}">Modifier</a>
+									</td>
 								{% endif %}
+								<td>
+									<a href="{{path('add_favorite', {id: spot.id}) }}">Ajouter aux favoris</a>
+								</td>
 							</tr>
 
 						{% else %}

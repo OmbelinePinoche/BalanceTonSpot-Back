@@ -20,7 +20,7 @@ class FavoritesController extends AbstractController
      * 
      * @return Response
      */
-        #[Route('/favorites/list', name: 'favorites_list')]
+        #[Route('/favorites/list', name: 'list_favorites')]
         public function list(Request $request): Response
         {
             // Retrieve the session from the request
@@ -41,8 +41,8 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favorite/add/{id}', name: 'favorite_add')]
-    public function add(Request $request, Spot $Spot, FavorisManager $favorisManager): Response
+    #[Route('/favorite/add/{id}', name: 'add_favorite')]
+    public function add(Spot $Spot, FavorisManager $favorisManager): Response
     {
         // Recover the spot id
         $id = $Spot->getId();
@@ -62,7 +62,7 @@ class FavoritesController extends AbstractController
         );
 
         // Redirect back to the favorites list page
-        return $this->redirectToRoute('favorites_list');
+        return $this->redirectToRoute('list_favorites');
     }
 
     /**
@@ -70,7 +70,7 @@ class FavoritesController extends AbstractController
      *
      * @return void
      */
-    #[Route('/favorites/clear', name: 'favorites_clear')]
+    #[Route('/favorites/clear', name: 'clear_favorites')]
     public function clear(Request $request)
     {
         //  I recover the data from the session thanks to $request->getSession()
@@ -78,15 +78,15 @@ class FavoritesController extends AbstractController
         // I empty the element whose key name is 'favorites' (to empty the favorites)
         $session->remove('favoris');
         // I redirect to the list of spots (empty now)
-        return $this->redirectToRoute('favorites_list');
+        return $this->redirectToRoute('list_favorites');
     }
 
-     /**
+    /**
      * Function that removes a spot from the favorites list
      *
      * @return void
      */
-    #[Route('/favorite/remove/{id}', name: 'favorites_remove')]
+    #[Route('/favorite/remove/{id}', name: 'remove_favorites')]
     public function remove(Request $request, $id)
     {
         // I recover the data from the session thanks to $request->getSession()
@@ -99,6 +99,6 @@ class FavoritesController extends AbstractController
         // I update my favorites without the Spot (which was deleted)
         $session->set('favoris', $favoris);
         // I redirect to the list of spots (empty now)
-        return $this->redirectToRoute('favorites_list');
+        return $this->redirectToRoute('list_favorites');
     }
 }

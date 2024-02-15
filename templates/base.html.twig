@@ -35,7 +35,7 @@
 						</li>
 						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 							<li class="nav-item">
-								<a class="nav-link" href="">Mes spots</a>
+								<a class="nav-link" href="{{path('list_favorites')}}">Mes spots</a>
 							</li>
 						{% endif %}
 						{% if is_granted('ROLE_ADMIN') %}
@@ -51,7 +51,7 @@
 					{% if app.user %}
 						<div class="nav-link" style="color: white;">
 							Vous êtes connecté en tant que
-							{{ app.user.username }}
+							{{ app.user.pseudo }}
 						</div>
 					{% endif %}
 					<a href="{{ path('app_logout')}}">

@@ -37,11 +37,11 @@ class UserController extends AbstractController
      *
      * @return Response
      */
-    #[Route('/show/{username}', name: 'show_user')]
-    public function show(UserRepository $userRepository,  $username): Response
+    #[Route('/show/{pseudo}', name: 'show_user')]
+    public function show(UserRepository $userRepository,  $pseudo): Response
     {
-        // Get the user by its username
-        $user = $userRepository->findOneBy(['username' => $username]);
+        // Get the user by its pseudo
+        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
         
         // Checks if the user exists
         if (!$user) {
@@ -91,10 +91,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * Modify a user via its username in a form in the back office
+     * Modify a user via its pseudo in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{username}', name: 'edit_user')]
+    #[Route('/edit/{pseudo}', name: 'edit_user')]
     public function edit(user $user, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want edit a user so no need to create anything.

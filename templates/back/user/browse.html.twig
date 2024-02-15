@@ -32,7 +32,7 @@
 			{% for user in users %}
 				<tr>
 					<td>{{ user.id }}</td>
-					<td>{{ user.username }}</td>
+					<td>{{ user.pseudo }}</td>
 					<td>{{ user.email }}</td>
 					<td>
 						{% if user.roles is defined %}
@@ -46,10 +46,10 @@
 						{% endif %}
 					</td>
 					<td>
-						<a href="{{ path('show_user', {username : user.username})}}">Voir</a>
+						<a href="{{ path('show_user', {pseudo : user.pseudo})}}">Voir</a>
 					</td>
 					<td>
-						<a href="{{ path('edit_user', {username : user.username})}}">Modifier</a>
+						<a href="{{ path('edit_user', {pseudo : user.pseudo})}}">Modifier</a>
 					</td>
 				</tr>
 			{% else %}
