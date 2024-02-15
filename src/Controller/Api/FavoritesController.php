@@ -44,7 +44,7 @@ class FavoritesController extends AbstractController
 
    
 
-    #[Route('/api/favoris/add/{userId}/{spotId}', name: 'api_update_favorites', methods: ['POST'])]
+    #[Route('/api/favori/{userId}/{spotId}', name: 'api_update_favorites', methods: ['POST'])]
     public function updateFavorite(Request $request, EntityManagerInterface $entityManager, $userId, $spotId): Response
     {
         // Retrieve the user from their ID
@@ -64,7 +64,7 @@ class FavoritesController extends AbstractController
         }
 
         
-            // If the spot has not a favorite, add him in the list
+            // add a favorite in the list
             $user->addFavorite($spot);
             $message = 'Favori ajouté avec succès.';
         
@@ -75,20 +75,20 @@ class FavoritesController extends AbstractController
     }
 
 
-    #[Route('/api/favoris/remove/{userId}/{spotId}', name: 'api_favorites_delete', methods: ['DELETE'])]
-    public function removefavorites($favoris = null, EntityManagerInterface $entityManager): Response
+    #[Route('/api/favori/{userId}/{spotId}', name: 'api_favorites_delete', methods: ['DELETE'])]
+    public function removefavorites(EntityManagerInterface $entityManager, $favoris = null): Response
     {
         // Check if the favoris exists
         if (!$favoris) {
 
-            return $this->json(['message' => 'Aucun favoris trouvé'], 404);
+            return $this->json(['message' => 'Aucun favori trouvé'], 404);
         }
         // Delete the data send in the request 
         $entityManager->remove($favoris);
         $entityManager->flush();
 
         // Return the success message
-        return $this->json(['message' => 'favoris supprimé avec succès!'], 200);
+        return $this->json(['message' => 'favori supprimé avec succès!'], 200);
     }
 
     
