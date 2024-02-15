@@ -33,10 +33,10 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route('/api/user/{username}', name: 'api_show_user', methods: ['GET'])]
-    public function show(userRepository $userRepository, $username): Response
+    #[Route('/api/user/{pseudo}', name: 'api_show_user', methods: ['GET'])]
+    public function show(userRepository $userRepository, $pseudo): Response
     {
-        $user = $userRepository->findOneBy(['username' => $username]);
+        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
 
         if (!$user) {
             return $this->json(['message' => 'Aucun user n\a été trouvé!'], 404);
@@ -52,7 +52,7 @@ class UserController extends AbstractController
 
         $user = new User();
         $user->setEmail($data['email']);
-        $user->setUsername($data['username']);
+        $user->setPseudo($data['pseudo']);
 
         // Hash password
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
@@ -68,8 +68,8 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Utilisateur créé avec succès'], 201);
     }
 
-    #[Route('/api/user/{username}', name: 'api_edit_user', methods: ['PUT'])]
-    public function update(User $user, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, $username): Response
+    #[Route('/api/user/{pseudo}', name: 'api_edit_user', methods: ['PUT'])]
+    public function update(User $user, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
     {
         // Check if the user exists
         if (!$user) {
@@ -89,7 +89,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Utilisateur modifié avec succès!'], 200);
     }
 
-    #[Route('/api/user/{username}', name: 'api_delete_user', methods: ['DELETE'])]
+    #[Route('/api/user/{pseudo}', name: 'api_delete_user', methods: ['DELETE'])]
     public function delete(User $user = null, EntityManagerInterface $entityManager): Response
     {
         // Check if the user exists

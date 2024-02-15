@@ -89,13 +89,11 @@ class CommentController extends AbstractController
         return $this->json($comments, 200, [], ['groups' => 'api_comment_by_spot']);
     }
 
-    
     #[Route('/api/comments', name: 'api_add_comment', methods: ['POST'])]
     public function addComment(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Retrieve the data send in the POST request
         $data = json_decode($request->getContent(), true);
-
 
         if (!isset($data['content'], $data['username'], $data['spot'])) {
             return $this->json(['message' => 'Données manquantes'], 400);
@@ -121,8 +119,7 @@ class CommentController extends AbstractController
     } 
 
 
-
-    #[Route('/api/comment/{id}', name: 'update_comment', methods: ['PUT'])]
+    #[Route('/api/secure/comment/{id}', name: 'update_comment', methods: ['PUT'])]
     public function update(CommentRepository $commentRepository, Request $request, EntityManagerInterface $entityManager, $id): Response
     {
         // 
@@ -148,7 +145,7 @@ class CommentController extends AbstractController
         return $this->json(['message' => 'Commentaire mis à jour avec succès'], 200);
     }
 
-    #[Route('/api/comment/{id}', name: 'api_comment_delete', methods: ['DELETE'])]
+    #[Route('/api/secure/comment/{id}', name: 'api_comment_delete', methods: ['DELETE'])]
     public function removeComment(comment $comment = null, EntityManagerInterface $entityManager): Response
     {
         // Check if the comment exists
