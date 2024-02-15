@@ -5,9 +5,7 @@
 	<div class="container-xl bg-light p-5 border-top">
 		<div class="row mb-2">
 			<div class="col-12 col-lg-3">
-				<ul
-					class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
-				</br>
+				<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center"></br>
 			</br>
 		</br>
 		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par nom</a>
@@ -16,36 +14,38 @@
 </div>
 <div class="col-12 col-lg-9">
 	<h2 class="text-muted fw-bold mb-4">Les villes
-		{# {% if is_granted('ROLE_MANAGER') %} #}
-		<a href="{{path('add_location')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter une ville</a>
-		{# {% endif %} #}
+		{% if is_granted('ROLE_ADMIN') %}
+			<a href="{{path('add_location')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter une ville</a>
+		{% endif %}
 	</h2>
 
-				<table class="table table-hover mt-4">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Nom</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for location in location %}
-							<tr>
-								<td>{{ location.id }}</td>
-								<td>{{ location.name }}</td>
-								<td>
-									<a href="{{ path('edit_location', {slug : location.slug})}}">Modifier</a>
-								</td>
-								<td>
-									<a href="{{ path('remove_location', {id : location.id})}}">Supprimer</a>
-								</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="10">Aucune ville trouvée</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+	<table class="table table-hover mt-4">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for location in location %}
+				<tr>
+					<td>{{ location.id }}</td>
+					<td>{{ location.name }}</td>
+					{% if is_granted('ROLE_ADMIN') %}
+						<td>
+							<a href="{{ path('edit_location', {slug : location.slug})}}">Modifier</a>
+						</td>
+						<td>
+							<a href="{{ path('remove_location', {id : location.id})}}">Supprimer</a>
+						</td>
+					{% endif %}
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="10">Aucune ville trouvée</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-			{% endblock %}
+{% endblock %}

@@ -6,33 +6,41 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
-
+    
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 

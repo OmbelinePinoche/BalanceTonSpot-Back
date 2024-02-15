@@ -15,9 +15,9 @@
 </div>
 <div class="col-12 col-lg-9">
 	<h2 class="text-muted fw-bold mb-4">Les commentaires
-		{# {% if is_granted('ROLE_MANAGER') %} #}
+		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 		<a href="{{path('add_comment')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un commentaire</a>
-		{# {% endif %} #}
+		{% endif %}
 	</h2>
 
 	<table class="table table-hover mt-4">
@@ -25,9 +25,9 @@
 			<tr>
 				<th>Id</th>
 				<th>Spot</th>
-				<th>Visité le</th>
-				<th>Par</th>
 				<th>Contenu du commentaire</th>
+				<th>Date d'ajout</th>
+				<th>Rider</th>
 
 			</tr>
 		</thead>
@@ -36,6 +36,7 @@
 				<tr>
 					<td>{{ comment.id }}</td>
 					<td>{{comment.spot.name }}</td>
+					<td>{{ comment.content }}</td>
 					<td>
 						{% if comment.date is not null %}
 							{{ comment.date.format('d-m-Y') }}
@@ -44,14 +45,15 @@
 						{% endif %}
 					</td>
 					<td>{{ comment.username }}</td>
-					<td>{{ comment.content }}</td>
 
 					<td>
 						<a href="{{ path('show_comment', {id : comment.id}) }}">Voir</a>
 					</td>
-					<td>
-						<a href="{{ path('edit_comment', {id : comment.id}) }}">Modifier</a>
-					</td>
+					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+						<td>
+							<a href="{{ path('edit_comment', {id : comment.id}) }}">Modifier</a>
+						</td>
+					{% endif %}
 				</tr>
 			{% else %}
 				<tr>

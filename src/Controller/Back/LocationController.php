@@ -59,7 +59,7 @@ class LocationController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add_location')]
+    #[Route('/admin/new', name: 'add_location')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Create an instance for the entity location
@@ -93,7 +93,7 @@ class LocationController extends AbstractController
      * Modify a location via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{slug}', name: 'edit_location')]
+    #[Route('/admin/edit/{slug}', name: 'edit_location')]
     public function edit(location $location, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a location so no need to create anything.
@@ -131,7 +131,7 @@ class LocationController extends AbstractController
      *  Modify a location via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/remove/{id}', name: 'remove_location')]
+    #[Route('/admin/remove/{id}', name: 'remove_location')]
     public function remove(location $location, LocationRepository $LocationRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a location so no need to create anything.
@@ -145,24 +145,16 @@ class LocationController extends AbstractController
     }
 
     #[Route('/{slug}/spots', name: 'show_by_location', methods: ['GET'])]
-    public function showByLocation(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, $slug, Location $location = null)
+    public function showByLocation(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Location $location = null)
     {
+        // Checks if the given id location exists
+        if (!$location) {
+            return $this->json(['message' => 'Aucun emplacement n\'a été trouvé'], 404);
+        }
+        // Get all the locations
+        $locations = $locationRepository->findAll();
         // Search the spots from the repository with the param "location"
         $spots = $spotRepository->findBy(['location' => $location]);
-
-        // Checks if there is a spot in the requested location
-        if (!$spots) {
-            return $this->json(['message' => 'Aucun spot n\'a été trouvé!'], 404);
-        }
-
-        // Checks if the location exists
-        if (!$location) {
-            return $this->json(['message' => 'Lieu inconnu!'], 404);
-        }
-
-        // Get all the locations
-        $locations = $locationRepository->findBy(['slug' => $slug]);
-
         $sports = $sportRepository->findAll();
 
         // Return  to the view all the spots according to the location

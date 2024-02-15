@@ -40,10 +40,10 @@ class SportController extends AbstractController
      * @return Response
      */
     #[Route('/show/{slug}', name: 'show_sport')]
-    public function show(SportRepository $SportRepository,  $id): Response
+    public function show(SportRepository $sportRepository,  $slug): Response
     {
-        // Get the sport by its ID
-        $sport = $SportRepository->find($id);
+        // Get the sport by its slug
+        $sport = $sportRepository->findOneBy(['slug' => $slug]);
 
         // Checks if the sport exists
         if (!$sport) {
@@ -61,7 +61,7 @@ class SportController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add_sport')]
+    #[Route('/admin/new', name: 'add_sport')]
     public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity sport
@@ -102,7 +102,7 @@ class SportController extends AbstractController
      * Modify a sport via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{slug}', name: 'edit_sport')]
+    #[Route('/admin/edit/{slug}', name: 'edit_sport')]
     public function edit(sport $sport, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // I build my form which revolves around my object
@@ -137,7 +137,7 @@ class SportController extends AbstractController
      *  Modify a sport via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/remove/{id}', name: 'remove_sport')]
+    #[Route('/admin/remove/{id}', name: 'remove_sport')]
     public function remove(sport $sport, SportRepository $SportRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a sport so no need to create anything.

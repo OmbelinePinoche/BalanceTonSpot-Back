@@ -59,7 +59,7 @@ class CommentController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add_comment')]
+    #[Route('/user/new', name: 'add_comment')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Create an instance for the entity comment
@@ -93,7 +93,7 @@ class CommentController extends AbstractController
      * Modify a comment via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_comment')]
+    #[Route('/user/edit/{id}', name: 'edit_comment')]
     public function edit(comment $comment, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a comment so no need to create anything.
@@ -131,7 +131,7 @@ class CommentController extends AbstractController
      *  Modify a comment via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/remove/{id}', name: 'remove_comment')]
+    #[Route('/user/remove/{id}', name: 'remove_comment')]
     public function remove(comment $comment, CommentRepository $CommentRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want delete a comment so no need to create anything.

@@ -73,7 +73,7 @@ class SpotController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add')]
+    #[Route('/admin/new', name: 'add')]
     public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity spot
@@ -102,7 +102,7 @@ class SpotController extends AbstractController
             );
 
             // Return the spots in the view
-            return $this->redirectToRoute('list_spot');
+            return $this->redirectToRoute('list');
         }
 
         return $this->render('back/spot/create.html.twig', [
@@ -114,7 +114,7 @@ class SpotController extends AbstractController
      * Modify a spot via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/edit/{slug}', name: 'edit')]
+    #[Route('/admin/edit/{slug}', name: 'edit')]
     public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // I build my form which revolves around my object
@@ -148,7 +148,7 @@ class SpotController extends AbstractController
      *  Modify a spot via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/remove/{id}', name: 'remove')]
+    #[Route('/admin/remove/{id}', name: 'remove')]
     public function remove(Spot $spot, spotRepository $spotRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a spot so no need to create anything
@@ -158,6 +158,6 @@ class SpotController extends AbstractController
         $entityManager->flush();
 
         // Return user to the home page
-        return $this->redirectToRoute('list_spot');
+        return $this->redirectToRoute('list');
     }
 }
