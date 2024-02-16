@@ -196,4 +196,17 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `email`, `pseudo`, `firstname`, `lastname`, `password`, `roles`) VALUES
 (1,	'admin@admin.fr',	'admin',	NULL,	NULL,	'$2y$13$mdsmlovcKOASxW9qzUZIve13As7kZ4k6g3wicFYWXPLYpVe5.nMvy',	'[\"ROLE_ADMIN\"]'),
 (2,	'rider@user.fr',	'rider',	NULL,	NULL,	'$2y$13$GE9o.xomhmJX.fNeyAb5zekh4gynBhUwehnb7vvp99HbMvdWoT5..',	'[\"ROLE_USER\"]');
--- 2024-02-13 11:31:41
+
+DROP TABLE IF EXISTS `user_spot`;
+CREATE TABLE `user_spot` (
+  `user_id` int(11) NOT NULL,
+  `spot_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_id`,`spot_id`),
+  KEY `IDX_C3B336BAA76ED395` (`user_id`),
+  KEY `IDX_C3B336BA2DF1D37C` (`spot_id`),
+  CONSTRAINT `FK_C3B336BA2DF1D37C` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_C3B336BAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- 2024-02-16 11:06:44
