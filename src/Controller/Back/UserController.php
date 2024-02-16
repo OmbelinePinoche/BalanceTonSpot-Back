@@ -83,7 +83,7 @@ class UserController extends AbstractController
             
             // Return the users in the view
             return $this->redirectToRoute('list_user');
-          }
+        }
 
         return $this->render('back/user/create.html.twig', [
             'form' => $form,
@@ -95,9 +95,9 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/edit/{pseudo}', name: 'edit_user')]
-    public function edit(user $user, Request $request, EntityManagerInterface  $entityManager): Response
+    public function edit(User $user, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here , we want edit a user so no need to create anything.
+        // We want edit a user so no need to create anything.
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(UserType::class, $user);
@@ -108,13 +108,12 @@ class UserController extends AbstractController
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
            // Here, no need to persist because it already exists so no need to recreate it 
-        
             $entityManager->flush(); 
 
         // We will display a 'flash message' which will allow us to display whether or not the user has been created
             $this->addFlash(
                 'succès',
-                'L utilisateur '.$user->getEmail().' a bien été modifié !'
+                'L utilisateur '.$user->getPseudo().' a bien été modifié !'
             );
             return $this->redirectToRoute('list_user');
         }
@@ -130,7 +129,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/remove/{id}', name: 'remove_user')]
-    public function remove(user $user, UserRepository $UserRepository, Request $request, EntityManagerInterface  $entityManager): Response
+    public function remove(user $user, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a user so no need to create anything.
         // The user exists already 

@@ -1,29 +1,35 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
 {% block main %}
-    <h2 class="text-muted fw-bold mb-4">{{ user.pseudo }}</h2>
+	<h2 class="text-muted fw-bold mb-4">{{ user.pseudo }}</h2>
 
-    <table class="table table-hover mt-4">
-        <tbody>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Rôle</th>
-                <td>{{ user.roles }}</td>
-            </tr>
-            <tr>
-                <th>Mot de passe</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            
-    
-        </tbody>
-    </table>
+	<table class="table table-hover mt-4">
+		<tbody>
+			<tr>
+				<th>Email</th>
+				<td>{{ user.email }}</td>
+			</tr>
+			<tr>
+				<th>Rôle</th>
+				<td>
+					{% for role in user.roles %}
+						{{ role }}
+						{% if not loop.last %},
+						{% endif %}
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Mot de passe</th>
+				<td>{{ user.password }}</td>
+			</tr>
 
-    <a href="{{ path('list_user') }}">Retour à la liste</a>
 
-    <a href="{{ path('edit_user', {'id; user.id}) }}">Modifier</a>
+		</tbody>
+	</table>
+
+	<a href="{{ path('list_user') }}">Retour à la liste</a>
+
+	<a href="{{ path('edit_user', {pseudo: user.pseudo}) }}">Modifier</a>
 
 {% endblock %}

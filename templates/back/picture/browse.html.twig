@@ -25,6 +25,7 @@
 			<tr>
 				<th>Id</th>
 				<th>Nom</th>
+				<th>Spot associé</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -32,6 +33,7 @@
 				<tr>
 					<td>{{ picture.id }}</td>
 					<td>{{ picture.name }}</td>
+					<td>{{ picture.spot.name }}</td>
 					{% if is_granted('ROLE_ADMIN') %}
 						<td>
 							<a href="{{ path('edit_picture', {id : picture.id})}}">Modifier</a>
