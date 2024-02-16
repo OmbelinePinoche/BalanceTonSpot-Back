@@ -107,8 +107,6 @@ class CommentController extends AbstractController
         $comment->setUsername($data['username']);
         $spot= $entityManager->getRepository(Spot::class)->find($data['spot']);
         $comment->setSpot($spot);
-    
-        
 
       // We need to persist the COMMENT entity to the database to save the data
         $entityManager->persist($comment);

@@ -1,10 +1,10 @@
 POST http://0.0.0.0:8080/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDc5OTkxMjcsImV4cCI6MTcwODAwMjcyNywicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGFkbWluLmZyIn0.OAHFU2MDm7Hb9nSQ-wN807czaCshdlr9aGJSjF3mscoCmZ8yf1vZR4bVcB03tq2QX-_6UtfwYIht_RxVG6tnXL3rEV7naEpZWdE41Knxjx7hJRHAxbLEglKxAeMGnX2R9H6h-ivwAHOGbIDy_0Koyl-nmKBbeJ2DnXd9OwIDZbnid3AX5C0mpZkPn5XSvDUDp1kaBKj_7D-fmAtcB47s8-cxjq_zLxMi65aC2pnrCRue8T-5ccQBZTo6JB8Y5R5GyiRA9Q5Zbfb9h63dwQHbOaeA3KSa4ngFmGX1oS-eZHMvqyW2Y5OQdNfd5S4sCIbqTnGnx_yvaAgUxXRvPaqy2A
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDgwNzIxOTksImV4cCI6MTcwODA3NTc5OSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGFkbWluLmZyIn0.aJjsEOxH5qjv45XHR6106di0V0Rf1wMh-DPbQjGK9RII-S0khNid4SsIfc82E-7aARQ3wSQ51u9KK8u1ab9cecSDzs5tJm4XNere9FJD6SZhRdB-AhmSdnTJ0K9dd425WqCDp-ZDJfJLzEUlq76Axjo5xCVcWAKjhmqVZ_n5PNQpnFfkqfcrsmR-47IVRN4dou_Q4tNokZ1mWxcq_Geo-WVusY7cPXxHPNPo85uPV_NJK_dP-6o9gLHWEAh1cn_chzAVNEvWqxM4ejgngj6EULfjNz0Re3KSl72uS4l27p0WNv42SxfrOfnVfUcdW7QLaPjimluWhJtnVhWlGhJNjQ
 
 {
-    "pseudo": "toto",
-    "email" : "toto@user.fr",
+    "pseudo": "fjkgdkf",
+    "email" : "dflfjd@user.fr",
     "password" : "okokok",
     "roles" :  ["ROLE_USER"]
 }

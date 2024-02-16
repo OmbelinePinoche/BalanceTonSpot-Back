@@ -41,7 +41,7 @@ class FavoritesController extends AbstractController
      * @return void
      */
     #[Route('/favorite/add/{id}', name: 'add_favorite')]
-    public function add(Spot $spot, FavorisManager $favorisManager, Request $request): Response
+    public function add(Spot $spot, Request $request): Response
     {
         // Recover the spot id
         $id = $spot->getId();

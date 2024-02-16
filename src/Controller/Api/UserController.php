@@ -33,10 +33,10 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route('/api/user/{pseudo}', name: 'api_show_user', methods: ['GET'])]
-    public function show(userRepository $userRepository, $pseudo): Response
+    #[Route('/api/user/{id}', name: 'api_show_user', methods: ['GET'])]
+    public function show(userRepository $userRepository, $id): Response
     {
-        $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
+        $user = $userRepository->find($id);
 
         if (!$user) {
             return $this->json(['message' => 'Aucun user n\a été trouvé!'], 404);
@@ -68,7 +68,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Utilisateur créé avec succès'], 201);
     }
 
-    #[Route('/api/user/{pseudo}', name: 'api_edit_user', methods: ['PUT'])]
+    #[Route('/api/user/{id}', name: 'api_edit_user', methods: ['PUT'])]
     public function update(User $user, Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): Response
     {
         // Check if the user exists
@@ -89,7 +89,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Utilisateur modifié avec succès!'], 200);
     }
 
-    #[Route('/api/user/{pseudo}', name: 'api_delete_user', methods: ['DELETE'])]
+    #[Route('/api/user/{id}', name: 'api_delete_user', methods: ['DELETE'])]
     public function delete(User $user = null, EntityManagerInterface $entityManager): Response
     {
         // Check if the user exists
