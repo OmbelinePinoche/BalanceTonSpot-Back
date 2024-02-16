@@ -11,16 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class FavoritesController extends AbstractController
 {
-    #[Route('/api/favorites/{userId}', name: 'api_favorites_list', methods: ['GET'])]
-    public function list($userId, UserRepository $userRepository): Response
+    #[Route('/api/favorites', name: 'api_favorites_list', methods: ['GET'])]
+    public function list(): Response
     {
-        // Retrieves the user from their ID
-        $user = $userRepository->find($userId);
+        /** @var User $user */
+        $user = $this->getUser();
 
         // Checks if the user exists
         if (!$user) {
             return $this->json(['message' => 'Utilisateur non trouvé'], 404);
         }
+
         // Get all the favorites from the User entity
         $favorites = $user->getFavorites();
 
@@ -43,11 +44,11 @@ class FavoritesController extends AbstractController
         );
     }
 
-    #[Route('/api/favorites/{userId}/{spotId}', name: 'api_add_to_favorites', methods: ['POST'])]
-    public function addToFavorites(EntityManagerInterface $entityManager, UserRepository $userRepository, $userId, SpotRepository $spotRepository, $spotId): Response
+    #[Route('/api/favorites/{spotId}', name: 'api_add_to_favorites', methods: ['POST'])]
+    public function addToFavorites(EntityManagerInterface $entityManager, SpotRepository $spotRepository, $spotId): Response
     {
-        // Retrieves the user from their ID
-        $user = $userRepository->find($userId);
+        /** @var User $user */
+        $user = $this->getUser();
 
         // Checks if the user exists
         if (!$user) {
@@ -72,11 +73,11 @@ class FavoritesController extends AbstractController
     }
 
 
-    #[Route('/api/favorites/{userId}/{spotId}', name: 'api_remove_favorites', methods: ['DELETE'])]
-    public function removefavorite(EntityManagerInterface $entityManager, UserRepository $userRepository, $userId, SpotRepository $spotRepository, $spotId): Response
+    #[Route('/api/favorites/{spotId}', name: 'api_remove_favorites', methods: ['DELETE'])]
+    public function removefavorite(EntityManagerInterface $entityManager, SpotRepository $spotRepository, $spotId): Response
     {
-        // Retrieves the user from their ID
-        $user = $userRepository->find($userId);
+        /** @var User $user */
+        $user = $this->getUser();
 
         // Checks if the user exists
         if (!$user) {
