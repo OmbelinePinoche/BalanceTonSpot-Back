@@ -105,6 +105,7 @@ class CommentController extends AbstractController
         // Set the properties from the given data
         $comment->setContent($data['content']);
         $comment->setUsername($data['username']);
+        $comment->setRating($data['rating']);
         $spot= $entityManager->getRepository(Spot::class)->find($data['spot']);
         $comment->setSpot($spot);
     
@@ -127,7 +128,7 @@ class CommentController extends AbstractController
     
         // Check if the comment exists
         if (!$comment) {
-            return $this->json(['message' => 'No comment found for the given ID'], 404);
+            return $this->json(['message' => 'Aucun commentaire trouvé sur cette ID'], 404);
         }
     
         // Retrieve the data sent in the PUT request

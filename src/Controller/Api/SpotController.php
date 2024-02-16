@@ -58,7 +58,6 @@ class SpotController extends AbstractController
         return $this->json($spot, 200, [], ['groups' => 'api_show']);
     }
 
- /**
     /**
      * /* @Route("/api/spot/{slug}/rate", name="api_spot_rate", methods={"POST"}) */
      
