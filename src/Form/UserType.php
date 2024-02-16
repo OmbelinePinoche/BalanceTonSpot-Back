@@ -21,7 +21,7 @@ class UserType extends AbstractType
             ->add('lastname', TypeTextType::class, [
                 'label' => 'Nom: '
             ])
-            ->add('username', TypeTextType::class, [
+            ->add('pseudo', TypeTextType::class, [
                 'label' => 'Pseudo'
             ])
             ->add('email', TypeTextType::class, [
@@ -31,10 +31,10 @@ class UserType extends AbstractType
                 'label' => 'Photo de Profil: '
             ])
             ->add('roles', TypeTextType::class, [
-                'label' => 'Rôle'
+                'label' => 'Rôle: '
             ])
             ->add('password', TypeTextType::class, [
-                'label' => 'Mot de passe'
+                'label' => 'Mot de passe: '
             ])
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],

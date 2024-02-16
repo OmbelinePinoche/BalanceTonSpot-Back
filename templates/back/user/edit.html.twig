@@ -2,7 +2,7 @@
 
 
 {% block main %}
-   <h2 class="text-muted fw-bold mb-4">Modifier l'utilisateur {{ user.username }}</h1>
+   <h2 class="text-muted fw-bold mb-4">Modifier l'utilisateur {{ user.pseudo }}</h1>
     {{ form(form) }}
     <a href="{{ path('list_user') }}">Retour à la liste</a>
     <a href="{{ path('remove_user', {id:user.id}) }}">Supprimer cet utilisateur</a>

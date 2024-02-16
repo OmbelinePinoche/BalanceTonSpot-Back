@@ -21,8 +21,6 @@ class PictureType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom de l\'image',
-                'data' => '.jpeg', // Valeur par défaut
-                'mapped' => false, // Ne pas mapper à une propriété de l'entité
             ])
             ->add('path', FileType::class, [
                 'label' => 'Image'
