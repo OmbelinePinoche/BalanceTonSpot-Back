@@ -119,29 +119,40 @@ class CommentController extends AbstractController
     } 
 
 
-    #[Route('/api/secure/comment/{id}', name: 'update_comment', methods: ['PUT'])]
+    #[Route('/api/secure/comment/{id}', name: 'api_update_comment', methods: ['PUT'])]
     public function update(CommentRepository $commentRepository, Request $request, EntityManagerInterface $entityManager, $id): Response
     {
-        // 
+        // Find the comment by ID
         $comment = $commentRepository->find($id);
     
         // Check if the comment exists
         if (!$comment) {
-            return $this->json(['message' => 'Aucun commentaire trouvé pour l\'ID donné'], 404);
+            return $this->json(['message' => 'No comment found for the given ID'], 404);
         }
     
-        // Retrieve the data send in the request PUT
+        // Retrieve the data sent in the PUT request
         $data = json_decode($request->getContent(), true);
     
-        //Update the properties of comment 
+        // Update the properties of the comment if they are present in the request data
         if (isset($data['content'])) {
             $comment->setContent($data['content']);
+        }
+        if (isset($data['username'])) {
+            $comment->setUsername($data['username']);
+        }
+        if (isset($data['spot'])) {
+        }
+        if (isset($data['date'])) {
+        
+        }
+        if (isset($data['rating'])) {
+            $comment->setRating($data['rating']);
         }
     
         // Persist the update
         $entityManager->flush();
     
-        // Return a response
+        // Return a success response
         return $this->json(['message' => 'Commentaire mis à jour avec succès'], 200);
     }
 

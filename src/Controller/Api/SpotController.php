@@ -2,17 +2,19 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Location;
 use App\Entity\Spot;
-use App\Repository\LocationRepository;
+use App\Entity\Location;
+use App\Form\SpotRatingType;
 use App\Repository\SpotRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SpotController extends AbstractController
 {
@@ -56,5 +58,33 @@ class SpotController extends AbstractController
         return $this->json($spot, 200, [], ['groups' => 'api_show']);
     }
 
-
+ /**
+    /**
+     * /* @Route("/api/spot/{slug}/rate", name="api_spot_rate", methods={"POST"}) */
+     
+    public function rate(Request $request, Spot $spot): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        
+        // Create the form
+        $form = $this->createForm(SpotRatingType::class);
+        $form->submit($data);
+        
+        // Check if the form is valid
+        if ($form->isValid()) {
+            $rating = $form->get('rating')->getData();
+            
+            // Save the rating in the database or any other necessary processing
+            
+            return new JsonResponse(['success' => true]);
+        }
+        
+        // If the form is not valid, return the errors
+        $errors = ["Qu'est ce que tu as fais de ce maudit pancake, tabarnak!"];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        
+        return new JsonResponse(['success' => false, 'errors' => $errors], 400);
+    }
 }
