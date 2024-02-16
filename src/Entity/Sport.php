@@ -18,7 +18,7 @@ class Sport
     #[ORM\Column]
     private ?int $id = null;
     
-    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport', 'api_list', 'api_show', 'api_spot_by_location'])]
+    #[Groups(['list_sport', 'show_sport', 'api_list_sport', 'api_show_sport', 'api_list', 'api_show', 'api_spot_by_location', 'api_favorites_list'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
