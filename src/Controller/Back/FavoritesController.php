@@ -20,6 +20,7 @@ class FavoritesController extends AbstractController
      * 
      * @return Response
      */
+    
     #[Route('/favorites/list', name: 'list_favorites')]
     public function list(Request $request): Response
     {
@@ -30,7 +31,7 @@ class FavoritesController extends AbstractController
         $favorites = $session->get('favoris');
 
         // Pass the list of favorites to the view
-        return $this->render('back/favorites/list.html.twig', [
+        return $this->render('back/favorites/browse.html.twig', [
             'favorites' => $favorites
         ]);
     }

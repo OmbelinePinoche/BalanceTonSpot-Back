@@ -2,16 +2,10 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Location;
-use App\Entity\Spot;
-use App\Repository\LocationRepository;
 use App\Repository\SpotRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SpotController extends AbstractController
@@ -45,16 +39,15 @@ class SpotController extends AbstractController
     #[Route('/api/spot/{slug}', name: 'api_show', methods: ['GET'])]
     public function show(SpotRepository $spotRepository, $slug): Response
     {
+        // Search the spot in the repository thanks to the property "slug"
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
+        // This checks if the given (id) spot exists
         if (!$spot) {
             return $this->json(['message' => 'Aucun spot n\a été trouvé!'], 404);
         }
-
-        // $spot->setSlug($this->slugger->slug($spot->getName()));
-
+        
         return $this->json($spot, 200, [], ['groups' => 'api_show']);
     }
-
 
 }
