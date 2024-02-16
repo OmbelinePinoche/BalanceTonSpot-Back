@@ -34,13 +34,9 @@ class Comment
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
-    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
-
-
-
 
     public function getId(): ?int
     {

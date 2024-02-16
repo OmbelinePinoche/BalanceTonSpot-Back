@@ -14,20 +14,21 @@ CREATE TABLE `comment` (
   `username` varchar(255) NOT NULL,
   `spot_id` int(255) NOT NULL,
   `date` date DEFAULT NULL,
+  `rating` decimal(2,1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_9474526C2DF1D37C` (`spot_id`),
   CONSTRAINT `FK_9474526C5B05007F` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `comment` (`id`, `content`, `username`, `spot_id`, `date`) VALUES
-(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	'lapinocherie',	1,	'2023-02-12'),
-(7,	'C\'est quoi cette blague lol',	'adrileclown',	4,	'2024-02-14'),
-(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	'DiegrossePochasse',	3,	'2024-02-14'),
-(9,	'Là je dis oui!',	'adrileclown',	5,	'2024-02-14'),
-(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	'lavocat',	1,	'2024-02-01'),
-(11,	'Ça ride à fond par ici j\'aimeuh bieng',	'DiegrossePochasse',	6,	'2024-02-11'),
-(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	'lapinocherie',	13,	'2024-02-05'),
-(13,	'ils sont toujours en travaux ils abusent pffff',	'lavocat',	10,	'2024-01-19');
+INSERT INTO `comment` (`id`, `content`, `username`, `spot_id`, `date`, `rating`) VALUES
+(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	'lapinocherie',	1,	'2023-02-12',	NULL),
+(7,	'C\'est quoi cette blague lol',	'adrileclown',	4,	'2024-02-14',	NULL),
+(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	'DiegrossePochasse',	3,	'2024-02-14',	NULL),
+(9,	'Là je dis oui!',	'adrileclown',	5,	'2024-02-14',	NULL),
+(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	'lavocat',	1,	'2024-02-01',	NULL),
+(11,	'Ça ride à fond par ici j\'aimeuh bieng',	'DiegrossePochasse',	6,	'2024-02-11',	NULL),
+(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	'lapinocherie',	13,	'2024-02-05',	NULL),
+(13,	'ils sont toujours en travaux ils abusent pffff',	'lavocat',	10,	'2024-01-19',	NULL);
 
 DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
@@ -189,13 +190,17 @@ CREATE TABLE `user` (
   `lastname` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
+  `profilpicture` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `user` (`id`, `email`, `pseudo`, `firstname`, `lastname`, `password`, `roles`) VALUES
-(1,	'admin@admin.fr',	'admin',	NULL,	NULL,	'$2y$13$mdsmlovcKOASxW9qzUZIve13As7kZ4k6g3wicFYWXPLYpVe5.nMvy',	'[\"ROLE_ADMIN\"]'),
-(2,	'rider@user.fr',	'rider',	NULL,	NULL,	'$2y$13$GE9o.xomhmJX.fNeyAb5zekh4gynBhUwehnb7vvp99HbMvdWoT5..',	'[\"ROLE_USER\"]');
+INSERT INTO `user` (`id`, `email`, `pseudo`, `firstname`, `lastname`, `password`, `roles`, `profilpicture`) VALUES
+(1,	'admin@admin.fr',	'admin',	NULL,	NULL,	'$2y$13$mdsmlovcKOASxW9qzUZIve13As7kZ4k6g3wicFYWXPLYpVe5.nMvy',	'[\"ROLE_ADMIN\"]',	NULL),
+(2,	'rider@user.fr',	'rider',	NULL,	NULL,	'$2y$13$GE9o.xomhmJX.fNeyAb5zekh4gynBhUwehnb7vvp99HbMvdWoT5..',	'[\"ROLE_USER\"]',	NULL),
+(3,	'gerard@user.fr',	'sasuke',	NULL,	NULL,	'$2y$13$SDehBTxkwHhe43AtvDWaaOZZhVJGxP9hLTVQS1ur256ZIMUFBwNTa',	'[\"ROLE_USER\"]',	'https://fr.web.img4.acsta.net/pictures/15/07/27/15/04/271855.jpg'),
+(4,	'mhysa@user.fr',	'roidelaglisse96',	NULL,	NULL,	'$2y$13$oOoTP8LvCDxDyFMdwNr4muKeysgLPV0t/ugLlmrpwFTftPV01kvK.',	'[\"ROLE_USER\"]',	'https://wallpapers-clan.com/wp-content/uploads/2023/08/kakashi-under-the-rain-green-wallpaper.jpg'),
+(5,	'tyrion@user.fr',	'Sasha',	NULL,	NULL,	'$2y$13$bQfA5Gk0d0h3rkThcEyYjOa7lyigOpUKdi..NuCWr3I/LJz4ofiK.',	'[\"ROLE_USER\"]',	'https://assets-prd.ignimgs.com/2023/08/29/mwii-s05-reloaded-announcement-016-1693306225115.jpg');
 
 DROP TABLE IF EXISTS `user_spot`;
 CREATE TABLE `user_spot` (
@@ -209,4 +214,4 @@ CREATE TABLE `user_spot` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- 2024-02-16 11:06:44
+-- 2024-02-16 15:54:59
