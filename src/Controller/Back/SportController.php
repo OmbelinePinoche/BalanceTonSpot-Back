@@ -34,29 +34,6 @@ class SportController extends AbstractController
     }
 
     /**
-     *  Shows a sport by ID in the backoffice
-     *  Don't forget that the route above ('/back/sport') will be the start of all the routes created below
-     *
-     * @return Response
-     */
-    #[Route('/show/{slug}', name: 'show_sport')]
-    public function show(SportRepository $sportRepository,  $slug): Response
-    {
-        // Get the sport by its slug
-        $sport = $sportRepository->findOneBy(['slug' => $slug]);
-
-        // Checks if the sport exists
-        if (!$sport) {
-            throw $this->createNotFoundException('Aucun sport ne répond à cet ID!');
-        }
-
-        // Return all the sport in the view
-        return $this->render('back/sport/show.html.twig', [
-            'sport' => $sport,
-        ]);
-    }
-
-    /**
      * Create a sport with a form in the backoffice
      * 
      * @return Response

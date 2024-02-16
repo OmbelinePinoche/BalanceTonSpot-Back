@@ -33,28 +33,6 @@ class LocationController extends AbstractController
     }
 
     /**
-     *  Shows a location by ID in the backoffice
-     *
-     * @return Response
-     */
-    #[Route('/show/{slug}', name: 'show_location')]
-    public function show(LocationRepository $locationRepository, $slug): Response
-    {
-        // Get the location by its slug
-        $location = $locationRepository->findOneBy(['slug' => $slug]);
-
-        // Checks if the location exists
-        if (!$location) {
-            throw $this->createNotFoundException('Aucune ville ne répond à ce nom!');
-        }
-
-        // Return all the location in the view
-        return $this->render('back/location/show.html.twig', [
-            'location' => $location,
-        ]);
-    }
-
-    /**
      * Create a location with a form in the backoffice
      * 
      * @return Response
