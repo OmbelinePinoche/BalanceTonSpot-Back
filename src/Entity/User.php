@@ -50,11 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Spot::class, inversedBy: 'user_favorite')]
     private Collection $favorites;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1)]
-    private ?string $rating = null;
-
+    #[Groups(['api_user_list', 'api_show_user'])]
     #[ORM\Column(length: 500, nullable: true)]
-    private ?string $profilPicture = null;
+    private ?string $profilpicture = null;
 
    
 
@@ -193,26 +191,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRating(): ?string
-    {
-        return $this->rating;
-    }
 
-    public function setRating(string $rating): static
-    {
-        $this->rating = $rating;
-
-        return $this;
-    }
 
     public function getProfilPicture(): ?string
     {
-        return $this->profilPicture;
+        return $this->profilpicture;
     }
 
     public function setProfilPicture(?string $profilPicture): static
     {
-        $this->profilPicture = $profilPicture;
+        $this->profilpicture = $profilPicture;
 
         return $this;
     }
