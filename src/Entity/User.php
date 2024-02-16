@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
@@ -48,6 +49,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Spot::class, inversedBy: 'user_favorite')]
     private Collection $favorites;
+
+    #[Groups(['api_user_list', 'api_show_user'])]
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $profilpicture = null;
+
+   
 
     public function __construct()
     {
@@ -183,5 +190,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+
+    public function getProfilPicture(): ?string
+    {
+        return $this->profilpicture;
+    }
+
+    public function setProfilPicture(?string $profilPicture): static
+    {
+        $this->profilpicture = $profilPicture;
+
+        return $this;
+    }
+
+    
     
 }

@@ -35,6 +35,12 @@ class Comment
     private ?\DateTimeInterface $date = null;
 
 
+    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
+    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1)]
+    private ?string $rating = null;
+
+
+
 
     public function getId(): ?int
     {
@@ -88,6 +94,19 @@ class Comment
 
         return $this;
     }
+
+    public function getRating(): ?string
+    {
+        return $this->rating;
+    }
+
+    public function setRating(string $rating): static
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
 
  
     

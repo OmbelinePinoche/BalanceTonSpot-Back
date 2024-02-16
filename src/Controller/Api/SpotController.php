@@ -2,17 +2,19 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Location;
 use App\Entity\Spot;
-use App\Repository\LocationRepository;
+use App\Entity\Location;
+use App\Form\SpotRatingType;
 use App\Repository\SpotRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SpotController extends AbstractController
 {
@@ -55,6 +57,5 @@ class SpotController extends AbstractController
 
         return $this->json($spot, 200, [], ['groups' => 'api_show']);
     }
-
 
 }

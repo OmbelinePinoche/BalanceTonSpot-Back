@@ -27,6 +27,9 @@ class UserType extends AbstractType
             ->add('email', TypeTextType::class, [
                 'label' => 'Email'
             ])
+            ->add('profilpicture', TypeTextType::class, [
+                'label' => 'Photo de Profil: '
+            ])
             ->add('roles', TypeTextType::class, [
                 'label' => 'Rôle'
             ])
