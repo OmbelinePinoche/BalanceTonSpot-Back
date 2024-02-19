@@ -3,6 +3,8 @@
 {% block main %}
 
 	<!-- main -->
+		<!-- Inclure jQuery si ce n'est pas déjà fait --><script src="https://code.jquery.com/jquery-3.6.4.min.js"> </script>
+
 
 	<div class="container my-4">
 		<p class="display-5">
@@ -24,7 +26,18 @@
     <option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</option>
   {% endfor %}
 </select>
-				
+									<script>
+$(document).ready(function () { 
+$('#city-select').change(function () { 
+var selectedUrl = $(this).val();
+
+if (selectedUrl) {
+window.location.href = selectedUrl;
+}
+});
+});
+
+	</script>
 					</br>
 					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
 					{% for sport in sports %}
