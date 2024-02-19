@@ -54,7 +54,6 @@ class UserController extends AbstractController
         $user = new User();
         $user->setEmail($data['email']);
         $user->setPseudo($data['pseudo']);
-        $user->setProfilPicture($data['profilpicture']);
 
         // Hash password
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
