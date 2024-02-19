@@ -31,8 +31,8 @@
 | `/api/location/{slug}` | PUT | Location | edit | Modifier une ville |
 | `/api/location/{id}` | DELETE | Location | delete | Supprimer une ville |
 | `/api/comments` | POST | Comment | add | Ajouter un commentaire |
-| `/api/comment/{id}` | PUT | Comment | edit | Modifier un commentaire |
-| `/api/comment/{id}` | DELETE | Comment | delete | Supprimer un commentaire |
+| `/api/secure/comment/{id}` | PUT | Comment | edit | Modifier un commentaire |
+| `/api/secure/comment/{id}` | DELETE | Comment | delete | Supprimer un commentaire |
 | `/api/users` | GET | User | list | Lister les utilisateurs |
 | `/api/user/{slug}` | GET | User | show | Consulter un profil utilisateur |
 | `/api/user/new` | POST | User | add | Création d’un utilisateur |

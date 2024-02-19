@@ -11,24 +11,26 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
   `spot_id` int(255) NOT NULL,
   `date` date DEFAULT NULL,
   `rating` decimal(2,1) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_9474526C2DF1D37C` (`spot_id`),
-  CONSTRAINT `FK_9474526C5B05007F` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`)
+  KEY `fk_comment_user` (`user_id`),
+  CONSTRAINT `FK_9474526C5B05007F` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`),
+  CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `comment` (`id`, `content`, `username`, `spot_id`, `date`, `rating`) VALUES
-(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	'lapinocherie',	1,	'2023-02-12',	NULL),
-(7,	'C\'est quoi cette blague lol',	'adrileclown',	4,	'2024-02-14',	NULL),
-(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	'DiegrossePochasse',	3,	'2024-02-14',	NULL),
-(9,	'Là je dis oui!',	'adrileclown',	5,	'2024-02-14',	NULL),
-(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	'lavocat',	1,	'2024-02-01',	NULL),
-(11,	'Ça ride à fond par ici j\'aimeuh bieng',	'DiegrossePochasse',	6,	'2024-02-11',	NULL),
-(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	'lapinocherie',	13,	'2024-02-05',	NULL),
-(13,	'ils sont toujours en travaux ils abusent pffff',	'lavocat',	10,	'2024-01-19',	NULL);
+INSERT INTO `comment` (`id`, `content`, `spot_id`, `date`, `rating`, `user_id`) VALUES
+(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	1,	'2023-02-12',	NULL,	2),
+(7,	'C\'est quoi cette blague lol',	4,	'2024-02-14',	NULL,	2),
+(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	3,	'2024-02-14',	NULL,	3),
+(9,	'Là je dis oui!',	5,	'2024-02-14',	NULL,	2),
+(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	1,	'2024-02-01',	NULL,	4),
+(11,	'Ça ride à fond par ici j\'aimeuh bieng',	6,	'2024-02-11',	NULL,	3),
+(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	13,	'2024-02-05',	NULL,	5),
+(13,	'ils sont toujours en travaux ils abusent pffff',	10,	'2024-01-19',	NULL,	4);
 
 DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
@@ -217,4 +219,4 @@ INSERT INTO `user_spot` (`user_id`, `spot_id`) VALUES
 (2,	7),
 (2,	13);
 
--- 2024-02-16 15:54:59
+-- 2024-02-19 10:24:52

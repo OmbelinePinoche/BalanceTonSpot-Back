@@ -72,7 +72,6 @@ class FavoritesController extends AbstractController
         return $this->json(['message' => 'Spot ajouté aux favoris!'], 200);
     }
 
-
     #[Route('/api/favorites/{spotId}', name: 'api_remove_favorites', methods: ['DELETE'])]
     public function removefavorite(EntityManagerInterface $entityManager, SpotRepository $spotRepository, $spotId): Response
     {

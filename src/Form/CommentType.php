@@ -11,8 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
-
 
 class CommentType extends AbstractType
 {
@@ -28,9 +26,6 @@ class CommentType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'label' => 'Ajouté le'
-            ])
-            ->add('username', TypeTextType::class, [
-                'label' => 'Par'
             ])
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],

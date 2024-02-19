@@ -2,13 +2,9 @@
 
 namespace App\Controller\Api;
 
-
-use App\Entity\Spot;
 use App\Entity\User;
 use App\Entity\Comment;
-use App\Form\FileTransformer;
 use App\Repository\SpotRepository;
-use App\Repository\UserRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class CommentController extends AbstractController
 {
@@ -27,7 +24,7 @@ class CommentController extends AbstractController
     {
         $this->slugger = $slugger;
     }
-    
+
     #[Route('/api/comments', name: 'api_list_comment', methods: ['GET'])]
     public function list(CommentRepository $commentRepository): Response
     {
@@ -44,6 +41,29 @@ class CommentController extends AbstractController
             [],
             // 4th param: groups (defines which elements of the entity we want to display)
             ['groups' => 'api_list_comment']
+        );
+    }
+
+    #[Route('/api/spot/{slug}/comments', name: 'api_comment_by_spot', methods: ['GET'])]
+    public function listBySpot(CommentRepository $commentRepository, SpotRepository $spotRepository, $slug): Response
+    {
+        // Search the spot in the repository thanks to the property "slug"
+        $spot = $spotRepository->findOneBy(['slug' => $slug]);
+
+        // Get the comment associated with the spot
+        $comments = $spot->getComments();
+
+        // We want to return the comments to the view
+        // $this->json method allows the conversion of a PHP object to a JSON object
+        return $this->json(
+            // 1st param: what we want to display
+            $comments,
+            // 2nd param: status code
+            200,
+            // 3rd param: header
+            [],
+            // 4th param: groups (defines which elements of the entity we want to display)
+            ['groups' => 'api_comment_by_spot']
         );
     }
 
@@ -67,14 +87,14 @@ class CommentController extends AbstractController
     }
 
     #[Route('/api/spot/{slug}/comments', name: 'api_comment_by_spot', methods: ['GET'])]
-    public function listByComment(SpotRepository $spotRepository, CommentRepository $commentRepository, $slug, Comment $content = null): Response
+    public function listByComment(SpotRepository $spotRepository, $slug): Response
     {
         // Get the comments from the repository searching with the "content" param
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
-        
+
         // Check if the spot exists
         if (!$spot) {
-            return $this->json(['message' => 'Aucun spot trouvé!'], 404);
+            return $this->json(['message' => 'Aucun spot associé à ce nom'], 404);
         }
 
         // Call the function to get the comments from the spot entity
@@ -89,68 +109,80 @@ class CommentController extends AbstractController
         return $this->json($comments, 200, [], ['groups' => 'api_comment_by_spot']);
     }
 
-    #[Route('/api/comments', name: 'api_add_comment', methods: ['POST'])]
-    public function addComment(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/api/spot/{slug}/comments', name: 'api_add_comment', methods: ['POST'])]
+    public function addComment(Request $request, EntityManagerInterface $entityManager, $slug, SpotRepository $spotRepository): Response
     {
-        // Retrieve the data send in the POST request
-        $data = json_decode($request->getContent(), true);
-
-        if (!isset($data['content'], $data['username'], $data['spot'])) {
-            return $this->json(['message' => 'Données manquantes'], 400);
+        /** @var User $user */
+        $user = $this->getUser();
+        
+        if (!$user) {
+            return $this->json(['message' => 'Utilisateur introuvable'], 404);
         }
 
-        // Create a new Comment instance
-        $comment = new Comment();
+        // Finds the spot by its slug
+        $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
-        // Set the properties from the given data
+        // Checks if the spot exists
+        if (!$spot) {
+            return $this->json(['message' => 'Aucun spot associé à ce nom'], 404);
+        }
+
+        $content = $request->getContent();
+        $data = json_decode($content, true);
+
+        // Checks if the content is present in the decoded data
+        if (!isset($data['content'])) {
+            return $this->json(['message' => 'Le champ "content" est manquant dans la requête JSON'], 400);
+        }
+
+        $comment = new Comment;
+        // Set the comment properties
+        $comment->setUser($user);
         $comment->setContent($data['content']);
-        $comment->setUsername($data['username']);
-        $comment->setRating($data['rating']);
-        $spot= $entityManager->getRepository(Spot::class)->find($data['spot']);
         $comment->setSpot($spot);
 
-      // We need to persist the COMMENT entity to the database to save the data
+        // We need to persist the Comment entity to the database to save the data
         $entityManager->persist($comment);
         $entityManager->flush();
 
-        // Return the comment create with the status http 201
-        return $this->json(['message' => 'Commentaire ajouté avec succès'], 201);
-    } 
-
+        // Returns the comment created with the HTTP status 201
+        return $this->json(['message' => 'Commentaire ajouté avec succès!'], 201);
+    }
 
     #[Route('/api/secure/comment/{id}', name: 'api_update_comment', methods: ['PUT'])]
     public function update(CommentRepository $commentRepository, Request $request, EntityManagerInterface $entityManager, $id): Response
     {
         // Find the comment by ID
         $comment = $commentRepository->find($id);
-    
+
         // Check if the comment exists
         if (!$comment) {
-            return $this->json(['message' => 'Aucun commentaire trouvé sur cette ID'], 404);
+            return $this->json(['message' => 'Aucun commentaire associé à cet ID'], 404);
         }
-    
+
         // Retrieve the data sent in the PUT request
         $data = json_decode($request->getContent(), true);
-    
-        // Update the properties of the comment if they are present in the request data
+
+        // Update the properties of the comment if they are present in the requested data
         if (isset($data['content'])) {
             $comment->setContent($data['content']);
         }
-        if (isset($data['username'])) {
-            $comment->setUsername($data['username']);
+        if (isset($data['user'])) {
+            $comment->setUser($data['user']);
         }
         if (isset($data['spot'])) {
+            $comment->setSpot($data['spot']);
         }
         if (isset($data['date'])) {
-        
+            $comment->setDate($data['date']);
         }
         if (isset($data['rating'])) {
             $comment->setRating($data['rating']);
         }
-    
+
         // Persist the update
         $entityManager->flush();
-    
+
         // Return a success response
         return $this->json(['message' => 'Commentaire mis à jour avec succès'], 200);
     }
@@ -171,4 +203,3 @@ class CommentController extends AbstractController
         return $this->json(['message' => 'Commentaire supprimé avec succès!'], 200);
     }
 }
-
