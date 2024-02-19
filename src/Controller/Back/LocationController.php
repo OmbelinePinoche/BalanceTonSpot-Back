@@ -4,14 +4,15 @@ namespace App\Controller\Back;
 
 use App\Entity\Location;
 use App\Form\LocationType;
-use App\Repository\LocationRepository;
-use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
+use App\Repository\SportRepository;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/location')]
@@ -143,4 +144,43 @@ class LocationController extends AbstractController
             'locations' => $locations,
         ]);
     }
+
+    
+#[Route('/select', name: 'choose_location')]
+public function select(Request $request, LocationRepository $locationRepository, SportRepository $sportRepository): Response
+{
+    // Create the form
+    $form = $this->createFormBuilder()
+        ->add('location', EntityType::class, [
+            'class' => Location::class,
+            'query_builder' => function (LocationRepository $locationRepository) {
+                return $locationRepository->createQueryBuilder('c')->orderBy('c.name', 'ASC');
+            },
+            'choice_label' => 'name', // Define which property of the Location entity will be displayed in the select options
+            'placeholder' => 'Choose a location', // Optional: Add a placeholder
+        ])
+        ->getForm();
+
+    // Handle form submission
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Get the selected location
+        $selectedLocation = $form->get('location')->getData();
+
+        // Fetch spots associated with the selected location
+        $spots = $selectedLocation->getSpots();
+
+        // Render a template to display spots
+        return $this->render('back/location/show_spots_by_location.html.twig', [
+            'selectedLocation' => $selectedLocation,
+            'spots' => $spots,
+        ]);
+    }
+
+    // Render the form
+    return $this->render('back/location/select.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
 }

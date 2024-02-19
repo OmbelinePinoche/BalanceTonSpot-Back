@@ -6,3 +6,7 @@ controllers:
 
 api_login_check:
     path: /api/login_check
+choose_location:
+    path: /select
+    controller: App\Controller\Back\LocationController::select
+    methods: [GET]
