@@ -213,5 +213,8 @@ CREATE TABLE `user_spot` (
   CONSTRAINT `FK_C3B336BAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+INSERT INTO `user_spot` (`user_id`, `spot_id`) VALUES
+(2,	7),
+(2,	13);
 
 -- 2024-02-16 15:54:59
