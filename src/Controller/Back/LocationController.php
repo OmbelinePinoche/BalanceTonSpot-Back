@@ -26,12 +26,14 @@ class LocationController extends AbstractController
     public function browse(LocationRepository $LocationRepository, SpotRepository $spotRepository): Response
     {
         // 1st step is getting all the locations from the repository
-        $location = $LocationRepository->findAll();
+        $locations = $LocationRepository->findAll();
         $spots = $spotRepository->findAll();
+        
         return $this->render('back/location/browse.html.twig', [
-            'location' => $location, 'spots' => $spots
+            'locations' => $locations, 'spots' => $spots
         ]);
     }
+
 
     /**
      * Create a location with a form in the backoffice
