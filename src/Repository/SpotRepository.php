@@ -101,4 +101,16 @@ class SpotRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    public function findBySport(Sport $sport)
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.sport_id', 'sport')
+            ->where('sport = :sport')
+            ->setParameter('sport', $sport)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
