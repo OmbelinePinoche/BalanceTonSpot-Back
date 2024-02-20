@@ -166,7 +166,7 @@ class CommentController extends AbstractController
             default:
                 $comments = $commentRepository->findAllOrderedByUsername();
         }
-
+        // Return the comments according to the chosen order
         return $this->render('back/comment/browse.html.twig', [
             'comments' => $comments,
             'sortBy' => $sortBy, // Pass the current sorting method to the template

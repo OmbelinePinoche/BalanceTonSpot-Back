@@ -29,10 +29,10 @@ class LocationController extends AbstractController
         $locations = $LocationRepository->findAll();
         $spots = $spotRepository->findAll();
         $sortedLocationsByName = $LocationRepository->findAllOrderedByName();
-        
+
         return $this->render('back/location/browse.html.twig', [
             'locations' => $locations, 'spots' => $spots, 'sortedLocationsByName' => $sortedLocationsByName,
-            
+
         ]);
     }
 
@@ -149,63 +149,62 @@ class LocationController extends AbstractController
         ]);
     }
 
-    
-#[Route('/select', name: 'choose_location')]
-public function select(Request $request, LocationRepository $locationRepository, SportRepository $sportRepository): Response
-{
-    // Create the form
-    $form = $this->createFormBuilder()
-        ->add('location', EntityType::class, [
-            'class' => Location::class,
-            'query_builder' => function (LocationRepository $locationRepository) {
-                return $locationRepository->createQueryBuilder('c')->orderBy('c.name', 'ASC');
-            },
-            'choice_label' => 'name', // Define which property of the Location entity will be displayed in the select options
-            'placeholder' => 'Choose a location', // Optional: Add a placeholder
-        ])
-        ->getForm();
 
-    // Handle form submission
-    $form->handleRequest($request);
+    #[Route('/select', name: 'choose_location')]
+    public function select(Request $request, LocationRepository $locationRepository, SportRepository $sportRepository): Response
+    {
+        // Create the form
+        $form = $this->createFormBuilder()
+            ->add('location', EntityType::class, [
+                'class' => Location::class,
+                'query_builder' => function (LocationRepository $locationRepository) {
+                    return $locationRepository->createQueryBuilder('c')->orderBy('c.name', 'ASC');
+                },
+                'choice_label' => 'name', // Define which property of the Location entity will be displayed in the select options
+                'placeholder' => 'Choose a location', // Optional: Add a placeholder
+            ])
+            ->getForm();
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Get the selected location
-        $selectedLocation = $form->get('location')->getData();
+        // Handle form submission
+        $form->handleRequest($request);
 
-        // Fetch spots associated with the selected location
-        $spots = $selectedLocation->getSpots();
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Get the selected location
+            $selectedLocation = $form->get('location')->getData();
 
-        // Render a template to display spots
-        return $this->render('back/location/show_spots_by_location.html.twig', [
-            'selectedLocation' => $selectedLocation,
-            'spots' => $spots,
+            // Fetch spots associated with the selected location
+            $spots = $selectedLocation->getSpots();
+
+            // Render a template to display spots
+            return $this->render('back/location/show_spots_by_location.html.twig', [
+                'selectedLocation' => $selectedLocation,
+                'spots' => $spots,
+            ]);
+        }
+
+        // Render the form
+        return $this->render('back/location/select.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
-    // Render the form
-    return $this->render('back/location/select.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
+    #[Route('/tri/{sortBy}', name: 'tri_location')]
+    public function triLocation(LocationRepository $locationRepository, string $sortBy): Response
+    {
+        // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['name', 'spot'];
+        $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'name';
 
-#[Route('/tri/{sortBy}', name: 'tri_location')]
-public function triLocation(LocationRepository $locationRepository, string $sortBy): Response
-{
-    // Define default sorting method if an invalid one is provided
-    $validSortOptions = ['name', 'spot']; // Define valid sorting options
-    $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'name';
-
-    // Fetch locations based on the chosen sorting method
-    if ($sortBy === 'name') {
-        $locations = $locationRepository->findAllOrderedByName();
-    } elseif ($sortBy === 'spot') {
-        $locations = $locationRepository->findAllOrderedBySpotCount();
+        // Fetch locations based on the chosen sorting method
+        if ($sortBy === 'name') {
+            $locations = $locationRepository->findAllOrderedByName();
+        } elseif ($sortBy === 'spot') {
+            $locations = $locationRepository->findAllOrderedBySpotCount();
+        }
+        // Return the sports according to the chosen order
+        return $this->render('back/location/browse.html.twig', [
+            'locations' => $locations,
+            'sortBy' => $sortBy,
+        ]);
     }
-
-    return $this->render('back/location/browse.html.twig', [
-        'locations' => $locations,
-        'sortBy' => $sortBy, // Pass the current sorting method to the template
-    ]);
-
-}
 }
