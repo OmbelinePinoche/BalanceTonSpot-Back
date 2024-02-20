@@ -114,7 +114,7 @@ class CommentController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        
+
         if (!$user) {
             return $this->json(['message' => 'Utilisateur introuvable'], 404);
         }
@@ -131,17 +131,19 @@ class CommentController extends AbstractController
         $data = json_decode($content, true);
 
         // Checks if the content is present in the decoded data
-        if (!isset($data['content'])) {
-            return $this->json(['message' => 'Le champ "content" est manquant dans la requête JSON'], 400);
+        if (!isset($data['content'], $data['rating'])) {
+            return $this->json(['message' => 'Un champ requis est manquant dans la requête JSON'], 400);
         }
 
         $comment = new Comment;
         // Set the comment properties
         $comment->setUser($user);
-        $comment->setContent($data['content']);
         $comment->setSpot($spot);
+        $comment->setContent($data['content']);
         $comment->setRating($data['rating']);
-        $comment->setDate(new DateTime($comment->getDate()->format('d-m-Y')));
+        if (isset($data['date'])) {
+            $comment->setDate(\DateTime::createFromFormat('d-m-Y', $data['date']));
+        }
 
         // We need to persist the Comment entity to the database to save the data
         $entityManager->persist($comment);

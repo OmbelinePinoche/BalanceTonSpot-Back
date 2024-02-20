@@ -12,7 +12,7 @@ CREATE TABLE `comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
   `spot_id` int(255) NOT NULL,
-  `date` date NOT NULL,
+  `date` date DEFAULT NULL,
   `rating` decimal(2,1) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
