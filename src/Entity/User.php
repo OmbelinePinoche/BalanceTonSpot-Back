@@ -61,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->favorites = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->profilpicture = '/public/upload/users/default-profile.png';
+        $this->profilpicture = 'https://i.postimg.cc/BZB7NG5J/default-profile.png';
     }
 
     public function getId(): ?int
