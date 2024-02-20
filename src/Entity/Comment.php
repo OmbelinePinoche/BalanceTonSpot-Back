@@ -39,6 +39,11 @@ class Comment
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

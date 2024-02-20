@@ -13,7 +13,7 @@ CREATE TABLE `comment` (
   `content` varchar(255) NOT NULL,
   `spot_id` int(255) NOT NULL,
   `date` date DEFAULT NULL,
-  `rating` decimal(2,1) DEFAULT NULL,
+  `rating` decimal(2,1) NOT NULL,
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_9474526C2DF1D37C` (`spot_id`),
@@ -23,14 +23,15 @@ CREATE TABLE `comment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `comment` (`id`, `content`, `spot_id`, `date`, `rating`, `user_id`) VALUES
-(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	1,	'2023-02-12',	NULL,	2),
-(7,	'C\'est quoi cette blague lol',	4,	'2024-02-14',	NULL,	2),
-(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	3,	'2024-02-14',	NULL,	3),
-(9,	'Là je dis oui!',	5,	'2024-02-14',	NULL,	2),
-(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	1,	'2024-02-01',	NULL,	4),
-(11,	'Ça ride à fond par ici j\'aimeuh bieng',	6,	'2024-02-11',	NULL,	3),
-(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	13,	'2024-02-05',	NULL,	5),
-(13,	'ils sont toujours en travaux ils abusent pffff',	10,	'2024-01-19',	NULL,	4);
+(4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	1,	'2023-02-12',	5.0,	2),
+(7,	'C\'est quoi cette blague lol',	4,	'2024-02-14',	2.0,	2),
+(8,	'J\'riiide toute la niiight, j\'ai pas le tiiime, donne-moi ton numéroo',	3,	'2024-02-14',	4.5,	3),
+(9,	'Là je dis oui!',	5,	'2024-02-14',	5.0,	2),
+(10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	1,	'2024-02-01',	4.0,	4),
+(11,	'Ça ride à fond par ici j\'aimeuh bieng',	6,	'2024-02-11',	4.0,	3),
+(12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	13,	'2024-02-05',	5.0,	5),
+(13,	'ils sont toujours en travaux ils abusent pffff',	10,	'2024-01-19',	3.0,	4),
+(28,	'Pas foufou hein',	4,	'2024-01-04',	2.0,	2);
 
 DROP TABLE IF EXISTS `doctrine_migration_versions`;
 CREATE TABLE `doctrine_migration_versions` (
