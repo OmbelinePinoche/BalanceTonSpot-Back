@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Spot::class, inversedBy: 'user_favorite')]
     private Collection $favorites;
 
-    #[Groups(['api_user_list', 'api_show_user'])]
+    #[Groups(['api_user_list', 'api_show_user', 'api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $profilpicture = null;
 

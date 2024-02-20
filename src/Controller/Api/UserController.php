@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
 {
-    #[Route('/api/bl/users', name: 'api_user_list', methods: ['GET'])]
+    #[Route('/api/users', name: 'api_user_list', methods: ['GET'])]
     public function list(UserRepository $userRepository): Response
     {
         // 1st step is getting all the users from the repository
