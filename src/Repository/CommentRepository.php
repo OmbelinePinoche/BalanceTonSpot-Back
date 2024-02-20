@@ -21,6 +21,31 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+
+    public function findAllOrderedByUsername(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.username', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllOrderedBySpot(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.spot', 's')
+            ->orderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllOrderedByDate(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.date', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Comment[] Returns an array of Comment objects
 //     */
