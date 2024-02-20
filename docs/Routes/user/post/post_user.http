@@ -1,10 +1,10 @@
 POST http://0.0.0.0:8080/api/users HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDgzNTU0MjIsImV4cCI6MTcwODM1OTAyMiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoicmlkZXJAdXNlci5mciJ9.ku9Xv0CEazO5cWcAPsyVQH24vENUN1BxLyM9ciG-KoFSGUsncPNccDi_hxvETFIzjq7vqd22CiN1W8HXKryS2e0jyo1XY6t0YEQbrafEYhhh5OWytwlWtUZsp1rUOu08JjX4UmAe9PAbeFW3lvu0IzEUsKp6-M0c0AcU3GpJMTumIIXMsYKrdjpR2wGMQ3Qp58VnMKkalXckZvKPzIHUh3HNkjq3AJm2ujyXdmXnwqRbtMW764Odw4jbTQZ4TNBpo4oEQv28L-u12LIYwwnv7x7fpcyrEbrrNO7kMFkY2t2QnmU1eBblpoejDH0IL8kZuuCF7miCMitNrNh_5MVSUg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDg0MTcxMTksImV4cCI6MTcwODQyMDcxOSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoicmlkZXJAdXNlci5mciJ9.Z32KZ6K2nUWIjxvTd97pNHMMzzRTLwiD9JetsiZOjSJ5dYAafkZHsaeGB8STQTq3GkP4tEe3iBFC-0D43ycrwWRksT4l4tUIIDE95pwj2x1pEgMw5KmK_QaxbGCW5_6M6nvDmpMpxi2FaK99NUZQmdcBfmJZlHe6H91sVE_ibUpUgRIVkUyVLt-iBucx7c6_TExufM30aNovpCrfVFt2EQkXjB-KWjpFvLzUmDsN6uZWgE--7mnkf25_larb2PbItrhRsytLu25lrANIKufJTwpK9ITUZAiXCxSXjHWOAYJUhU9vuS5jeOy7Jb3J4jSgcfVzsi5e6UlSC2wAgx3Eeg
 
 {
-    "pseudo": "fjkgdkf",
-    "email" : "dflfjd@user.fr",
+    "pseudo": "Shorty",
+    "email" : "shorty@user.fr",
     "password" : "okokok",
     "roles" :  ["ROLE_USER"]
 }

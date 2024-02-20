@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use DateTime;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -140,6 +140,8 @@ class CommentController extends AbstractController
         $comment->setUser($user);
         $comment->setContent($data['content']);
         $comment->setSpot($spot);
+        $comment->setRating($data['rating']);
+        $comment->setDate(new DateTime($comment->getDate()->format('d-m-Y')));
 
         // We need to persist the Comment entity to the database to save the data
         $entityManager->persist($comment);
