@@ -22,7 +22,7 @@
 	<table class="table table-hover mt-4">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>Image</th>
 				<th>Pseudo</th>
 				<th>Email</th>
 				<th>Rôle</th>
@@ -31,7 +31,14 @@
 		<tbody>
 			{% for user in users %}
 				<tr>
-					<td>{{ user.id }}</td>
+					<td>
+						{% if user.profilpicture %}
+							{% set fileName = user.profilpicture|split('/')|last %}
+							<img src="{{ asset('uploads/users/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+						{% else %}
+							Aucune image disponible
+						{% endif %}
+					</td>
 					<td>{{ user.pseudo }}</td>
 					<td>{{ user.email }}</td>
 					<td>

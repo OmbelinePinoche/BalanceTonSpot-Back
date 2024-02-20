@@ -31,16 +31,7 @@ INSERT INTO `comment` (`id`, `content`, `spot_id`, `date`, `rating`, `user_id`) 
 (11,	'Ça ride à fond par ici j\'aimeuh bieng',	6,	'2024-02-11',	4.0,	3),
 (12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	13,	'2024-02-05',	5.0,	5),
 (13,	'ils sont toujours en travaux ils abusent pffff',	10,	'2024-01-19',	3.0,	4),
-(28,	'Pas foufou hein',	4,	'2024-01-04',	2.0,	2);
-
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+(16,	'Pas foufou hein',	4,	'2024-01-04',	2.0,	2);
 
 DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
@@ -143,7 +134,7 @@ CREATE TABLE `spot` (
   `description` varchar(1000) NOT NULL,
   `picture` varchar(500) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `rating` decimal(2,1) DEFAULT NULL,
+  `rating` decimal(2,1) NOT NULL,
   `location_id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -155,7 +146,7 @@ INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `address`, `rating`,
 (1,	'Isola 2000',	'Le snowpark d\'Isola 2000 vous propose une expérience exceptionnelle à 2300 mètres d’altitude sur le secteur Marmotte. Découvrez de nouvelles sensations de glisse tous les jours de 10h à 16h dans cet espace ludique et technique, entretenu quotidiennement pour votre plaisir.',	'https://isola2000.com/wp-content/uploads/2022/09/pano-cime-1920x960-1-1280x640.jpeg',	'Station d\'Isola',	0.0,	1,	'isola-2000'),
 (2,	'Vars Park',	'Il y en a pour tout le monde. Le Varspark met un point d\'honneur à démocratiser la pratique du freestyle aussi bien pour les débutants que les spécialistes de la discipline.',	'https://www.snowsurf.com/media/__NEWS/news_2017/vier%202017/top10_parks/vars_remi_morel_le_parc_de_leyssina_du_telesiege_de_crevoux.jpg',	'Station de Vars',	4.5,	2,	'vars-park'),
 (3,	'LCZ Park',	'Le snowpark de La Cluzaz propose un espace ludique à tous les amateurs de freestyle ! Une multitude de modules est à disposition durant toute la saison pour permettre aux skieurs les plus fous d’exprimer toute leur créativité.',	'https://static.savoie-mont-blanc.com/wp-content/uploads/external/e132d5d4d725e4a69beabf7bcc818ecf-3800129-1745x1163.jpg',	'Station de La Clusaz',	4.0,	3,	'lcz-park'),
-(4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'https://cdn.paris.fr/paris/2021/03/17/huge-fe8b8dec36a98d44ea22fadfc2a095d1.jpg',	'Rue Raymond Aron, 75012 Paris',	2.0,	4,	'bercy'),
+(4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'https://cdn.paris.fr/paris/2021/03/17/huge-fe8b8dec36a98d44ea22fadfc2a095d1.jpg',	'Rue Raymond Aron, 75012 Paris',	2.7,	4,	'bercy'),
 (5,	'EGP18',	'C\'est désormais le plus gros skatepark parisien. Il se compose de parks, de 2  bowls en béton et d\'une fin-box permettant à des patineurs de niveaux variés de rider en indoor pour urface totale de 3545 m².',	'https://media.manawa.com/cache/activity_gallery_zoom_770x500/media/2019/01/99ed4a58c0595a482a40ddb65f406feb.jpeg',	'Imp. des Fillettes, 75018 Paris',	4.5,	4,	'egp18'),
 (6,	'Jemmapes',	'Bien connu de la faune locale à roulettes, le skatepark du quai de Jemmapes fait partie des spots parisiens incontournables. Plutôt pas trop mal situé au bord du canal Saint Martin, assez ensoleillé, bien fréquenté en journée, ce petit park de ville aura de quoi vous combler pour démarrer/clôturer votre session entre potos.',	'https://skateparks.fr/wp-content/uploads/2020/11/jemmapes-01.jpg',	'140 quai de Jemmapes, 75010 Paris',	4.0,	4,	'jemmapes'),
 (7,	'Le Hangar',	'Un skatepark indoor conçu à partir de matériaux de récupération pour rider proprement sur un florilège de modules : bowl en bois, big ramp, street area… Au Hangar, il y a de quoi faire le plein de sensations ou de frayeurs, ça dépendra de vous.',	'https://static.wixstatic.com/media/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg/v1/fill/w_2500,h_1502,al_c/7680dd_61081cf4a35a45deaa47559601a03e6f~mv2.jpg',	'9 allée des Vinaigriers - 44300 Nantes',	4.5,	5,	'le-hangar'),
@@ -211,12 +202,12 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `user` (`id`, `email`, `pseudo`, `firstname`, `lastname`, `password`, `roles`, `profilpicture`) VALUES
-(1,	'admin@admin.fr',	'admin',	NULL,	NULL,	'$2y$13$mdsmlovcKOASxW9qzUZIve13As7kZ4k6g3wicFYWXPLYpVe5.nMvy',	'[\"ROLE_ADMIN\"]', 'https://i.postimg.cc/BZB7NG5J/default-profile.png'),
-(2,	'rider@user.fr',	'rider',	NULL,	NULL,	'$2y$13$GE9o.xomhmJX.fNeyAb5zekh4gynBhUwehnb7vvp99HbMvdWoT5..',	'[\"ROLE_USER\"]', 'https://i.postimg.cc/BZB7NG5J/default-profile.png'),
-(3,	'gerard@user.fr',	'sasuke',	NULL,	NULL,	'$2y$13$SDehBTxkwHhe43AtvDWaaOZZhVJGxP9hLTVQS1ur256ZIMUFBwNTa',	'[\"ROLE_USER\"]',	'https://fr.web.img4.acsta.net/pictures/15/07/27/15/04/271855.jpg'),
-(4,	'mhysa@user.fr',	'roidelaglisse96',	NULL,	NULL,	'$2y$13$oOoTP8LvCDxDyFMdwNr4muKeysgLPV0t/ugLlmrpwFTftPV01kvK.',	'[\"ROLE_USER\"]',	'https://wallpapers-clan.com/wp-content/uploads/2023/08/kakashi-under-the-rain-green-wallpaper.jpg'),
-(5,	'tyrion@user.fr',	'Sasha',	NULL,	NULL,	'$2y$13$bQfA5Gk0d0h3rkThcEyYjOa7lyigOpUKdi..NuCWr3I/LJz4ofiK.',	'[\"ROLE_USER\"]',	'https://assets-prd.ignimgs.com/2023/08/29/mwii-s05-reloaded-announcement-016-1693306225115.jpg'),
-(8,	'shorty@user.fr',	'Shorty',	NULL,	NULL,	'$2y$13$77KfFAQxX7F20xffPdHGhO7GxVSKSmtp0Zz3BHg8EKrOlYs5Y1GZ2',	'[\"ROLE_USER\"]',	'https://i.postimg.cc/BZB7NG5J/default-profile.png');
+(1,	'admin@admin.fr',	'admin',	NULL,	NULL,	'$2y$13$mdsmlovcKOASxW9qzUZIve13As7kZ4k6g3wicFYWXPLYpVe5.nMvy',	'[\"ROLE_ADMIN\"]',	'https://i.postimg.cc/BZB7NG5J/default-profile.png'),
+(2,	'rider@user.fr',	'rider',	NULL,	NULL,	'$2y$13$GE9o.xomhmJX.fNeyAb5zekh4gynBhUwehnb7vvp99HbMvdWoT5..',	'[\"ROLE_USER\"]',	'https://i.postimg.cc/BZB7NG5J/default-profile.png'),
+(3,	'stitch@user.fr',	'stitch',	NULL,	NULL,	'okokok',	'[\"ROLE_USER\"]',	'https://www.muralsticker.com/42049-thickbox/vinyle-decoratif-pour-enfants-stitch.jpg'),
+(4,	'mhysa@user.fr',	'roidelaglisse96',	NULL,	NULL,	'okokok',	'[\"ROLE_USER\"]',	'https://wallpapers-clan.com/wp-content/uploads/2023/08/kakashi-under-the-rain-green-wallpaper.jpg'),
+(5,	'tyrion@user.fr',	'sasha',	NULL,	NULL,	'okokok',	'[\"ROLE_USER\"]',	'https://assets-prd.ignimgs.com/2023/08/29/mwii-s05-reloaded-announcement-016-1693306225115.jpg'),
+(8,	'shorty@user.fr',	'shorty',	NULL,	NULL,	'$2y$13$77KfFAQxX7F20xffPdHGhO7GxVSKSmtp0Zz3BHg8EKrOlYs5Y1GZ2',	'[\"ROLE_USER\"]',	'https://i.postimg.cc/BZB7NG5J/default-profile.png');
 
 DROP TABLE IF EXISTS `user_spot`;
 CREATE TABLE `user_spot` (
@@ -233,4 +224,4 @@ INSERT INTO `user_spot` (`user_id`, `spot_id`) VALUES
 (2,	7),
 (2,	13);
 
--- 2024-02-20 08:19:58
+-- 2024-02-20 12:42:08

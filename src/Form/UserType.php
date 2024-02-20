@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
 
 
@@ -32,8 +31,9 @@ class UserType extends AbstractType
             ->add('email', TypeTextType::class, [
                 'label' => 'Email: '
             ])
-            ->add('profilpicture', FileType::class, [
-                'label' => 'Photo de profil: '
+            ->add('profilPictureFile', FileType::class, [
+                'label' => 'Image du profil: ',
+                'required' => false,
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Rôle: ',
