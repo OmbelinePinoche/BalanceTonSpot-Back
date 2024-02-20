@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/users')]
 class UserController extends AbstractController
 {
+
+  
+
     /**
      * Shows all users in the backoffice
      * Don't forget that the route above ('/back/user') will be the start of all the routes created below
@@ -54,42 +58,53 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
+    
+ /**
      * Create a user with a form in the backoffice
      * 
      * @return Response
      */
-    #[Route('/new', name: 'add_user')]
-    public function create(Request $request, EntityManagerInterface  $entityManager): Response
-    {
-        // Create an instance for the entity user
-        $user = new user();
-        // Create a form
-        $form = $this->createForm(UserType::class, $user); 
+   
+ /**
+ * Create a user with a form in the backoffice
+ * 
+ * @return Response
+ */
+#[Route('/new', name: 'add_user')]
+public function create(Request $request, EntityManagerInterface  $entityManager): Response
+{
+    // Create an instance for the entity user
+    $user = new user();
+    // Create a form
+    $form = $this->createForm(UserType::class, $user); 
 
-        // I pass the information from my request to my form to find out if the form has been submitted
-        $form->handleRequest($request);
+    // I pass the information from my request to my form to find out if the form has been submitted
+    $form->handleRequest($request);
 
-        // Checks if the form has been submitted and if it is valid
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
+    // Checks if the form has been submitted and if it is valid
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Hash the password before register in the BDD
+        $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+        $user->setPassword($hashedPassword);
+        // Persist the user to the BDD
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-            // We will display a flash message which will allow us to display whether or not the user has been created.
-            $this->addFlash(
-                'succès',
-                'L\'utilisateur '.$user->getEmail().'a bien été créé !'
-            );
-            
-            // Return the users in the view
-            return $this->redirectToRoute('list_user');
-        }
-
-        return $this->render('back/user/create.html.twig', [
-            'form' => $form,
-        ]);
+        // We will display a flash message which will allow us to display whether or not the user has been created.
+        $this->addFlash(
+            'success',
+            'L\'utilisateur '.$user->getEmail().' a bien été créé !'
+        );
+        
+        // Return the users in the view
+        return $this->redirectToRoute('list_user');
     }
 
+    return $this->render('back/user/create.html.twig', [
+        'form' => $form,
+    ]);
+
+}
     /**
      * Modify a user via its pseudo in a form in the back office
      * @return Response
