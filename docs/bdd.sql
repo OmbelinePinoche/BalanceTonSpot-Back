@@ -216,7 +216,7 @@ INSERT INTO `user` (`id`, `email`, `pseudo`, `firstname`, `lastname`, `password`
 (3,	'gerard@user.fr',	'sasuke',	NULL,	NULL,	'$2y$13$SDehBTxkwHhe43AtvDWaaOZZhVJGxP9hLTVQS1ur256ZIMUFBwNTa',	'[\"ROLE_USER\"]',	'https://fr.web.img4.acsta.net/pictures/15/07/27/15/04/271855.jpg'),
 (4,	'mhysa@user.fr',	'roidelaglisse96',	NULL,	NULL,	'$2y$13$oOoTP8LvCDxDyFMdwNr4muKeysgLPV0t/ugLlmrpwFTftPV01kvK.',	'[\"ROLE_USER\"]',	'https://wallpapers-clan.com/wp-content/uploads/2023/08/kakashi-under-the-rain-green-wallpaper.jpg'),
 (5,	'tyrion@user.fr',	'Sasha',	NULL,	NULL,	'$2y$13$bQfA5Gk0d0h3rkThcEyYjOa7lyigOpUKdi..NuCWr3I/LJz4ofiK.',	'[\"ROLE_USER\"]',	'https://assets-prd.ignimgs.com/2023/08/29/mwii-s05-reloaded-announcement-016-1693306225115.jpg'),
-(8,	'shorty@user.fr',	'Shorty',	NULL,	NULL,	'$2y$13$77KfFAQxX7F20xffPdHGhO7GxVSKSmtp0Zz3BHg8EKrOlYs5Y1GZ2',	'[\"ROLE_USER\"]',	NULL);
+(8,	'shorty@user.fr',	'Shorty',	NULL,	NULL,	'$2y$13$77KfFAQxX7F20xffPdHGhO7GxVSKSmtp0Zz3BHg8EKrOlYs5Y1GZ2',	'[\"ROLE_USER\"]',	'https://i.postimg.cc/BZB7NG5J/default-profile.png');
 
 DROP TABLE IF EXISTS `user_spot`;
 CREATE TABLE `user_spot` (
