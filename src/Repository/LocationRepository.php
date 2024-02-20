@@ -21,6 +21,32 @@ class LocationRepository extends ServiceEntityRepository
         parent::__construct($registry, Location::class);
     }
 
+     /**
+     * @return Location[]
+     */
+    public function findAllOrderedBySpotCount(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.spot_id', 's')
+            ->groupBy('l.id')
+            ->orderBy('COUNT(s)', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+     /**
+     * @return Location[]
+     */
+    public function findAllOrderedByName(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->orderBy('l.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Location[] Returns an array of Location objects
 //     */

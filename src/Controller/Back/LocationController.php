@@ -28,9 +28,11 @@ class LocationController extends AbstractController
         // 1st step is getting all the locations from the repository
         $locations = $LocationRepository->findAll();
         $spots = $spotRepository->findAll();
+        $sortedLocationsByName = $LocationRepository->findAllOrderedByName();
         
         return $this->render('back/location/browse.html.twig', [
-            'locations' => $locations, 'spots' => $spots
+            'locations' => $locations, 'spots' => $spots, 'sortedLocationsByName' => $sortedLocationsByName,
+            
         ]);
     }
 
@@ -184,5 +186,26 @@ public function select(Request $request, LocationRepository $locationRepository,
     return $this->render('back/location/select.html.twig', [
         'form' => $form->createView(),
     ]);
+}
+
+#[Route('/tri/{sortBy}', name: 'tri_location')]
+public function triLocation(LocationRepository $locationRepository, string $sortBy): Response
+{
+    // Define default sorting method if an invalid one is provided
+    $validSortOptions = ['name', 'spot']; // Define valid sorting options
+    $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'name';
+
+    // Fetch locations based on the chosen sorting method
+    if ($sortBy === 'name') {
+        $locations = $locationRepository->findAllOrderedByName();
+    } elseif ($sortBy === 'spot') {
+        $locations = $locationRepository->findAllOrderedBySpotCount();
+    }
+
+    return $this->render('back/location/browse.html.twig', [
+        'locations' => $locations,
+        'sortBy' => $sortBy, // Pass the current sorting method to the template
+    ]);
+
 }
 }
