@@ -141,4 +141,33 @@ class UserController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list_user');
     }
+
+    #[Route('/tri/{sortBy}', name: 'tri_user')]
+    public function triUser(UserRepository $userRepository, string $sortBy): Response
+    {
+         
+        // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['pseudo', 'email', 'role']; 
+        $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'pseudo';
+
+        
+        switch ($sortBy) {
+            case 'username':
+                $users = $userRepository->findAllOrderedByPseudo();
+                break;
+            case 'email':
+                $users = $userRepository->findAllOrderedByEmail();
+                break;
+            case 'role':
+                $users = $userRepository->findAllOrderedByRole();
+                break;
+            default:
+                $users = $userRepository->findAllOrderedByPseudo();
+        }
+
+        return $this->render('back/user/browse.html.twig', [
+            'users' => $users,
+            'sortBy' => $sortBy, 
+        ]);
+    }
 }

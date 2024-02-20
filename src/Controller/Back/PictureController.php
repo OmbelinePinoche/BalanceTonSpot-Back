@@ -142,4 +142,29 @@ class PictureController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list_pictures');
     }
+    
+    #[Route('/tri/{sortBy}', name: 'tri_picture')]
+    public function triPicture(PictureRepository $pictureRepository, string $sortBy): Response
+    {
+         // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['nom', 'spot']; // 
+        $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
+
+
+        switch ($sortBy) {
+            case 'nom':
+                $pictures = $pictureRepository->findAllOrderedByName();
+                break;
+            case 'spot':
+                $pictures = $pictureRepository->findAllOrderedBySpot();
+                break;
+            default:
+                $pictures = $pictureRepository->findAllOrderedByName();
+        }
+
+        return $this->render('back/picture/browse.html.twig', [
+            'pictures' => $pictures,
+            'sortBy' => $sortBy, 
+        ]);
+    }
 }

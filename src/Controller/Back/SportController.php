@@ -167,7 +167,7 @@ class SportController extends AbstractController
         $validSortOptions = ['nom', 'spot'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
 
-        // Fetch comments based on the chosen sorting method
+    
         switch ($sortBy) {
             case 'nom':
                 $sports = $sportRepository->findAllOrderedByName();

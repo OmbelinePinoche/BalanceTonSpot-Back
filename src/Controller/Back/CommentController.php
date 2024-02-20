@@ -149,7 +149,7 @@ class CommentController extends AbstractController
     public function triComment(CommentRepository $commentRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided
-        $validSortOptions = ['pseudo', 'spot', 'date']; // Define valid sorting options
+        $validSortOptions = ['pseudo', 'spot', 'date']; 
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'pseudo';
 
         // Fetch comments based on the chosen sorting method
@@ -169,7 +169,7 @@ class CommentController extends AbstractController
         // Return the comments according to the chosen order
         return $this->render('back/comment/browse.html.twig', [
             'comments' => $comments,
-            'sortBy' => $sortBy, // Pass the current sorting method to the template
+            'sortBy' => $sortBy, 
         ]);
     }
 }

@@ -40,6 +40,45 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+   /**
+     * Retrieves all users ordered by Pseudo.
+     *
+     * @return User[] Returns an array of User objects
+     */
+    public function findAllOrderedByPseudo(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.pseudo', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retrieves all users ordered by email.
+     *
+     * @return User[] Returns an array of User objects
+     */
+    public function findAllOrderedByEmail(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.email', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retrieves all users ordered by role.
+     *
+     * @return User[] Returns an array of User objects
+     */
+    public function findAllOrderedByRole(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.roles', 'ASC') 
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
