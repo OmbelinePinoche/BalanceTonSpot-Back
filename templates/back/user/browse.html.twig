@@ -54,10 +54,10 @@
 						{% endif %}
 					</td>
 					<td>
-						<a href="{{ path('show_user', {pseudo : user.pseudo})}}">Voir</a>
+						<a href="{{ path('show_user', {pseudo : user.pseudo})}}" class="btn btn-sm btn-outline-info">Voir</a>
 					</td>
 					<td>
-						<a href="{{ path('edit_user', {pseudo : user.pseudo})}}">Modifier</a>
+						<a href="{{ path('edit_user', {pseudo : user.pseudo})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 					</td>
 				</tr>
 			{% else %}

@@ -47,11 +47,11 @@
 					<td>{{ comment.user.pseudo }}</td>
 
 					<td>
-						<a href="{{ path('show_comment', {id : comment.id}) }}">Voir</a>
+						<a href="{{ path('show_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Voir</a>
 					</td>
 					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 						<td>
-							<a href="{{ path('edit_comment', {id : comment.id}) }}">Modifier</a>
+							<a href="{{ path('edit_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 					{% endif %}
 				</tr>

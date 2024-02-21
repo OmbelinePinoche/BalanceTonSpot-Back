@@ -141,7 +141,7 @@ class SpotController extends AbstractController
                 'succès',
                 'Le spot ' . $spot->getName() . ' a bien été modifié !'
             );
-            return $this->redirectToRoute('list_spot');
+            return $this->redirectToRoute('list');
         }
 
         // Je passe tous les spots à ma vue
@@ -168,6 +168,4 @@ class SpotController extends AbstractController
         return $this->redirectToRoute('list');
     }
 
-
-   
 }

@@ -35,10 +35,10 @@
 					<td>{{ location.name }}</td>
 					{% if is_granted('ROLE_ADMIN') %}
 						<td>
-							<a href="{{ path('edit_location', {slug : location.slug})}}">Modifier</a>
+							<a href="{{ path('edit_location', {slug : location.slug})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 						<td>
-							<a href="{{ path('remove_location', {id : location.id})}}">Supprimer</a>
+							<a href="{{ path('remove_location', {id : location.id})}}" class="btn btn-sm btn-outline-info">Supprimer</a>
 						</td>
 					{% endif %}
 				</tr>
