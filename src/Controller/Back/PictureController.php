@@ -12,9 +12,17 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PictureController extends AbstractController
 {
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     #[Route('/pictures', name: 'list_pictures')]
     public function list(PictureRepository $pictureRepository): Response
     {
@@ -55,7 +63,7 @@ class PictureController extends AbstractController
      * @return Response
      */
     #[Route('/admin/picture/new', name: 'add_picture')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity Picture
         $picture = new Picture();
@@ -67,10 +75,23 @@ class PictureController extends AbstractController
 
         // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-            // Validate and set necessary values before persisting
-            $picture->setName($form->get('name')->getData());
-            // Ensure that the 'path' property is a Symfony\Component\HttpFoundation\File\File instance
-            $picture->setPath(new File($form->get('path')->getData()));
+
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
+            $pictureFile = $form->get('path')->getData();
+            if ($pictureFile) {
+
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                $pictureFile->move(
+                    $this->getParameter('pictures_directory'),
+                    $newFilename
+                );
+
+                $picture->setPath($newFilename);
+            }
 
             $entityManager->persist($picture);
             $entityManager->flush();
@@ -106,9 +127,25 @@ class PictureController extends AbstractController
         $form->handleRequest($request);
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-            // Ensure that the 'path' property is a Symfony\Component\HttpFoundation\File\File instance
-            $picture->setPath(new File($form->get('path')->getData()));
-            // Here, no need to persist because it already exists so no need to recreate it 
+
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
+            $pictureFile = $form->get('name')->getData();
+            if ($pictureFile) {
+
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                $pictureFile->move(
+                    $this->getParameter('pictures_directory'),
+                    $newFilename
+                );
+
+                $picture->setName($newFilename);
+            }
+
+            $entityManager->persist($picture);
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the picture has been created
@@ -142,31 +179,31 @@ class PictureController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list_pictures');
     }
-    
+
     #[Route('/tri/{sortBy}', name: 'tri_picture')]
     public function triPicture(PictureRepository $pictureRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided
         $validSortOptions = ['nom', 'spot']; // Valid sorting options
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
-    
+
         // Switch based on sorting method provided
         switch ($sortBy) {
-            // If sorting by name
+                // If sorting by name
             case 'nom':
                 // Retrieve pictures sorted by name
                 $pictures = $pictureRepository->findAllOrderedByName();
                 break;
-            // If sorting by spot
+                // If sorting by spot
             case 'spot':
                 // Retrieve pictures sorted by spot
                 $pictures = $pictureRepository->findAllOrderedBySpot();
                 break;
-            // If invalid sorting option provided, default to sorting by name
+                // If invalid sorting option provided, default to sorting by name
             default:
                 $pictures = $pictureRepository->findAllOrderedByName();
         }
-    
+
         // Render the browse.html.twig template with sorted pictures and sorting method
         return $this->render('back/picture/browse.html.twig', [
             'pictures' => $pictures,

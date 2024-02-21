@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6 bg-light p-4 rounded shadow">
+				<h2 class="text-muted fw-bold mb-4">Modifier l'image</h2>
+
+				{{ form_start(form) }}
+				<div class="form-group">
+					{{ form_label(form.name) }}
+					{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+				</div>
+
+				<div class="form-group">
+					{{ form_label(form.path) }}
+					{{ form_widget(form.path, {'attr': {'class': 'form-control-file'}}) }}
+				</div>
+
+				<div class="form-group">
+					{{ form_label(form.spot) }}
+					{{ form_widget(form.spot, {'attr': {'class': 'form-control'}}) }}
+				</div>
+				{{ form_end(form) }}
+
+				<div class="mt-3">
+					<a href="{{ path('list_pictures') }}" class="btn btn-secondary">Retour à la liste</a>
+					<a href="{{ path('remove_picture', {id:picture.id}) }}" class="btn btn-primary">Supprimer</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

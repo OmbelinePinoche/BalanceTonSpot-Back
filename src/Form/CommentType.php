@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CommentType extends AbstractType
 {
@@ -24,8 +25,27 @@ class CommentType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label' => 'Commentaire'
             ])
+            ->add('rating', ChoiceType::class, [
+                'label' => 'Note',
+                'choices' => [
+                    '0 étoile' => 0,
+                    '1 étoile' => 1,
+                    '2 étoiles' => 2,
+                    '3 étoiles' => 3,
+                    '4 étoiles' => 4,
+                    '5 étoiles' => 5
+                ]
+            ])
             ->add('date', DateType::class, [
                 'label' => 'Ajouté le'
+            ])
+            ->add('user', null, [
+                'label' => 'Par',
+                'mapped' => false, 
+                'data' => $options['user'], // Set the username as default data
+                'attr' => [
+                    'disabled' => true,
+                ],
             ])
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],
@@ -36,6 +56,7 @@ class CommentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Comment::class,
+            'user' => null
         ]);
     }
 }

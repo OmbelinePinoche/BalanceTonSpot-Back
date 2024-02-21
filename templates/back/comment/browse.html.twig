@@ -16,25 +16,25 @@
 <div class="col-12 col-lg-9">
 	<h2 class="text-muted fw-bold mb-4">Les commentaires
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-		<a href="{{path('add_comment')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un commentaire</a>
+			<a href="{{path('add_comment')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un commentaire</a>
 		{% endif %}
 	</h2>
 
 	<table class="table table-hover mt-4">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>Rider</th>
 				<th>Spot</th>
 				<th>Contenu du commentaire</th>
 				<th>Date d'ajout</th>
-				<th>Rider</th>
-
 			</tr>
 		</thead>
 		<tbody>
 			{% for comment in comments %}
 				<tr>
-					<td>{{ comment.id }}</td>
+					<td>{% set fileName = comment.user.profilpicture|split('/')|last %}
+						<img src="{{ asset('uploads/users/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 30px; max-height: 30px;">
+{{ comment.user.pseudo }}</td>
 					<td>{{comment.spot.name }}</td>
 					<td>{{ comment.content }}</td>
 					<td>
@@ -44,8 +44,6 @@
 							Date non disponible
 						{% endif %}
 					</td>
-					<td>{{ comment.user.pseudo }}</td>
-
 					<td>
 						<a href="{{ path('show_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Voir</a>
 					</td>

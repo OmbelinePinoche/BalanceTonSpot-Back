@@ -1,5 +1,5 @@
 <?php
-// src/Service/FavoritesManager.php
+
 namespace App\Service;
 
 use App\Entity\Spot;

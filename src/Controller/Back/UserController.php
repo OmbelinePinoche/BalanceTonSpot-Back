@@ -71,7 +71,7 @@ class UserController extends AbstractController
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Create an instance for the entity user
-        $user = new user();
+        $user = new User();
         // Create a form
         $form = $this->createForm(UserType::class, $user);
 
@@ -106,9 +106,15 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/edit/{pseudo}', name: 'edit_user')]
-    public function edit(User $user, Request $request, EntityManagerInterface  $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // We want edit a user so no need to create anything.
+        // Get the current user
+        $user = $this->getUser();
+
+        // Check if the user is authenticated
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
+        }
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(UserType::class, $user);
@@ -119,6 +125,10 @@ class UserController extends AbstractController
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
             // Here, no need to persist because it already exists so no need to recreate it 
+            // Hash the password before register in the BDD
+            $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+            $user->setPassword($hashedPassword);
+            // Persist the user to the BDD
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the user has been created

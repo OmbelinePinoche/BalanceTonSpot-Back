@@ -62,10 +62,17 @@ class CommentController extends AbstractController
     #[Route('/user/new', name: 'add_comment')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
+        // Fetch the currently authenticated user
+        $user = $this->getUser();
+
         // Create an instance for the entity comment
         $comment = new Comment();
+
+        // Set the user for the comment
+        $comment->setUser($user);
+
         // Create a form
-        $form = $this->createForm(commentType::class, $comment);
+        $form = $this->createForm(commentType::class, $comment, ['user' => $comment->getUser(),]);
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
@@ -98,6 +105,8 @@ class CommentController extends AbstractController
     {
         // Here we want to edit a comment so no need to create anything.
         /*    The comment exists already */
+        // Fetch the currently authenticated user
+        $user = $this->getUser();
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(commentType::class, $comment);
@@ -149,34 +158,34 @@ class CommentController extends AbstractController
     public function triComment(CommentRepository $commentRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided
-        $validSortOptions = ['pseudo', 'spot', 'date']; 
+        $validSortOptions = ['pseudo', 'spot', 'date'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'pseudo';
 
-      // Switch based on sorting method provided
+        // Switch based on sorting method provided
         switch ($sortBy) {
-            // If sorting by name
+                // If sorting by name
             case 'user':
                 //Retrieve Comments sorted by User
                 $comments = $commentRepository->findAllOrderedByUser();
                 break;
-            // If sorting by spot
+                // If sorting by spot
             case 'spot':
                 //Retrieve Comments sorted by Spot
                 $comments = $commentRepository->findAllOrderedBySpot();
                 break;
-            // If sorting by date
+                // If sorting by date
             case 'date':
                 //Retrieve Comments sorted by Date
                 $comments = $commentRepository->findAllOrderedByDate();
                 break;
-            // If invalid sorting option provided, default to sorting by User
+                // If invalid sorting option provided, default to sorting by User
             default:
                 $comments = $commentRepository->findAllOrderedByUser();
         }
         // Render the browse.html.twig template with sorted comments and sorting method
         return $this->render('back/comment/browse.html.twig', [
             'comments' => $comments,
-            'sortBy' => $sortBy, 
+            'sortBy' => $sortBy,
         ]);
     }
 }

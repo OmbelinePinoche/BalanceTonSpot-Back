@@ -1,43 +1,51 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-	<h2 class="text-muted fw-bold mb-4">Commentaire
-		{{ comment.id }}</h2>
+	<div class="container mt-5">
+		<div class="col-mb-4 bg-light p-4 rounded shadow">
+			<h2 class="text-muted fw-bold mb-4">Commentaire de
+				<i>
+					{{ comment.user.pseudo }}</i>
+			</h2>
 
-	<table class="table table-hover mt-4">
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{comment.id }}</td>
-			</tr>
-			<tr>
-				<th>Spot</th>
-				<td>{{comment.spot.name }}</td>
-			</tr>
-			<tr>
-				<th>Contenu</th>
-				<td>{{ comment.content }}</td>
-			</tr>
-			<tr>
-				<th>Ajouté le</th>
-				<td>
-					{% if comment.date is not null %}
-						{{ comment.date.format('d-m-Y') }}
-					{% else %}
-						Date non disponible
-					{% endif %}
-				</td>
-			</tr>
-			<tr>
-				<th>Par</th>
-				<td>{{ comment.user.pseudo }}</td>
-			</tr>
-		</tbody>
-	</table>
+			<table class="table table-hover mt-4">
+				<tbody>
+					<tr>
+						<th>Id</th>
+						<td>{{comment.id }}</td>
+					</tr>
+					<tr>
+						<th>Spot</th>
+						<td>{{comment.spot.name }}</td>
+					</tr>
+					<tr>
+						<th>Contenu</th>
+						<td>{{ comment.content }}</td>
+					</tr>
+					<tr>
+						<th>Note</th>
+						<td>{{ comment.rating }}</td>
+					</tr>
+					<tr>
+						<th>Ajouté le</th>
+						<td>
+							{% if comment.date is not null %}
+								{{ comment.date.format('d-m-Y') }}
+							{% else %}
+								Date non disponible
+							{% endif %}
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-	<a href="{{ path('list_comment') }}">Retour à la liste</a>
-	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-		<a href="{{ path('edit_comment', {id : comment.id}) }}">Modifier</a>
-	{% endif %}
+			<div class="buttons-container">
+				<a href="{{ path('list_comment') }}" class="btn btn-secondary">Retour à la liste</a>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<a href="{{ path('edit_comment', {id : comment.id}) }}" class="btn btn-primary">Modifier</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

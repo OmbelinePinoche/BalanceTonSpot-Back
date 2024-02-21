@@ -32,23 +32,29 @@
 			{% for picture in pictures %}
 				<tr>
 					<td>{{ picture.id }}</td>
-					<td>{{ picture.name }}</td>
+					<td>
+						{% if picture.path %}
+							{% set fileName = picture.path|split('/')|last %}
+							<img src="{{ asset('uploads/spots/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+						{% else %}
+							Aucune image disponible
+						{% endif %}
+					</td>
 					<td>{{ picture.spot.name }}</td>
 					{% if is_granted('ROLE_ADMIN') %}
 						<td>
-							<a href="{{ path('edit_picture', {id : picture.id})}}"  class="btn btn-sm btn-outline-info">Modifier</a>
+							<a href="{{ path('edit_picture', {id : picture.id})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 						<td>
-							<a href="{{ path('remove_picture', {id : picture.id})}}"  class="btn btn-sm btn-outline-info">Supprimer</a>
+							<a href="{{ path('remove_picture', {id : picture.id})}}" class="btn btn-sm btn-outline-info">Supprimer</a>
 						</td>
 					{% endif %}
 				</tr>
-			{% else %}
-				<tr>
-					<td colspan="10">Aucune ville trouvée</td>
-				</tr>
-			{% endfor %}
+			</tbody>
 		</tbody>
-	</table>
-
-{% endblock %}
+	</tr>
+{% else %}
+	<tr>
+		<td colspan="10">Aucune ville trouvée</td>
+	</tr>
+{% endfor %}</tbody></table>{% endblock %}

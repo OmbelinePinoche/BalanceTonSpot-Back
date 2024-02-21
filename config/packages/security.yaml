@@ -51,7 +51,7 @@ security:
         - { path: ^/api,       roles: PUBLIC_ACCESS }
         - { path: ^/api/user,       roles: ROLE_USER }
         - { path: ^/api/users,       roles: ROLE_ADMIN }
-        - { path: ^/api/secure,       roles: ROLE_USER }
+        - { path: ^/api/secure,       roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin/edit, roles: ROLE_ADMIN }
         - { path: ^/admin/new, roles: ROLE_ADMIN }
         - { path: ^/admin/remove, roles: ROLE_ADMIN }
