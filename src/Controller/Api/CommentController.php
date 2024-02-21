@@ -191,8 +191,11 @@ class CommentController extends AbstractController
     }
 
     #[Route('/api/secure/comment/{id}', name: 'api_comment_delete', methods: ['DELETE'])]
-    public function removeComment(comment $comment = null, EntityManagerInterface $entityManager): Response
+    public function removeComment(Comment $comment = null, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
         // Check if the comment exists
         if (!$comment) {
 
