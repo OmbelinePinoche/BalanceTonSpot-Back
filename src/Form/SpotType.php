@@ -12,8 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class SpotType extends AbstractType
 {
@@ -40,7 +41,9 @@ class SpotType extends AbstractType
                 'label' => 'Description'
             ])
             ->add('picture', FileType::class, [
-                'label' => 'Image principale'
+                'label' => 'Image principale',
+                'mapped' => false, // To prevent Symfony from trying to map the field to an entity property
+                'required' => false, 
             ])
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],

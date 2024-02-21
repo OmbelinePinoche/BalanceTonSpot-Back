@@ -3,9 +3,8 @@
 namespace App\Form;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\HttpFoundation\File\File;
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileTransformer implements DataTransformerInterface
 {
@@ -22,7 +21,8 @@ class FileTransformer implements DataTransformerInterface
     {
         // transform the string (file path) to a File instance
         if (!empty($value)) {
-            return new File($value);
+            // Use UploadedFile instead of File to keep the file upload information
+            return new UploadedFile($value, 'original_filename', null, null, true);
         }
         return null;
     }

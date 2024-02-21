@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 class SpotController extends AbstractController
 {
@@ -87,6 +88,23 @@ class SpotController extends AbstractController
         // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
 
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
+            $pictureFile = $form->get('picture')->getData();
+            if ($pictureFile) {
+
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                $pictureFile->move(
+                    $this->getParameter('pictures_directory'),
+                    $newFilename
+                );
+
+                $spot->setPicture($newFilename);
+            }
+
             // Generate the slug using the Slugger service
             $slug = $form->get('name')->getData() ?? ''; // Use the spot name by default if "name" field is available
             $slug = $slugger->slug($slug);
@@ -98,7 +116,7 @@ class SpotController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the spot has been created.
             $this->addFlash(
                 'succès',
-                'Le spot ' . $spot->getName() . 'a bien été créé !'
+                'Le spot ' . $spot->getName() . ' a bien été créé !'
             );
 
             // Return the spots in the view
@@ -126,7 +144,25 @@ class SpotController extends AbstractController
         $form->handleRequest($request);
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-            // Here, no need to persist because it already exists so no need to recreate it 
+
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
+            $pictureFile = $form->get('picture')->getData();
+            if ($pictureFile) {
+
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                $pictureFile->move(
+                    $this->getParameter('pictures_directory'),
+                    $newFilename
+                );
+
+                $spot->setPicture($newFilename);
+            }
+
+            $entityManager->persist($spot);
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the spot has been created
@@ -134,7 +170,7 @@ class SpotController extends AbstractController
                 'succès',
                 'Le spot ' . $spot->getName() . ' a bien été modifié !'
             );
-            return $this->redirectToRoute('list_spot');
+            return $this->redirectToRoute('list');
         }
 
         // Je passe tous les spots à ma vue
@@ -149,7 +185,7 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/admin/remove/{id}', name: 'remove')]
-    public function remove(Spot $spot, spotRepository $spotRepository, Request $request, EntityManagerInterface  $entityManager): Response
+    public function remove(Spot $spot, EntityManagerInterface  $entityManager): Response
     {
         // Here we want delete a spot so no need to create anything
 

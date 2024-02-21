@@ -3,7 +3,7 @@
 {% block main %}
 
 	<!-- main -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"> </script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 	<div class="container my-4">
 		<p class="display-5">
@@ -15,7 +15,7 @@
 			<div class="row mb-2">
 				<div class="col-12 col-lg-3">
 					<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
-						<h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
+						<h3 class="text-center text-muted fw-bold mb-3">Par ville</h3>
 						<select class="text-center text-muted fw-bold mb-4" name="cities" id="city-select" class="form-select">
 							<option class="btn btn-sm btn-outline-danger mx-1 mb-2" value="">-- Sélectionner une ville --</option>
 							{% for location in locations %}
@@ -25,23 +25,38 @@
 					</br>
 
 					<script>
-					$(document).ready(function () {
-					$('#city-select').change(function () {
-					var selectedUrl = $(this).val();
+						$(document).ready(function () {
+$('#city-select').change(function () {
+var selectedUrl = $(this).val();
 
-					if (selectedUrl) {
-					window.location.href = selectedUrl;
-					}
-					});
-					});
+if (selectedUrl) {
+window.location.href = selectedUrl;
+}
+});
+});
 					</script>
 
-
-					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
-					{% for sport in sports %}
-						<a href="{{ path('api_show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</a>
-					{% endfor %}
+					<h3 class="text-center text-muted fw-bold mb-3">Par sport</h3>
+					<select class="text-center text-muted fw-bold mb-4" name="cities" id="sport-select" class="form-select">
+						<option class="btn btn-sm btn-outline-danger mx-1 mb-2" value="">-- Sélectionner un sport --</option>
+						{% for sport in sports %}
+							<option value="{{ path('api_show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</option>
+						{% endfor %}
+					</select>
 				</br>
+
+				<script>
+					$(document).ready(function () {
+$('#sport-select').change(function () {
+var selectedUrl = $(this).val();
+
+if (selectedUrl) {
+window.location.href = selectedUrl;
+}
+});
+});
+				</script>
+
 			</div>
 			<div class="col-12 col-lg-9">
 				<h2 class="text-muted fw-bold mb-4">Les spots

@@ -87,7 +87,6 @@ class UserController extends AbstractController
 
         $updatedUser = $serializer->deserialize($data, User::class, 'json', ['object_to_populate' => $user]);
 
-        $entityManager->persist($updatedUser);
         $entityManager->flush();
 
         // Return to the updated user
