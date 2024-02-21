@@ -167,14 +167,18 @@ class SportController extends AbstractController
         $validSortOptions = ['nom', 'spot'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
 
-    
+        // Switch based on sorting method provided
         switch ($sortBy) {
+            // If sorting by name
             case 'nom':
+                // Retrieve pictures sorted by name
                 $sports = $sportRepository->findAllOrderedByName();
                 break;
             case 'spot':
+                // Retrieve pictures sorted by spot
                 $sports = $sportRepository->findAllOrderedBySpot();
                 break;
+            // If invalid sorting option provided, default to sorting by name
             default:
                 $sports = $sportRepository->findAllOrderedByName();
         }

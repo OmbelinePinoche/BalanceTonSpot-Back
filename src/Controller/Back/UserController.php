@@ -167,19 +167,26 @@ public function create(Request $request, EntityManagerInterface  $entityManager)
 
         
         switch ($sortBy) {
+            // If sorting by username
             case 'username':
+                // Retrieve pictures sorted by Pseudo
                 $users = $userRepository->findAllOrderedByPseudo();
                 break;
+            // If sorting by email
             case 'email':
+                // Retrieve pictures sorted by Email
                 $users = $userRepository->findAllOrderedByEmail();
                 break;
+            // If sorting by role
             case 'role':
+                // Retrieve pictures sorted by Role
                 $users = $userRepository->findAllOrderedByRole();
                 break;
+            // If invalid sorting option provided, default to sorting by Pseudo
             default:
                 $users = $userRepository->findAllOrderedByPseudo();
         }
-
+        // Render the browse.html.twig template with sorted users and sorting method
         return $this->render('back/user/browse.html.twig', [
             'users' => $users,
             'sortBy' => $sortBy, 

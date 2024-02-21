@@ -146,25 +146,31 @@ class PictureController extends AbstractController
     #[Route('/tri/{sortBy}', name: 'tri_picture')]
     public function triPicture(PictureRepository $pictureRepository, string $sortBy): Response
     {
-         // Define default sorting method if an invalid one is provided
-        $validSortOptions = ['nom', 'spot']; // 
+        // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['nom', 'spot']; // Valid sorting options
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
-
-
+    
+        // Switch based on sorting method provided
         switch ($sortBy) {
+            // If sorting by name
             case 'nom':
+                // Retrieve pictures sorted by name
                 $pictures = $pictureRepository->findAllOrderedByName();
                 break;
+            // If sorting by spot
             case 'spot':
+                // Retrieve pictures sorted by spot
                 $pictures = $pictureRepository->findAllOrderedBySpot();
                 break;
+            // If invalid sorting option provided, default to sorting by name
             default:
                 $pictures = $pictureRepository->findAllOrderedByName();
         }
-
+    
+        // Render the browse.html.twig template with sorted pictures and sorting method
         return $this->render('back/picture/browse.html.twig', [
             'pictures' => $pictures,
-            'sortBy' => $sortBy, 
+            'sortBy' => $sortBy, // Pass the sorting method to the template
         ]);
     }
 }
