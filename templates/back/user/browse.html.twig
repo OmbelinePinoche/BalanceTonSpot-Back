@@ -8,22 +8,22 @@
 			</br>
 		</br>
 		<a href="{{ path('tri_user', {'sortBy': 'pseudo'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
-<a href="{{ path('tri_user', {'sortBy': 'email'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par email</a>
-<a href="{{ path('tri_user', {'sortBy': 'role'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par rôle</a>
+		<a href="{{ path('tri_user', {'sortBy': 'email'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par email</a>
+		<a href="{{ path('tri_user', {'sortBy': 'role'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par rôle</a>
 
 	</br>
 </div>
 <div class="col-12 col-lg-9">
 	<h2 class="text-muted fw-bold mb-4">Les utilisateurs
 		{% if is_granted('ROLE_ADMIN') %}
-		<a href="{{path('add_user')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un utilisateur</a>
+			<a href="{{path('add_user')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un utilisateur</a>
 		{% endif %}
 	</h2>
 
 	<table class="table table-hover mt-4">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>Image</th>
 				<th>Pseudo</th>
 				<th>Email</th>
 				<th>Rôle</th>
@@ -32,7 +32,14 @@
 		<tbody>
 			{% for user in users %}
 				<tr>
-					<td>{{ user.id }}</td>
+					<td>
+						{% if user.profilpicture %}
+							{% set fileName = user.profilpicture|split('/')|last %}
+							<img src="{{ asset('uploads/users/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 80px; max-height: 80px;">
+						{% else %}
+							Aucune image disponible
+						{% endif %}
+					</td>
 					<td>{{ user.pseudo }}</td>
 					<td>{{ user.email }}</td>
 					<td>
