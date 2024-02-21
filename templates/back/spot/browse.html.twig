@@ -2,13 +2,8 @@
 
 {% block main %}
 
-<<<<<<< HEAD
-	<!-- main -->
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-=======
     <!-- main -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
->>>>>>> newbackoffice
 
     <div class="container my-4">
         <p class="display-5">
@@ -16,106 +11,19 @@
             <strong>Balance Ton Spot</strong>, la référence des passionnés de sports de glisse!
         </p>
 
-<<<<<<< HEAD
-		<div class="container-xl bg-light p-5 border-top">
-			<div class="row mb-2">
-				<div class="col-12 col-lg-3">
-					<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center">
-						<h3 class="text-center text-muted fw-bold mb-3">Par ville</h3>
-						<select class="text-center text-muted fw-bold mb-4" name="cities" id="city-select" class="form-select">
-							<option class="btn btn-sm btn-outline-danger mx-1 mb-2" value="">-- Sélectionner une ville --</option>
-							{% for location in locations %}
-								<option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ location.name }}</option>
-							{% endfor %}
-						</select>
-					</br>
-
-					<script>
-						$(document).ready(function () {
-$('#city-select').change(function () {
-var selectedUrl = $(this).val();
-
-if (selectedUrl) {
-window.location.href = selectedUrl;
-}
-});
-});
-					</script>
-
-					<h3 class="text-center text-muted fw-bold mb-3">Par sport</h3>
-					<select class="text-center text-muted fw-bold mb-4" name="cities" id="sport-select" class="form-select">
-						<option class="btn btn-sm btn-outline-danger mx-1 mb-2" value="">-- Sélectionner un sport --</option>
-						{% for sport in sports %}
-							<option value="{{ path('api_show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">{{ sport.name }}</option>
-						{% endfor %}
-					</select>
-				</br>
-
-				<script>
-					$(document).ready(function () {
-$('#sport-select').change(function () {
-var selectedUrl = $(this).val();
-
-if (selectedUrl) {
-window.location.href = selectedUrl;
-}
-});
-});
-				</script>
-
-			</div>
-			<div class="col-12 col-lg-9">
-				<h2 class="text-muted fw-bold mb-4">Les spots
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{path('add')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
-					{% endif %}
-				</h2>
-=======
         <div class="container-xl bg-light p-5 border-top">
             <div class="row mb-2">
                 <div class="col-12 col-lg-3">
->>>>>>> newbackoffice
 
                     <ul class="list-unstyled">
                         <h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
 
-<<<<<<< HEAD
-					<tbody>
-						{% for spot in spots %}
-							<tr>
-								<td>{{ spot.name }}</td>
-								<td>{{ spot.description }}</td>
-								<td>
-									{% if spot.picture %}
-										{% set fileName = spot.picture|split('/')|last %}
-										<img src="{{ asset('uploads/spots/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
-									{% else %}
-										Aucune image disponible
-									{% endif %}
-								</td>
-								<td>{{ spot.location.name }}</td>
-								<td>
-									<a href="{{ path('show', {slug : spot.slug}) }}">Voir</a>
-								</td>
-								{% if is_granted('ROLE_ADMIN') %}
-									<td>
-										<a href="{{ path('edit', {slug : spot.slug}) }}">Modifier</a>
-									</td>
-								{% endif %}
-								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-									<td>
-										<a href="{{path('add_favorite', {id: spot.id}) }}">Ajouter aux favoris</a>
-									</td>
-								{% endif %}
-							</tr>
-=======
                         <select class="form-select mb-4" name="cities" id="city-select">
                             <option value="" class="btn btn-sm btn-outline-danger">-- Sélectionner une ville --</option>
                             {% for location in locations %}
                                 <option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger">{{ location.name }}</option>
                             {% endfor %}
                         </select>
->>>>>>> newbackoffice
 
                         <script>
                             $(document).ready(function () {

@@ -13,12 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\String\Slugger\SluggerInterface;
-<<<<<<< HEAD
-use Symfony\Component\HttpFoundation\File\File;
-=======
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
->>>>>>> newbackoffice
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SpotController extends AbstractController
 {
@@ -50,11 +46,7 @@ class SpotController extends AbstractController
             'sports' => $sports
         ]);
 
-        
-
     }
-
-    
 
     /**
      *  Shows a spot by ID in the backoffice

@@ -6,18 +6,7 @@
         <div class="col-md-6 bg-light p-4 rounded shadow">
             <h1 class="text-muted fw-bold mb-4">Ajouter un spot</h1>
 
-<<<<<<< HEAD
-	<h1 class="text-muted fw-bold mb-4">Ajouter un spot</h1>
-
-		{{ form(form, {'enctype': 'multipart/form-data'}) }}
-
-	</br>
-
-	<a href="{{ path('list') }}">
-		Retour à la liste</a>
-{% endblock %}
-=======
-            {{ form_start(form) }}
+            {{ form_start(form, {'enctype': 'multipart/form-data'}) }}
     <div class="form-group">
         {{ form_label(form.name) }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
@@ -61,4 +50,3 @@
 	</div>
 
 		{% endblock %}
->>>>>>> newbackoffice

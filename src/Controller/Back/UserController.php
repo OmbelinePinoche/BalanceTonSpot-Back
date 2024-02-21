@@ -17,8 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserController extends AbstractController
 {
 
-  
-
     /**
      * Shows all users in the backoffice
      * Don't forget that the route above ('/back/user') will be the start of all the routes created below
@@ -29,7 +27,7 @@ class UserController extends AbstractController
     {
         // 1st step is getting all the users from the repository
         $users = $UserRepository->findAll();
-       
+
         return $this->render('back/user/browse.html.twig', [
             'users' => $users,
         ]);
@@ -46,7 +44,7 @@ class UserController extends AbstractController
     {
         // Get the user by its pseudo
         $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
-        
+
         // Checks if the user exists
         if (!$user) {
             throw $this->createNotFoundException('Aucun utilisateur ne répond à ce nom!');
@@ -58,53 +56,51 @@ class UserController extends AbstractController
         ]);
     }
 
-    
- /**
+    /**
      * Create a user with a form in the backoffice
      * 
      * @return Response
      */
-   
- /**
- * Create a user with a form in the backoffice
- * 
- * @return Response
- */
-#[Route('/new', name: 'add_user')]
-public function create(Request $request, EntityManagerInterface  $entityManager): Response
-{
-    // Create an instance for the entity user
-    $user = new user();
-    // Create a form
-    $form = $this->createForm(UserType::class, $user); 
 
-    // I pass the information from my request to my form to find out if the form has been submitted
-    $form->handleRequest($request);
+    /**
+     * Create a user with a form in the backoffice
+     * 
+     * @return Response
+     */
+    #[Route('/new', name: 'add_user')]
+    public function create(Request $request, EntityManagerInterface  $entityManager): Response
+    {
+        // Create an instance for the entity user
+        $user = new user();
+        // Create a form
+        $form = $this->createForm(UserType::class, $user);
 
-    // Checks if the form has been submitted and if it is valid
-    if ($form->isSubmitted() && $form->isValid()) {
-        // Hash the password before register in the BDD
-        $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
-        $user->setPassword($hashedPassword);
-        // Persist the user to the BDD
-        $entityManager->persist($user);
-        $entityManager->flush();
+        // I pass the information from my request to my form to find out if the form has been submitted
+        $form->handleRequest($request);
 
-        // We will display a flash message which will allow us to display whether or not the user has been created.
-        $this->addFlash(
-            'success',
-            'L\'utilisateur '.$user->getEmail().' a bien été créé !'
-        );
-        
-        // Return the users in the view
-        return $this->redirectToRoute('list_user');
+        // Checks if the form has been submitted and if it is valid
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Hash the password before register in the BDD
+            $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
+            $user->setPassword($hashedPassword);
+            // Persist the user to the BDD
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // We will display a flash message which will allow us to display whether or not the user has been created.
+            $this->addFlash(
+                'success',
+                'L\'utilisateur ' . $user->getEmail() . ' a bien été créé !'
+            );
+
+            // Return the users in the view
+            return $this->redirectToRoute('list_user');
+        }
+
+        return $this->render('back/user/create.html.twig', [
+            'form' => $form,
+        ]);
     }
-
-    return $this->render('back/user/create.html.twig', [
-        'form' => $form,
-    ]);
-
-}
     /**
      * Modify a user via its pseudo in a form in the back office
      * @return Response
@@ -122,13 +118,13 @@ public function create(Request $request, EntityManagerInterface  $entityManager)
         $form->handleRequest($request);
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
-           // Here, no need to persist because it already exists so no need to recreate it 
-            $entityManager->flush(); 
+            // Here, no need to persist because it already exists so no need to recreate it 
+            $entityManager->flush();
 
-        // We will display a 'flash message' which will allow us to display whether or not the user has been created
+            // We will display a 'flash message' which will allow us to display whether or not the user has been created
             $this->addFlash(
                 'succès',
-                'L utilisateur '.$user->getPseudo().' a bien été modifié !'
+                'L utilisateur ' . $user->getPseudo() . ' a bien été modifié !'
             );
             return $this->redirectToRoute('list_user');
         }
@@ -152,7 +148,7 @@ public function create(Request $request, EntityManagerInterface  $entityManager)
         // Delete the user
         $entityManager->remove($user);
         $entityManager->flush();
-        
+
         // Return user to the home page
         return $this->redirectToRoute('list_user');
     }
@@ -160,36 +156,35 @@ public function create(Request $request, EntityManagerInterface  $entityManager)
     #[Route('/tri/{sortBy}', name: 'tri_user')]
     public function triUser(UserRepository $userRepository, string $sortBy): Response
     {
-         
+
         // Define default sorting method if an invalid one is provided
-        $validSortOptions = ['pseudo', 'email', 'role']; 
+        $validSortOptions = ['pseudo', 'email', 'role'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'pseudo';
 
-        
         switch ($sortBy) {
-            // If sorting by username
+                // If sorting by username
             case 'username':
                 // Retrieve pictures sorted by Pseudo
                 $users = $userRepository->findAllOrderedByPseudo();
                 break;
-            // If sorting by email
+                // If sorting by email
             case 'email':
                 // Retrieve pictures sorted by Email
                 $users = $userRepository->findAllOrderedByEmail();
                 break;
-            // If sorting by role
+                // If sorting by role
             case 'role':
                 // Retrieve pictures sorted by Role
                 $users = $userRepository->findAllOrderedByRole();
                 break;
-            // If invalid sorting option provided, default to sorting by Pseudo
+                // If invalid sorting option provided, default to sorting by Pseudo
             default:
                 $users = $userRepository->findAllOrderedByPseudo();
         }
         // Render the browse.html.twig template with sorted users and sorting method
         return $this->render('back/user/browse.html.twig', [
             'users' => $users,
-            'sortBy' => $sortBy, 
+            'sortBy' => $sortBy,
         ]);
     }
 }

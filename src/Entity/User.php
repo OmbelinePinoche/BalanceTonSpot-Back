@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
-    #[ORM\ManyToMany(targetEntity: Spot::class, inversedBy: 'user_favorite')]
+    #[ORM\ManyToMany(targetEntity: Spot::class, inversedBy: 'user_favorite', orphanRemoval: 'true')]
     private Collection $favorites;
 
     #[Groups(['api_user_list', 'api_show_user', 'api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
