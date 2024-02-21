@@ -1,9 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1 class="text-muted fw-bold mb-4">Ajouter une ville</h1>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6 bg-light p-4 rounded shadow">
+				<h1 class="text-muted fw-bold mb-4">Ajouter une ville</h1>
 
-    {{ form(form) }}
-</br>
-    <a href="{{ path('list_location') }}">Retour à la liste</a>
+				{{ form_start(form) }}
+				<div class="form-group">
+					{{ form_label(form.name) }}
+					{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+				</div>
+
+				<div class="form-group">
+					{{ form_widget(form.Ajouter, {'attr': {'class': 'btn btn-primary'}}) }}
+				</div>
+				{{ form_end(form) }}
+
+				<a href="{{ path('list_location') }}" class="btn btn-secondary">Retour à la liste</a>
+			</div>
+		</div>
+	</div>
 {% endblock %}

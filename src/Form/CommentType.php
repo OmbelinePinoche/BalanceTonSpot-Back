@@ -27,6 +27,12 @@ class CommentType extends AbstractType
             ->add('date', DateType::class, [
                 'label' => 'Ajouté le'
             ])
+<<<<<<< HEAD
+=======
+            ->add('user', TypeTextType::class, [
+                'label' => 'Par'
+            ])
+>>>>>>> newbackoffice
             ->add('Ajouter', SubmitType::class, [
                 'attr' => ['class' => 'save'],
             ]);

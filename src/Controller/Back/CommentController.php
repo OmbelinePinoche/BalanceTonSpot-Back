@@ -143,4 +143,40 @@ class CommentController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list_comment');
     }
+
+
+    #[Route('/tri/{sortBy}', name: 'tri_comment')]
+    public function triComment(CommentRepository $commentRepository, string $sortBy): Response
+    {
+        // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['pseudo', 'spot', 'date']; 
+        $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'pseudo';
+
+      // Switch based on sorting method provided
+        switch ($sortBy) {
+            // If sorting by name
+            case 'user':
+                //Retrieve Comments sorted by User
+                $comments = $commentRepository->findAllOrderedByUser();
+                break;
+            // If sorting by spot
+            case 'spot':
+                //Retrieve Comments sorted by Spot
+                $comments = $commentRepository->findAllOrderedBySpot();
+                break;
+            // If sorting by date
+            case 'date':
+                //Retrieve Comments sorted by Date
+                $comments = $commentRepository->findAllOrderedByDate();
+                break;
+            // If invalid sorting option provided, default to sorting by User
+            default:
+                $comments = $commentRepository->findAllOrderedByUser();
+        }
+        // Render the browse.html.twig template with sorted comments and sorting method
+        return $this->render('back/comment/browse.html.twig', [
+            'comments' => $comments,
+            'sortBy' => $sortBy, 
+        ]);
+    }
 }

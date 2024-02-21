@@ -8,8 +8,8 @@
 				<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center"></br>
 			</br>
 		</br>
-		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par nom</a>
-		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
+		<a href="{{ path('tri_sport', {'sortBy': 'name'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par nom</a>
+		<a href="{{ path('tri_sport', {'sortBy': 'spot'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
 	</br>
 </div>
 <div class="col-12 col-lg-9">
@@ -33,10 +33,10 @@
 					<td>{{ sport.name }}</td>
 					{% if is_granted('ROLE_ADMIN') %}
 						<td>
-							<a href="{{ path('edit_sport', {slug : sport.slug})}}">Modifier</a>
+							<a href="{{ path('edit_sport', {slug : sport.slug})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 						<td>
-							<a href="{{ path('remove_sport', {id : sport.id})}}">Supprimer</a>
+							<a href="{{ path('remove_sport', {id : sport.id})}}"  class="btn btn-sm btn-outline-info">Supprimer</a>
 						</td>
 					{% endif %}
 				</tr>

@@ -4,16 +4,21 @@ namespace App\Controller\Back;
 
 use App\Entity\Spot;
 use App\Form\SpotType;
-use App\Repository\LocationRepository;
-use App\Repository\SportRepository;
+use App\Entity\Location;
 use App\Repository\SpotRepository;
+use App\Repository\SportRepository;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\String\Slugger\SluggerInterface;
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\File\File;
+=======
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+>>>>>>> newbackoffice
 
 class SpotController extends AbstractController
 {
@@ -44,7 +49,12 @@ class SpotController extends AbstractController
             'locations' => $locations,
             'sports' => $sports
         ]);
+
+        
+
     }
+
+    
 
     /**
      *  Shows a spot by ID in the backoffice
@@ -196,4 +206,5 @@ class SpotController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list');
     }
+
 }

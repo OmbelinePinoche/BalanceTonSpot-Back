@@ -3,6 +3,7 @@
 namespace App\Controller\Back;
 
 use App\Entity\Sport;
+use App\Entity\Spot;
 use App\Form\SportType;
 use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
@@ -127,28 +128,64 @@ class SportController extends AbstractController
         return $this->redirectToRoute('list_sport');
     }
 
+
+
+
     #[Route('/{slug}/spots', name: 'show_by_sport', methods: ['GET'])]
-    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Sport $sport, $slug)
+    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, $slug)
     {
-        // Checks if the given id sport exists
+        //Find all the sports for the loop {% for sport in sports %} to work
+        $sports = $sportRepository->findAll();
+        // Find the sport based on the provided slug
+        $sport = $sportRepository->findOneBy(['slug' => $slug]);
+
+        // Checks if the sport was found
         if (!$sport) {
-            return $this->json(['message' => 'Aucun sport n\'a été trouvé'], 404);
+            return $this->json(['message' => 'Aucun sport n\'a été trouvé pour le slug donné'], 404);
         }
 
-        // Search the spots from the repository with the param "sport"
-        $spots = $spotRepository->findBy(['sport_id' => $sport]);
-        
+        // Search the spots associated with the sport
+        $spots = $spotRepository->findBySport($sport);
+
+        // Fetch all locations
         $locations = $locationRepository->findAll();
 
-        // Get all the sports
-        $sports = $sportRepository->findAllBy(['slug' => $slug]);
-
-        // Return  to the view all the spots according to the sport
+        // Return to the view all the spots according to the sport
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
-            'sports' => $sports,
-            'sport_id' => $sport,
+            'sport' => $sport,
             'locations' => $locations,
+            'sports' => $sports,
+
+        ]);
+    }
+
+    #[Route('/tri/{sortBy}', name: 'tri_sport')]
+    public function triSport(SportRepository $sportRepository, string $sortBy): Response
+    {
+        // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['nom', 'spot'];
+        $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
+
+        // Switch based on sorting method provided
+        switch ($sortBy) {
+            // If sorting by name
+            case 'nom':
+                // Retrieve pictures sorted by name
+                $sports = $sportRepository->findAllOrderedByName();
+                break;
+            case 'spot':
+                // Retrieve pictures sorted by spot
+                $sports = $sportRepository->findAllOrderedBySpot();
+                break;
+            // If invalid sorting option provided, default to sorting by name
+            default:
+                $sports = $sportRepository->findAllOrderedByName();
+        }
+        // Return the sports according to the chosen order
+        return $this->render('back/sport/browse.html.twig', [
+            'sports' => $sports,
+            'sortBy' => $sortBy,
         ]);
     }
 }

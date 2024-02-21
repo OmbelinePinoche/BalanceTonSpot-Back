@@ -8,9 +8,9 @@
 				<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center"></br>
 			</br>
 		</br>
-		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
-		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par date</a>
-		<a href="" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
+		<a href="{{ path('tri_comment', {'sortBy': 'spot'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
+		<a href="{{ path('tri_comment', {'sortBy': 'date'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par date</a>
+		<a href="{{ path('tri_comment', {'sortBy': 'user'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
 	</br>
 </div>
 <div class="col-12 col-lg-9">
@@ -47,11 +47,11 @@
 					<td>{{ comment.user.pseudo }}</td>
 
 					<td>
-						<a href="{{ path('show_comment', {id : comment.id}) }}">Voir</a>
+						<a href="{{ path('show_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Voir</a>
 					</td>
 					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 						<td>
-							<a href="{{ path('edit_comment', {id : comment.id}) }}">Modifier</a>
+							<a href="{{ path('edit_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 					{% endif %}
 				</tr>

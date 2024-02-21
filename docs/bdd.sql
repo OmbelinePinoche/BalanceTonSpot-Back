@@ -157,7 +157,8 @@ INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `address`, `rating`,
 (12,	'Sergent Blandan',	'Très typé street (avec quand même deux trois courbes bien raides par ci par là), ce skatepark est rempli de belles idées. Il faudra quand même un bon niveau pour vraiment en profiter.',	'https://skateparks.fr/wp-content/uploads/2020/11/sergent-blandan-skatepark-full.jpg',	'Rue de l\'Epargne, 69007 Lyon',	3.5,	10,	'sergent-blandan'),
 (13,	'Les 2 Alpes',	'Station de ski phare du département de l’Isère, Les 2 Alpes jouit d’une réputation internationale. Elle est située au cœur du massif des Ecrins, dans l’Oisans. Avec une neige naturelle garantie grâce au domaine de haute altitude culminant à 3600m, vous avez l’assurance de skier en toute saison.',	'https://reservation.les2alpes.com/medias/images/perrine/snowpark_hiv_paysage_2.jpg',	'Station des Deux Alpes',	5.0,	11,	'les-2-Alpes'),
 (14,	'Serre-Chevalier',	'Plus grand domaine skiable des Alpes du Sud, Serre Chevalier est aussi l\'un des plus grands domaines d\'Europe avec ses 3 901 hectares. Débutant ou expert, découvrez tout un domaine XXL, par les forêts de mélèzes ou par les sommets offrant des panoramas de montagne exceptionnels.',	'https://www.skiresort.fr/fileadmin/_processed_/c3/34/42/25/81527b2b3f.jpg',	'Station de Serre-Chevalier',	4.0,	12,	'serre-chevalier'),
-(15,	'Le Grand Bornand',	'Cette station propose un domaine skiable préservé dans lequel vous pouvez pratiquer de nombreuses disciplines : ski alpin, ski nordique, biathlon, snowboard, ski de randonnée, raquettes, marche nordique, luge.',	'https://www.barnes-montblanc.com/uploads/sectors/36/hero_pictures/53984/show.jpg?1573573424',	'Station du Grand Bornand',	4.0,	13,	'le-grand-bornand');
+(15,	'Le Grand Bornand',	'Cette station propose un domaine skiable préservé dans lequel vous pouvez pratiquer de nombreuses disciplines : ski alpin, ski nordique, biathlon, snowboard, ski de randonnée, raquettes, marche nordique, luge.',	'https://www.barnes-montblanc.com/uploads/sectors/36/hero_pictures/53984/show.jpg?1573573424',	'Station du Grand Bornand',	4.0,	13,	'le-grand-bornand'),
+(42,	'fgssdf',	'sGsGG',	'original-filename-9accd67b80775063.jpg',	'gsgessg',	NULL,	20,	'fgssdf');
 
 DROP TABLE IF EXISTS `spot_sport`;
 CREATE TABLE `spot_sport` (
@@ -185,7 +186,8 @@ INSERT INTO `spot_sport` (`spot_id`, `sport_id`) VALUES
 (12,	1),
 (13,	2),
 (14,	2),
-(15,	2);
+(15,	2),
+(42,	1);
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -216,12 +218,16 @@ CREATE TABLE `user_spot` (
   PRIMARY KEY (`user_id`,`spot_id`),
   KEY `IDX_C3B336BAA76ED395` (`user_id`),
   KEY `IDX_C3B336BA2DF1D37C` (`spot_id`),
-  CONSTRAINT `FK_C3B336BA2DF1D37C` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_C3B336BAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+  CONSTRAINT `FK_C3B336BAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_spot_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `spot` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `user_spot` (`user_id`, `spot_id`) VALUES
 (2,	7),
 (2,	13);
 
+<<<<<<< HEAD
 -- 2024-02-20 12:42:08
+=======
+-- 2024-02-21 07:34:23
+>>>>>>> newbackoffice

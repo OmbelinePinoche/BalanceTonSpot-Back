@@ -21,6 +21,32 @@ class PictureRepository extends ServiceEntityRepository
         parent::__construct($registry, Picture::class);
     }
 
+    /**
+     * Retrieves all pictures ordered by name.
+     *
+     * @return Picture[] Returns an array of Picture objects
+     */
+    public function findAllOrderedByName(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retrieves all pictures ordered by associated spot name.
+     *
+     * @return Picture[] Returns an array of Picture objects
+     */
+    public function findAllOrderedBySpot(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.spot', 's')
+            ->orderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Picture[] Returns an array of Picture objects
 //     */

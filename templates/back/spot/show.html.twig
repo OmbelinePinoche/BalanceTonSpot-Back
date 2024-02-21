@@ -1,52 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-	<h2 class="text-muted fw-bold mb-4">{{ spot.name }}</h2>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<h2 class="text-muted fw-bold mb-4">{{ spot.name }}</h2>
 
-	<table class="table table-hover mt-4">
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{ spot.id }}</td>
-			</tr>
-			<tr>
-				<th>Nom</th>
-				<td>{{ spot.name }}</td>
-			</tr>
-			<tr>
-				<th>Sport</th>
-				<td>
-					{% if spot.sportid is not null %}
-						{% for sport in spot.sportid %}
-							{{ sport.name }}
-						{% endfor %}
-					{% else %}
-						Aucun sport associé
-					{% endif %}
-				</td>
-			</tr>
-			<tr>
-				<th>Ville</th>
-				<td>{{ spot.location.name }}</td>
-			</tr>
-			<tr>
-				<th>Adresse</th>
-				<td>{{ spot.address }}</td>
-			</tr>
-			<tr>
-				<th>Description</th>
-				<td>{{ spot.description }}</td>
-			</tr>
-			<tr>
-				<th>Image</th>
-				<td>{{ spot.picture }}</td>
-			</tr>
-		</tbody>
-	</table>
+			<table class="table table-hover mt-4">
+				<tbody>
+					<tr>
+						<th>Id</th>
+						<td>{{ spot.id }}</td>
+					</tr>
+					<tr>
+						<th>Nom</th>
+						<td>{{ spot.name }}</td>
+					</tr>
+					<tr>
+						<th>Image</th>
+						<td>
+							{% if spot.picture %}
+								{% set fileName = spot.picture|split('/')|last %}
+								<img src="{{ asset('uploads/spots/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 800px; max-height: 500px;">
+							{% else %}
+								Aucune image disponible
+							{% endif %}
+						</td>
+					</tr>
+					<tr>
+						<th>Adresse</th>
+						<td>{{ spot.address }}</td>
+					</tr>
+					<tr>
+						<th>Sport</th>
+						<td>
+							{% if spot.sportid is not null %}
+								{% for sport in spot.sportid %}
+									{{ sport.name }}
+								{% endfor %}
+							{% else %}
+								Aucun sport associé
+							{% endif %}
+						</td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td>{{ spot.description }}</td>
+					</tr>
 
-	<a href="{{ path('list') }}">Retour à la liste</a>
-	{% if is_granted('ROLE_ADMIN') %}
-	<a href="{{ path('edit', {'slug': spot.slug}) }}">Modifier</a>
-	{% endif %}
+				</tbody>
+			</table>
+			<div class="buttons-container">
+				<a href="{{ path('list') }}" class="btn btn-secondary">Retour à la liste</a>
 
-{% endblock %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('edit', {'slug': spot.slug}) }}" class="btn btn-primary">Modifier</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

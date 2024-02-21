@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
-
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -110,3 +109,4 @@ class Comment
     }
     
 }
+

@@ -4,14 +4,15 @@ namespace App\Controller\Back;
 
 use App\Entity\Location;
 use App\Form\LocationType;
-use App\Repository\LocationRepository;
-use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
+use App\Repository\SportRepository;
+use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/location')]
@@ -25,12 +26,16 @@ class LocationController extends AbstractController
     public function browse(LocationRepository $LocationRepository, SpotRepository $spotRepository): Response
     {
         // 1st step is getting all the locations from the repository
-        $location = $LocationRepository->findAll();
+        $locations = $LocationRepository->findAll();
         $spots = $spotRepository->findAll();
+        $sortedLocationsByName = $LocationRepository->findAllOrderedByName();
+
         return $this->render('back/location/browse.html.twig', [
-            'location' => $location, 'spots' => $spots
+            'locations' => $locations, 'spots' => $spots, 'sortedLocationsByName' => $sortedLocationsByName,
+
         ]);
     }
+
 
     /**
      * Create a location with a form in the backoffice
@@ -141,6 +146,65 @@ class LocationController extends AbstractController
             'sports' => $sports,
             'location' => $location,
             'locations' => $locations,
+        ]);
+    }
+
+
+    #[Route('/select', name: 'choose_location')]
+    public function select(Request $request, LocationRepository $locationRepository, SportRepository $sportRepository): Response
+    {
+        // Create the form
+        $form = $this->createFormBuilder()
+            ->add('location', EntityType::class, [
+                'class' => Location::class,
+                'query_builder' => function (LocationRepository $locationRepository) {
+                    return $locationRepository->createQueryBuilder('c')->orderBy('c.name', 'ASC');
+                },
+                'choice_label' => 'name', // Define which property of the Location entity will be displayed in the select options
+                'placeholder' => 'Choose a location', // Optional: Add a placeholder
+            ])
+            ->getForm();
+
+        // Handle form submission
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Get the selected location
+            $selectedLocation = $form->get('location')->getData();
+
+            // Fetch spots associated with the selected location
+            $spots = $selectedLocation->getSpots();
+
+            // Render a template to display spots
+            return $this->render('back/location/show_spots_by_location.html.twig', [
+                'selectedLocation' => $selectedLocation,
+                'spots' => $spots,
+            ]);
+        }
+
+        // Render the form
+        return $this->render('back/location/select.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/tri/{sortBy}', name: 'tri_location')]
+    public function triLocation(LocationRepository $locationRepository, string $sortBy): Response
+    {
+        // Define default sorting method if an invalid one is provided
+        $validSortOptions = ['name', 'spot'];
+        $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'name';
+
+        // Fetch locations based on the chosen sorting method
+        if ($sortBy === 'name') {
+            $locations = $locationRepository->findAllOrderedByName();
+        } elseif ($sortBy === 'spot') {
+            $locations = $locationRepository->findAllOrderedBySpotCount();
+        }
+        // Return the sports according to the chosen order
+        return $this->render('back/location/browse.html.twig', [
+            'locations' => $locations,
+            'sortBy' => $sortBy,
         ]);
     }
 }
