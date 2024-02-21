@@ -26,10 +26,10 @@ class CommentRepository extends ServiceEntityRepository
      *
      * @return Comment[] Returns an array of Comment objects
      */
-    public function findAllOrderedByUsername(): array
+    public function findAllOrderedByUser(): array
     {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.username', 'ASC')
+            ->orderBy('c.user', 'ASC')
             ->getQuery()
             ->getResult();
     }

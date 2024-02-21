@@ -154,8 +154,8 @@ class CommentController extends AbstractController
 
         // Fetch comments based on the chosen sorting method
         switch ($sortBy) {
-            case 'username':
-                $comments = $commentRepository->findAllOrderedByUsername();
+            case 'user':
+                $comments = $commentRepository->findAllOrderedByUser();
                 break;
             case 'spot':
                 $comments = $commentRepository->findAllOrderedBySpot();
@@ -164,7 +164,7 @@ class CommentController extends AbstractController
                 $comments = $commentRepository->findAllOrderedByDate();
                 break;
             default:
-                $comments = $commentRepository->findAllOrderedByUsername();
+                $comments = $commentRepository->findAllOrderedByUser();
         }
         // Return the comments according to the chosen order
         return $this->render('back/comment/browse.html.twig', [

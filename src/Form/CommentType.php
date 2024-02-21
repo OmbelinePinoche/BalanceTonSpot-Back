@@ -29,7 +29,7 @@ class CommentType extends AbstractType
             ->add('date', DateType::class, [
                 'label' => 'Ajouté le'
             ])
-            ->add('username', TypeTextType::class, [
+            ->add('user', TypeTextType::class, [
                 'label' => 'Par'
             ])
             ->add('Ajouter', SubmitType::class, [

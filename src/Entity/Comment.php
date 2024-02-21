@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
 {
-
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,10 +21,11 @@ class Comment
     private ?string $content = null;
 
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
-    #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-    #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
+    #[Groups(['api_list_comment', 'api_show_comment'])]
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Spot $spot = null;
@@ -37,6 +37,11 @@ class Comment
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
     private ?string $rating = null;
+
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -55,14 +60,14 @@ class Comment
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getUser(): ?User
     {
-        return $this->username;
+        return $this->user;
     }
 
-    public function setUsername(string $username): static
+    public function setUser(?User $user): static
     {
-        $this->username = $username;
+        $this->user = $user;
 
         return $this;
     }
@@ -102,8 +107,6 @@ class Comment
 
         return $this;
     }
-
-
- 
     
 }
+
