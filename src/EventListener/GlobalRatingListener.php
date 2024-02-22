@@ -8,7 +8,7 @@ use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
-#[AsEntityListener(event: Events::postPersist, method: ['postPersist', 'postUpdate', 'postRemove'], entity: Comment::class)]
+#[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: Comment::class)]
 final class GlobalRatingListener
 {
 
@@ -52,7 +52,7 @@ final class GlobalRatingListener
         // Loop through all comments of the spot
         foreach ($spot->getComments() as $comment) {
             // Accumulate the ratings
-            $allNotes = $allNotes + $comment->getRating();
+       $allNotes = $allNotes + $comment->getRating();
         }
 
         // Calculate the average rating by dividing the total sum by the number of comments
