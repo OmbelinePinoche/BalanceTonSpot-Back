@@ -49,7 +49,7 @@ class Spot
     private ?Location $location = null;
 
     #[Groups(['api_show'])]
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'spot', cascade: ['persist', 'remove'])]
     private Collection $comments;
 
     #[Groups(['show'])]

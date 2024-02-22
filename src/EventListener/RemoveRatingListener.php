@@ -31,9 +31,9 @@ final class RemoveRatingListener
         $spot->setRating($average);
 
         // We get the entityManager from the Doctrine Object Manager
-        $entityManager = $event->getObjectManager();
+        $entityManager = $event->getObjectManager(); 
 
-        // We Remove the changes to the database
+        // We remove the changes to the database
         $entityManager->flush();
     }
 

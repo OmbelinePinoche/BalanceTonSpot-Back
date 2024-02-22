@@ -15,7 +15,7 @@
 							<td>
 								{% if user.profilpicture %}
 									{% set fileName = user.profilpicture|split('/')|last %}
-									<img src="{{ asset('uploads/users/' ~ fileName) }}" alt="Image de l'utilisateur" class="img-fluid" style="max-width: 70px; max-height: 70px;">
+									<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image de l'utilisateur" class="img-fluid" style="max-width: 70px; max-height: 70px;">
 								{% else %}
 									Aucune image disponible
 								{% endif %}

@@ -21,7 +21,7 @@ class Comment
     private ?string $content = null;
 
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
-    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\ManyToOne(inversedBy: 'comments', cascade: ['remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -36,7 +36,7 @@ class Comment
 
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
-    private ?string $rating = null;
+    private ?float $rating = null;
 
     public function __construct()
     {
@@ -96,12 +96,12 @@ class Comment
         return $this;
     }
 
-    public function getRating(): ?string
+    public function getRating(): ?float
     {
         return $this->rating;
     }
 
-    public function setRating(string $rating): static
+    public function setRating(float $rating): static
     {
         $this->rating = $rating;
 

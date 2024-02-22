@@ -35,7 +35,7 @@
 					<td>
 						{% if picture.path %}
 							{% set fileName = picture.path|split('/')|last %}
-							<img src="{{ asset('uploads/spots/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+							<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
 						{% else %}
 							Aucune image disponible
 						{% endif %}
