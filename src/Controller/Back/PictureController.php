@@ -130,7 +130,8 @@ class PictureController extends AbstractController
 
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
             $pictureFile = $form->get('path')->getData();
-            if ($pictureFile) {
+            
+            if ($pictureFile !== null) {
 
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $this->slugger->slug($originalFilename);
@@ -154,6 +155,7 @@ class PictureController extends AbstractController
                 'succès',
                 "L'image" . $picture->getName() . " a bien été modifiée !"
             );
+            
             return $this->redirectToRoute('list_pictures');
         }
 

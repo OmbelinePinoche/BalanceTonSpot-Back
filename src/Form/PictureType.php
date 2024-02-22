@@ -22,7 +22,8 @@ class PictureType extends AbstractType
                 'label' => 'Nom de l\'image',
             ])
             ->add('path', FileType::class, [
-                'label' => 'Image'
+                'label' => 'Image',
+                'mapped' => false, // To prevent Symfony from trying to map the field to an entity property
             ])
             ->add('spot', EntityType::class, [
                 'class' => Spot::class,
