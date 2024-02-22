@@ -4,7 +4,6 @@ namespace App\Controller\Back;
 
 use App\Entity\Spot;
 use App\Form\SpotType;
-use App\Entity\Location;
 use App\Repository\SpotRepository;
 use App\Repository\SportRepository;
 use App\Repository\LocationRepository;

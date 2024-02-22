@@ -6,16 +6,22 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/users')]
 class UserController extends AbstractController
 {
+
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
 
     /**
      * Shows all users in the backoffice
@@ -80,6 +86,24 @@ class UserController extends AbstractController
 
         // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
+            $pictureFile = $form->get('profilPictureFile')->getData();
+            if ($pictureFile) {
+
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                $pictureFile->move(
+                    $this->getParameter('pictures_directory'),
+                    $newFilename
+                );
+
+                $user->setProfilPicture($newFilename);
+            }
+
             // Hash the password before register in the BDD
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
@@ -124,6 +148,24 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         // checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
+            $pictureFile = $form->get('profilPictureFile')->getData();
+            if ($pictureFile) {
+
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
+                // Move the file to the directory where pictures are stored
+                $pictureFile->move(
+                    $this->getParameter('pictures_directory'),
+                    $newFilename
+                );
+
+                $user->setProfilPicture($newFilename);
+            }
+
             // Here, no need to persist because it already exists so no need to recreate it 
             // Hash the password before register in the BDD
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);

@@ -21,7 +21,7 @@ class Comment
     private ?string $content = null;
 
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
-    #[ORM\ManyToOne(inversedBy: 'comments', cascade: ['remove'])]
+    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

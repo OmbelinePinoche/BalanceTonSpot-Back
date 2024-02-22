@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $profilpicture = null;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', cascade: ['persist'])]    
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user')]    
     private Collection $comments;
 
     public function __construct()

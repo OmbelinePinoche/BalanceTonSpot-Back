@@ -33,7 +33,7 @@
 			{% for comment in comments %}
 				<tr>
 					<td>{% set fileName = comment.user.profilpicture|split('/')|last %}
-						<img src="{{ asset('uploads/users/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 30px; max-height: 30px;">
+						<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 30px; max-height: 30px;">
 {{ comment.user.pseudo }}</td>
 					<td>{{comment.spot.name }}</td>
 					<td>{{ comment.content }}</td>
