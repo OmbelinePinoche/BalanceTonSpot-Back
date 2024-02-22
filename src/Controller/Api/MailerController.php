@@ -35,33 +35,34 @@ class MailerController extends AbstractController
     }
 
 
-
     #[Route('/api/emails', methods: ['POST'])]
     public function sendEmail(Request $request, MailerService $mailerService): JsonResponse
     {
         // Decode the request content to retrieve data
         $data = json_decode($request->getContent(), true);
-        // Extract the user email from the data
+        // Extract the user email and message from the data
         $userEmail = $data['user_email'] ?? null;
+        $subject = $data['subject'] ?? null;
+        $content = $data['content'] ?? null;
 
-        // Check if the user email is provided
-        if (!$userEmail) {
-            // Return a JSON response with a message indicating that email is required
-            return new JsonResponse(['message' => 'Email requis'], JsonResponse::HTTP_BAD_REQUEST);
+        // Check if the user email and message are provided
+        if (!$userEmail || !$content) {
+            // Return a JSON response with a message indicating that email and message are required
+            return new JsonResponse(['message' => 'Email et message requis'], JsonResponse::HTTP_BAD_REQUEST);
         }
-
+    
         // Find the user by email in the repository
         $user = $this->userRepository->findOneBy(['email' => $userEmail]);
-
+    
         // Check if the user is found
         if (!$user) {
             // Return a JSON response with a message indicating user not found
             return new JsonResponse(['message' => 'Utilisateur non trouvé'], JsonResponse::HTTP_NOT_FOUND);
         }
-
-        // Call the sendEmail() method of the MailerService and pass the user object
-        $success = $mailerService->sendEmail($user);
-
+    
+        // Call the sendEmail() method of the MailerService and pass the user object and message
+        $success = $mailerService->sendEmail($user,$subject,$content);
+    
         // Check if the email was sent successfully
         if ($success) {
             // If successful, return a JSON response with a success message

@@ -28,7 +28,7 @@ class MailerService
             ->to($this->adminEmail)
             ->htmlTemplate(template: 'back/email/browse.html.twig')
             ->context([
-                'username' => 'Gatien'
+                'username' => 'laboulemagique'
 
 
 
@@ -38,14 +38,14 @@ class MailerService
     }
 
 
-    public function sendEmail(User $user): JsonResponse
+    public function sendEmail(User $user, string $content, string $subject): JsonResponse
     {
         try {
             $email = (new Email())
-                ->subject('Welcome')
+                ->subject($subject)
                 ->from($user->getEmail())
                 ->to($this->adminEmail)
-                ->text('Très content de votre site');
+                ->text($content);
 
             $this->mailer->send($email);
 
