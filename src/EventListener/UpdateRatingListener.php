@@ -4,13 +4,12 @@ namespace App\EventListener;
 
 use App\Entity\Comment;
 use Doctrine\ORM\Events;
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
 #[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: Comment::class)]
 final class UpdateRatingListener
 {
-
     public function postUpdate(Comment $comment, PostUpdateEventArgs $event)
     {
         // We need to retrieve the spot from the variable comment
@@ -24,17 +23,18 @@ final class UpdateRatingListener
             // Add the rating of each comment to the total sum
             $allNotes = $allNotes + $comment->getRating();
         }
-        // Calculate the average rating by dividing the total sum by the number of comments
-        $average = $allNotes / count($spot->getComments());
 
-        // we set the calculated average rating to the spot
-        $spot->setRating($average);
+        if ($allNotes == 0) {
+            $spot->setRating(0);
+        } else {
+            $average = $allNotes / count($spot->getComments());
+            $spot->setRating($average);
+        }
 
         // We get the entityManager from the Doctrine Object Manager
         $entityManager = $event->getObjectManager();
 
-        // We Update the changes to the database
+        // We persist the changes to the database
         $entityManager->flush();
     }
-
 }

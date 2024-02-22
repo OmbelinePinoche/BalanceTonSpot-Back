@@ -24,11 +24,14 @@ final class GlobalRatingListener
             // Add the rating of each comment to the total sum
             $allNotes = $allNotes + $comment->getRating();
         }
-        // Calculate the average rating by dividing the total sum by the number of comments
-        $average = $allNotes / count($spot->getComments());
 
-        // we set the calculated average rating to the spot
-        $spot->setRating($average);
+        if ($allNotes == 0) {
+            $spot->setRating(0);
+        } 
+        else {
+            $average = $allNotes / count($spot->getComments());
+            $spot->setRating($average);
+        }
 
         // We get the entityManager from the Doctrine Object Manager
         $entityManager = $event->getObjectManager();

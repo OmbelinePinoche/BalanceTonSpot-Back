@@ -59,7 +59,7 @@ class Spot
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites', cascade: ['remove'])]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     private Collection $user_favorite;
 
     public function __construct()
