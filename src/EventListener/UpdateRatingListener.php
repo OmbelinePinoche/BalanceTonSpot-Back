@@ -4,14 +4,14 @@ namespace App\EventListener;
 
 use App\Entity\Comment;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
 
-#[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: Comment::class)]
-final class GlobalRatingListener
+#[AsEntityListener(event: Events::postUpdate, method: 'postUpdate', entity: Comment::class)]
+final class UpdateRatingListener
 {
 
-    public function postPersist(Comment $comment, PostPersistEventArgs $event)
+    public function postUpdate(Comment $comment, PostUpdateEventArgs $event)
     {
         // We need to retrieve the spot from the variable comment
         $spot = $comment->getSpot();
@@ -33,7 +33,7 @@ final class GlobalRatingListener
         // We get the entityManager from the Doctrine Object Manager
         $entityManager = $event->getObjectManager();
 
-        // We persist the changes to the database
+        // We Update the changes to the database
         $entityManager->flush();
     }
 
