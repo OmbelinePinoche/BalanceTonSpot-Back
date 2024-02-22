@@ -46,9 +46,9 @@ class MailerController extends AbstractController
         $content = $data['content'] ?? null;
 
         // Check if the user email and message are provided
-        if (!$userEmail || !$content) {
+        if (!$userEmail || !$content || !$subject) {
             // Return a JSON response with a message indicating that email and message are required
-            return new JsonResponse(['message' => 'Email et message requis'], JsonResponse::HTTP_BAD_REQUEST);
+            return new JsonResponse(['message' => 'Données manquantes'], JsonResponse::HTTP_BAD_REQUEST);
         }
     
         // Find the user by email in the repository
