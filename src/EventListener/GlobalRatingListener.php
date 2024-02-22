@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 #[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: Comment::class)]
 final class GlobalRatingListener
@@ -34,6 +35,43 @@ final class GlobalRatingListener
         $entityManager = $event->getObjectManager();
 
         // We persist the changes to the database
+        $entityManager->flush();
+    }
+
+    /**
+     * Handles postRemove event for Comment entity.
+     */
+    public function postRemove(Comment $comment, LifecycleEventArgs $event)
+    {
+        $this->updateSpotRating($comment, $event);
+    }
+
+    /**
+     * Updates the spot rating based on its comments.
+     */
+    private function updateSpotRating(Comment $comment, LifecycleEventArgs $event)
+    {
+        // We get the spot associated with the comment
+        $spot = $comment->getSpot();
+
+        // Initialize the total sum of ratings
+        $allNotes = 0;
+
+        // Loop through all comments of the spot
+        foreach ($spot->getComments() as $comment) {
+            // Accumulate the ratings
+            $allNotes += $comment->getRating();
+        }
+
+        // Calculate the average rating
+        $average = count($spot->getComments()) > 0 ? $allNotes / count($spot->getComments()) : 0;
+
+        // Update the spot's average rating
+        $spot->setRating($average);
+
+        $entityManager = $event->getObjectManager();
+
+        // Persist the changes to the database
         $entityManager->flush();
     }
 }

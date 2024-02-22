@@ -22,6 +22,14 @@
 							</td>
 						</tr>
 						<tr>
+							<th>Prénom</th>
+							<td>{{ user.firstname }}</td>
+						</tr>
+						<tr>
+							<th>Nom</th>
+							<td>{{ user.lastname }}</td>
+						</tr>
+						<tr>
 							<th>Email</th>
 							<td>{{ user.email }}</td>
 						</tr>
@@ -44,7 +52,7 @@
 
 					</tbody>
 				</table>
-				
+
 				<div class="buttons-container">
 					<a href="{{ path('list_user') }}" class="btn btn-secondary">Retour à la liste</a>
 

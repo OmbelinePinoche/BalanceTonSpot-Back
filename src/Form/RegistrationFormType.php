@@ -48,6 +48,7 @@ class RegistrationFormType extends AbstractType
                 'multiple' => true
             ])
             ->add('password', PasswordType::class, [
+                'label' => 'Mot de passe: ',
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,

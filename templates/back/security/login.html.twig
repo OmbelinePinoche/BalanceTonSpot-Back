@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-	<div class="container">
+	<div class="container mt-5">
 		<div class="row justify-content-center">
-			<div class="col-md-6">
+			<div class="col-md-6 bg-light p-4 rounded shadow">
 				<h2 class="mt-5 mb-4">Connexion</h2>
 
 				<form
@@ -21,13 +21,13 @@
 						</div>
 					{% endif %}
 					<div class="mb-3">
-						<label for="username" class="form-label">Nom d'utilisateur :</label>
-						<input type="text" id="username" name="email" class="form-control" value="" required autofocus>
+						<label for="username" class="form-label">Email:</label>
+						<input type="text" id="username" name="email" class="form-control" placeholder="Ton email" value="" required autofocus>
 					</div>
 
 					<div class="mb-3">
-						<label for="password" class="form-label">Mot de passe :</label>
-						<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+						<label for="password" class="form-label">Mot de passe:</label>
+						<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Ton mot de passe" autocomplete="current-password" required>
 					</div>
 
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

@@ -129,7 +129,7 @@ class PictureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
-            $pictureFile = $form->get('name')->getData();
+            $pictureFile = $form->get('path')->getData();
             if ($pictureFile) {
 
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -143,6 +143,7 @@ class PictureController extends AbstractController
                 );
 
                 $picture->setName($newFilename);
+                $picture->setPath($newFilename);
             }
 
             $entityManager->persist($picture);
