@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -109,5 +111,43 @@ class UserController extends AbstractController
 
         // Return the success message
         return $this->json(['message' => 'Utilisateur supprimé avec succès!'], 200);
+    }
+
+    #[Route('/api/profile/upload/', name: 'api_profile_upload',  methods: ['POST'])]
+    public function uploadProfilePicture(Request $request, ParameterBagInterface $params, EntityManagerInterface $entityManager): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        // Check if the user exists
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur introuvable');
+        }
+
+        $pictureFile = $request->files->get('profilPictureFile');
+
+        // Check if a file was sent in the request
+        if (!$pictureFile) {
+            return $this->json([
+                'error' => 'Aucun fichier envoyé'
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Move the file to the directory where pictures are stored
+        $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalExtension();
+        $pictureFile->move($params->get('pictures_directory'), $pictureFile->getClientOriginalName());
+
+        // Set the new filename in the user entity
+        $user->setProfilPicture($newFilename);
+
+        // Save the user entity to the database
+        $entityManager->persist($user);
+
+        // Flush changes to the database
+        $entityManager->flush();
+
+        return $this->json([
+            'message' => 'Image ajoutée avec succès'
+        ]);
     }
 }

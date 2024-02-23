@@ -22,7 +22,7 @@ class Picture
     #[ORM\Column(length: 500)]
     private ?string $path = null;
 
-    #[Groups(['api_list_pictures', 'api_show'])]
+    #[Groups(['api_list_pictures'])]
     #[ORM\ManyToOne(inversedBy: 'pictures')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Spot $spot = null;
