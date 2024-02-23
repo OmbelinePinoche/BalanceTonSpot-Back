@@ -133,14 +133,8 @@ class UserController extends AbstractController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Generate a unique filename
-        $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalExtension();
-
         // Move the file to the directory where pictures are stored
-        $pictureFile->move($params->get('pictures_directory'), $newFilename);
-
-        // Set the new filename in the user entity
-        $user->setProfilPicture($newFilename);
+        $pictureFile->move($params->get('pictures_directory'));
 
         // Set the new filename in the user entity
         $user->setProfilPicture($pictureFile);
