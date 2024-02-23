@@ -51,7 +51,4 @@ class SpotController extends AbstractController
         return $this->json($spot, 200, [], ['groups' => 'api_show']);
     }
 
-    // #[Route('/api/spot/upload', name: 'api_upload', methods: ['GET'])]
-    // public function upload()
-
 }
