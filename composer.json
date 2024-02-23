@@ -35,6 +35,7 @@
         "symfony/security-bundle": "7.0.*",
         "symfony/sendgrid-mailer": "7.0.*",
         "symfony/serializer": "7.0.*",
+        "symfony/service-contracts": "*",
         "symfony/stimulus-bundle": "^2.13",
         "symfony/twig-bundle": "7.0.*",
         "symfony/ux-autocomplete": "^2.13",

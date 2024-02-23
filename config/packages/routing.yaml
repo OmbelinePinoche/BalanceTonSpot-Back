@@ -8,9 +8,3 @@ when@prod:
     framework:
         router:
             strict_requirements: null
-# config/packages/routing.yaml
-#when@prod:
-    #framework:
-        #router:
-            # ...
-          #  default_uri: '<your project's root URI>'

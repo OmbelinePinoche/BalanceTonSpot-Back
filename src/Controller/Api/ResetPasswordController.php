@@ -13,26 +13,35 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 
 class ResetPasswordController extends AbstractController
 {
-    private ResetPasswordHelperInterface $resetPasswordHelper;
+    use ResetPasswordControllerTrait;
+   
     private EntityManagerInterface $entityManager;
     private MailerInterface $mailer;
-    private ?SessionInterface $session = null;
 
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, EntityManagerInterface $entityManager, MailerInterface $mailer, SessionInterface $session)
+
+
+   /*  public function __construct(
+        private ResetPasswordHelperInterface $resetPasswordHelper,
+        private EntityManagerInterface $entityManager
+    ) {
+    } */
+    public function __construct(private ResetPasswordHelperInterface $resetPasswordHelper, EntityManagerInterface $entityManager, MailerInterface $mailer)
     {
-        $this->resetPasswordHelper = $resetPasswordHelper;
+        
         $this->entityManager = $entityManager;
         $this->mailer = $mailer;
-        $this->session = $session;
+       
     }
 
 
@@ -42,18 +51,38 @@ class ResetPasswordController extends AbstractController
     #[Route('/api/reset-password/request', name: 'api_reset_password_request', methods: ['POST'])]
     public function request(Request $request): JsonResponse
     {
-        // Create a form instance for reset password request
-        $form = $this->createForm(ResetPasswordRequestFormType::class);
-        $form->handleRequest($request);
 
-        // Check if the form is submitted and valid
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Process sending password reset email
-            return $this->processSendingPasswordResetEmail($form->get('email')->getData());
+        $data = json_decode($request->getContent(), true);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy([
+            'email' => $data['email'],
+        ]);
+
+        if (!$user) {
+            return new JsonResponse(['message' => 'Utilisateur non trouvé'], Response::HTTP_NOT_FOUND);
         }
 
-        // If form submission is invalid, return a JSON response with an error message
-        return new JsonResponse(['message' => 'Requête invalide'], Response::HTTP_BAD_REQUEST);
+        try {
+            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+        } catch (ResetPasswordExceptionInterface $e) {
+            return new JsonResponse(['message' => 'Erreur lors de la génération de la réinitialisation du mot de passe'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $email = (new TemplatedEmail())
+        ->from(new Address('Balancetonspot@outlook.com', 'BTS'))
+        ->to($user->getEmail())
+        ->subject('Votre demande de réinitialisation de mot de passe')
+        ->htmlTemplate('reset_password/email.html.twig')
+        ->context([
+            'resetToken' => $resetToken,
+        ]);
+
+        $this->mailer->send($email);
+
+        // Return the token in the JSON response
+        return new JsonResponse(['message' => 'Demande de changement de mot de passe envoyé', 'resetToken' => $resetToken], Response::HTTP_OK);
+    
+
+       
     }
 
     #[Route('/api/reset-password/check-email', name: 'api_check_email', methods: ['GET'])]
