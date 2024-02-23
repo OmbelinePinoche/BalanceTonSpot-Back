@@ -134,10 +134,11 @@ class UserController extends AbstractController
         }
 
         // Move the file to the directory where pictures are stored
-        $pictureFile->move($params->get('pictures_directory'));
+        $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
+        $pictureFile->move($params->get('pictures_directory'), $newFilename);
 
         // Set the new filename in the user entity
-        $user->setProfilPicture($pictureFile);
+        $user->setProfilPicture($newFilename);
 
         // Save the user entity to the database
         $entityManager->persist($user);
