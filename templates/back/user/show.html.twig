@@ -30,6 +30,10 @@
 							<td>{{ user.lastname }}</td>
 						</tr>
 						<tr>
+							<th>Pseudo</th>
+							<td>{{ user.pseudo }}</td>
+						</tr>
+						<tr>
 							<th>Email</th>
 							<td>{{ user.email }}</td>
 						</tr>
@@ -56,8 +60,11 @@
 				<div class="buttons-container">
 					<a href="{{ path('list_user') }}" class="btn btn-secondary">Retour à la liste</a>
 
-					{% if is_granted('ROLE_ADMIN') %}
+					{% if is_granted('ROLE_USER') and app.user == user %}
 						<a href="{{ path('edit_user', {'pseudo': user.pseudo}) }}" class="btn btn-primary">Modifier</a>
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('remove_user', {'id': user.id}) }}" class="btn btn-danger">Supprimer ce profil</a>
 					{% endif %}
 				</div>
 			</div>

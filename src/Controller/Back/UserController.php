@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/users')]
@@ -67,14 +68,8 @@ class UserController extends AbstractController
      * 
      * @return Response
      */
-
-    /**
-     * Create a user with a form in the backoffice
-     * 
-     * @return Response
-     */
     #[Route('/new', name: 'add_user')]
-    public function create(Request $request, EntityManagerInterface  $entityManager): Response
+    public function create(Request $request, EntityManagerInterface  $entityManager, ParameterBagInterface $params): Response
     {
         // Create an instance for the entity user
         $user = new User();
@@ -91,15 +86,10 @@ class UserController extends AbstractController
             $pictureFile = $form->get('profilPictureFile')->getData();
             if ($pictureFile) {
 
-                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $this->slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+                $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
 
                 // Move the file to the directory where pictures are stored
-                $pictureFile->move(
-                    $this->getParameter('pictures_directory'),
-                    $newFilename
-                );
+                $pictureFile->move($params->get('pictures_directory'), $newFilename);
 
                 $user->setProfilPicture($newFilename);
             }
@@ -130,7 +120,7 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/edit/{pseudo}', name: 'edit_user')]
-    public function edit(Request $request, EntityManagerInterface  $entityManager, User $user): Response
+    public function edit(Request $request, EntityManagerInterface  $entityManager, User $user, ParameterBagInterface $params): Response
     {
         // // Get the current user
         // $user = $this->getUser();
@@ -141,7 +131,7 @@ class UserController extends AbstractController
         // }
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
-        $form = $this->createForm(UserType::class);
+        $form = $this->createForm(UserType::class, $user);
         // Here I build a form which manipulates an object $user which already exists, therefore which already has values therefore in the form which will be displayed
 
         // I pass the information from my request to my form to find out if the form has been submitted
@@ -153,15 +143,10 @@ class UserController extends AbstractController
             $pictureFile = $form->get('profilPictureFile')->getData();
             if ($pictureFile) {
 
-                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $this->slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+                $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
 
                 // Move the file to the directory where pictures are stored
-                $pictureFile->move(
-                    $this->getParameter('pictures_directory'),
-                    $newFilename
-                );
+                $pictureFile->move($params->get('pictures_directory'), $newFilename);
 
                 $user->setProfilPicture($newFilename);
             }
@@ -170,7 +155,8 @@ class UserController extends AbstractController
             // Hash the password before register in the BDD
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
-            // Persist the user to the BDD
+            
+            // Save the changes to the BDD
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the user has been created

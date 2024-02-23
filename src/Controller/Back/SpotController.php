@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SpotController extends AbstractController
@@ -132,7 +133,7 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/admin/edit/{slug}', name: 'edit')]
-    public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager): Response
+    public function edit(Spot $spot, Request $request, EntityManagerInterface  $entityManager, ParameterBagInterface $params): Response
     {
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
@@ -148,10 +149,12 @@ class SpotController extends AbstractController
             $pictureFile = $form->get('picture')->getData();
             if ($pictureFile) {
 
-                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $this->slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
-
+                $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
+                $pictureFile->move($params->get('pictures_directory'), $newFilename);
+                
+                // Set the new filename in the spot entity
+                $spot->setPicture($newFilename);
+                
                 // Get the current picture path
                 $currentPath = $spot->getPicture();
 
@@ -172,7 +175,6 @@ class SpotController extends AbstractController
                 $spot->setPicture($newFilename);
             }
 
-            $entityManager->persist($spot);
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the spot has been created

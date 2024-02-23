@@ -34,6 +34,7 @@ class UserType extends AbstractType
             ])
             ->add('profilPictureFile', FileType::class, [
                 'label' => 'Image du profil: ',
+                'mapped' => false, // To prevent Symfony from trying to map the field to an entity property
                 'required' => false,
             ])
             ->add('roles', ChoiceType::class, [
