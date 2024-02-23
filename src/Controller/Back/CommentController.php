@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/comments')]
+#[Route('/comment')]
 class CommentController extends AbstractController
 {
     /**
@@ -59,7 +59,7 @@ class CommentController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/user/new', name: 'add_comment')]
+    #[Route('/new', name: 'add_comment')]
     public function create(Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Fetch the currently authenticated user
@@ -100,13 +100,17 @@ class CommentController extends AbstractController
      * Modify a comment via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/user/edit/{id}', name: 'edit_comment')]
+    #[Route('/edit/{id}', name: 'edit_comment')]
     public function edit(comment $comment, Request $request, EntityManagerInterface  $entityManager): Response
     {
-        // Here we want to edit a comment so no need to create anything.
         /*    The comment exists already */
         // Fetch the currently authenticated user
         $user = $this->getUser();
+
+        // Check if the user is authenticated
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
+        }
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(commentType::class, $comment);
@@ -140,7 +144,7 @@ class CommentController extends AbstractController
      *  Modify a comment via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/user/remove/{id}', name: 'remove_comment')]
+    #[Route('/remove/{id}', name: 'remove_comment')]
     public function remove(comment $comment, CommentRepository $CommentRepository, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want delete a comment so no need to create anything.
@@ -154,7 +158,7 @@ class CommentController extends AbstractController
     }
 
 
-    #[Route('/tri/{sortBy}', name: 'tri_comment')]
+    #[Route('/sort/{sortBy}', name: 'sort_comment')]
     public function triComment(CommentRepository $commentRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided

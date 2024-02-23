@@ -205,7 +205,7 @@ class UserController extends AbstractController
         return $this->redirectToRoute('list_user');
     }
 
-    #[Route('/tri/{sortBy}', name: 'tri_user')]
+    #[Route('/sort/{sortBy}', name: 'sort_user')]
     public function triUser(UserRepository $userRepository, string $sortBy): Response
     {
 

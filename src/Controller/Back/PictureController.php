@@ -183,8 +183,8 @@ class PictureController extends AbstractController
         return $this->redirectToRoute('list_pictures');
     }
 
-    #[Route('/tri/{sortBy}', name: 'tri_picture')]
-    public function triPicture(PictureRepository $pictureRepository, string $sortBy): Response
+    #[Route('/sort/{sortBy}', name: 'sort_picture')]
+    public function sortPicture(PictureRepository $pictureRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided
         $validSortOptions = ['nom', 'spot']; // Valid sorting options

@@ -160,7 +160,7 @@ class SportController extends AbstractController
         ]);
     }
 
-    #[Route('/tri/{sortBy}', name: 'tri_sport')]
+    #[Route('/sort/{sortBy}', name: 'sort_sport')]
     public function triSport(SportRepository $sportRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided

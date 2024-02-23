@@ -2,12 +2,15 @@
 
 namespace App\Controller\Api;
 
+
+use App\Entity\User;
 use App\Repository\PictureRepository;
 use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -55,23 +58,54 @@ class PictureController extends AbstractController
         // Return the pictures associated with the picture
         return $this->json($pictures, 200, [], ['groups' => 'api_picture_by_spot']);
     }
-    
-    #[Route('/api/picture/upload', name: 'api_upload',  methods: ['POST'])]
-    public function upload(Request $request, ParameterBagInterface $params, EntityManagerInterface $entity)
+
+
+    #[Route('/api/spot/{filename}', name: 'api_get_picture',  methods: ['GET'])]
+    public function getSpotPicture(string $filename, ParameterBagInterface $params): BinaryFileResponse
     {
-        $image = $request->files->get('file');
-				// enregistrement de l'image dans le dossier public du serveur
-				// paramas->get('public') =>  va chercher dans services.yaml la variable public
-        $image->move($params->get('pictures_directory'), $image->getClientOriginalName());
+        // Construct the full file path using the pictures_directory parameter
+        $filePath = $params->get('pictures_directory') . '/' . $filename;
 
-        // on ajoute uniqid() afin de ne pas avoir 2 fichiers avec le même nom
-        $newFilename = uniqid().'.'. $image->getClientOriginalName();
-        // ne pas oublier d'ajouter l'url de l'image dans l'entitée aproprié
-				// $entity est l'entity qui doit recevoir votre image
-				$entity->setImage($newFilename);
-
-        return $this->json([
-            'message' => 'Image uploaded successfully.'
-        ]);
+        // Return the image file as a BinaryFileResponse
+        return new BinaryFileResponse($filePath);
     }
+
+
+    // #[Route('/api/profile/upload/{name}', name: 'api_profile_upload',  methods: ['POST'])]
+    // public function uploadProfilePicture(Request $request, ParameterBagInterface $params, EntityManagerInterface $entityManager, User $user): JsonResponse
+    // {
+    //     /** @var User $user */
+    //     $user = $this->getUser();
+
+    //     // Check if the user exists
+    //     if (!$user) {
+    //         throw $this->createNotFoundException('Utilisateur introuvable');
+    //     }
+
+    //     $pictureFile = $request->files->get('profilPictureFile');
+
+    //     // Check if a file was sent in the request
+    //     if (!$pictureFile) {
+    //         return $this->json([
+    //             'error' => 'Aucun fichier envoyé'
+    //         ], JsonResponse::HTTP_BAD_REQUEST);
+    //     }
+
+    //     // Move the file to the directory where pictures are stored
+    //     $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalExtension();
+    //     $pictureFile->move($params->get('pictures_directory'), $pictureFile->getClientOriginalName());
+
+    //     // Set the new filename in the user entity
+    //     $user->setProfilPicture($newFilename);
+
+    //     // Save the user entity to the database
+    //     $entityManager->persist($user);
+
+    //     // Flush changes to the database
+    //     $entityManager->flush();
+
+    //     return $this->json([
+    //         'message' => 'Image ajoutée avec succès'
+    //     ]);
+    // }
 }

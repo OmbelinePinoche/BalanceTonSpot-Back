@@ -33,10 +33,6 @@
 					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 					<button class="btn btn-danger me-2" type="submit">Lancer la ride!</button>
 				</form>
-			</br>
-			<p>Pas encore de compte? Inscris-toi
-				<a href="{{ path('app_register')}}">ici</a>.</p>
-
 		</br>
 	</div>
 {% endblock %}
