@@ -43,7 +43,6 @@ class SpotController extends AbstractController
             'locations' => $locations,
             'sports' => $sports
         ]);
-
     }
 
     /**
@@ -153,6 +152,17 @@ class SpotController extends AbstractController
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
+                // Get the current picture path
+                $currentPath = $spot->getPicture();
+
+                // Delete the previous picture path if it exists
+                if ($currentPath) {
+                    $currentFilePath = $this->getParameter('pictures_directory') . '/' . $currentPath;
+                    if (file_exists($currentFilePath)) {
+                        unlink($currentFilePath);
+                    }
+                }
+
                 // Move the file to the directory where pictures are stored
                 $pictureFile->move(
                     $this->getParameter('pictures_directory'),
@@ -196,5 +206,4 @@ class SpotController extends AbstractController
         // Return user to the home page
         return $this->redirectToRoute('list');
     }
-
 }

@@ -130,18 +130,18 @@ class UserController extends AbstractController
      * @return Response
      */
     #[Route('/edit/{pseudo}', name: 'edit_user')]
-    public function edit(Request $request, EntityManagerInterface  $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface  $entityManager, User $user): Response
     {
-        // Get the current user
-        $user = $this->getUser();
+        // // Get the current user
+        // $user = $this->getUser();
 
-        // Check if the user is authenticated
-        if (!$user) {
-            throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
-        }
+        // // Check if the user is authenticated
+        // if (!$user) {
+        //     throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
+        // }
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class);
         // Here I build a form which manipulates an object $user which already exists, therefore which already has values therefore in the form which will be displayed
 
         // I pass the information from my request to my form to find out if the form has been submitted

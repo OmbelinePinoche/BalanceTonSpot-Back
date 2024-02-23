@@ -113,7 +113,7 @@ class UserController extends AbstractController
         return $this->json(['message' => 'Utilisateur supprimé avec succès!'], 200);
     }
 
-    #[Route('/api/profile/upload/', name: 'api_profile_upload',  methods: ['POST'])]
+    #[Route('/api/profile/upload', name: 'api_profile_upload',  methods: ['POST'])]
     public function uploadProfilePicture(Request $request, ParameterBagInterface $params, EntityManagerInterface $entityManager): Response
     {
         /** @var User $user */

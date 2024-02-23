@@ -84,6 +84,17 @@ class PictureController extends AbstractController
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
+                // Récupérer le chemin actuel de l'image
+                $currentPath = $picture->getPath();
+
+                // Supprimer l'ancienne image si elle existe
+                if ($currentPath) {
+                    $currentFilePath = $this->getParameter('pictures_directory') . '/' . $currentPath;
+                    if (file_exists($currentFilePath)) {
+                        unlink($currentFilePath);
+                    }
+                }
+
                 // Move the file to the directory where pictures are stored
                 $pictureFile->move(
                     $this->getParameter('pictures_directory'),
@@ -130,7 +141,7 @@ class PictureController extends AbstractController
 
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
             $pictureFile = $form->get('path')->getData();
-            
+
             if ($pictureFile !== null) {
 
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -155,7 +166,7 @@ class PictureController extends AbstractController
                 'succès',
                 "L'image" . $picture->getName() . " a bien été modifiée !"
             );
-            
+
             return $this->redirectToRoute('list_pictures');
         }
 
@@ -183,7 +194,7 @@ class PictureController extends AbstractController
         return $this->redirectToRoute('list_pictures');
     }
 
-    #[Route('/sort/{sortBy}', name: 'sort_picture')]
+    #[Route('/picture/sort/{sortBy}', name: 'sort_picture')]
     public function sortPicture(PictureRepository $pictureRepository, string $sortBy): Response
     {
         // Define default sorting method if an invalid one is provided
