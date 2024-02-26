@@ -6,13 +6,13 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/comment')]
+#[Route('/comments')]
 class CommentController extends AbstractController
 {
     /**
@@ -21,13 +21,20 @@ class CommentController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'list_comment')]
-    public function browse(CommentRepository $CommentRepository): Response
+    public function browse(CommentRepository $CommentRepository, Request $request, PaginatorInterface $paginator): Response
     {
         // 1st step is getting all the comments from the repository
         $comments = $CommentRepository->findAll();
 
+        $pagination = $paginator->paginate(
+            $comments,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         return $this->render('back/comment/browse.html.twig', [
-            'comments' => $comments
+            'comments' => $comments,
+            'pagination' => $pagination
         ]);
     }
 
@@ -145,7 +152,7 @@ class CommentController extends AbstractController
      * @return Response
      */
     #[Route('/remove/{id}', name: 'remove_comment')]
-    public function remove(comment $comment, CommentRepository $CommentRepository, Request $request, EntityManagerInterface  $entityManager): Response
+    public function remove(comment $comment, EntityManagerInterface  $entityManager): Response
     {
         // Here , we want delete a comment so no need to create anything.
 
@@ -159,7 +166,7 @@ class CommentController extends AbstractController
 
 
     #[Route('/sort/{sortBy}', name: 'sort_comment')]
-    public function triComment(CommentRepository $commentRepository, string $sortBy): Response
+    public function triComment(CommentRepository $commentRepository, string $sortBy, Request $request, PaginatorInterface $paginator): Response
     {
         // Define default sorting method if an invalid one is provided
         $validSortOptions = ['pseudo', 'spot', 'date'];
@@ -186,10 +193,18 @@ class CommentController extends AbstractController
             default:
                 $comments = $commentRepository->findAllOrderedByUser();
         }
+
+        $pagination = $paginator->paginate(
+            $comments,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         // Render the browse.html.twig template with sorted comments and sorting method
         return $this->render('back/comment/browse.html.twig', [
             'comments' => $comments,
             'sortBy' => $sortBy,
+            'pagination' => $pagination
         ]);
     }
 }

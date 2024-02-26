@@ -26,7 +26,7 @@
 								<td>
 									{% if spot.picture %}
 										{% set fileName = spot.picture|split('/')|last %}
-										<img src="{{ asset('uploads/spots/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+										<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
 									{% else %}
 										Aucune image disponible
 									{% endif %}
@@ -49,7 +49,7 @@
 
 						{% else %}
 							<tr>
-								<td colspan="10">Aucun spot trouvé</td>
+								<td colspan="10">Aucun spot en favoris</td>
 							</tr>
 						{% endfor %}
 					</tbody>

@@ -8,16 +8,23 @@ use App\Repository\SpotRepository;
 use App\Repository\SportRepository;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/location')]
 class LocationController extends AbstractController
 {
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
     /**
      * Shows all locations in the backoffice
      * @return Response
@@ -43,7 +50,7 @@ class LocationController extends AbstractController
      * @return Response
      */
     #[Route('/admin/new', name: 'add_location')]
-    public function create(Request $request, EntityManagerInterface  $entityManager): Response
+    public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
         // Create an instance for the entity location
         $location = new Location();
@@ -55,6 +62,12 @@ class LocationController extends AbstractController
 
         //checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Generate the slug using the Slugger service
+            $slug = $form->get('name')->getData() ?? ''; // Use the location name by default if "name" field is available
+            $slug = $slugger->slug($slug);
+            $location->setSlug($slug);
+
             $entityManager->persist($location);
             $entityManager->flush();
 
@@ -128,7 +141,7 @@ class LocationController extends AbstractController
     }
 
     #[Route('/{slug}/spots', name: 'show_by_location', methods: ['GET'])]
-    public function showByLocation(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Location $location = null)
+    public function showByLocation(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, Location $location = null, Request $request, PaginatorInterface $paginator)
     {
         // Checks if the given id location exists
         if (!$location) {
@@ -140,12 +153,19 @@ class LocationController extends AbstractController
         $spots = $spotRepository->findBy(['location' => $location]);
         $sports = $sportRepository->findAll();
 
+        $pagination = $paginator->paginate(
+            $spots,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         // Return  to the view all the spots according to the location
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
             'sports' => $sports,
             'location' => $location,
             'locations' => $locations,
+            'pagination' => $pagination
         ]);
     }
 

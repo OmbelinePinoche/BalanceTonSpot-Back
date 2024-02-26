@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous"/>
 		<link rel="stylesheet" href="Css/style.css">
 	</head>
+
 	<body>
 		<!-- Navigation bar -->
 		<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
@@ -68,5 +69,7 @@
 					</a>
 				{% endif %}
 			</div>
-		</body>
-</nav>{% block main %}{# Here we call the content <body> in all the views which extend base.html.twig #}{% endblock %}</div></main></html>
+		</nav>
+		{% block main %}{# Here we call the content <body> in all the views which extend base.html.twig #}{% endblock %}
+	</body>
+</html>

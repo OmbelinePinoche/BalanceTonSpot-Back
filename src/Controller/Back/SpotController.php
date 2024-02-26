@@ -7,6 +7,7 @@ use App\Form\SpotType;
 use App\Repository\SpotRepository;
 use App\Repository\SportRepository;
 use App\Repository\LocationRepository;
+use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 class SpotController extends AbstractController
 {
@@ -30,7 +32,7 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'list')]
-    public function browse(SpotRepository $spotRepository, LocationRepository $locationRepository, SportRepository $sportRepository): Response
+    public function browse(SpotRepository $spotRepository, LocationRepository $locationRepository, SportRepository $sportRepository, Request $request, PaginatorInterface $paginator): Response
     {
         // 1st step is getting all the spots from the repository
         $spots = $spotRepository->findAll();
@@ -39,10 +41,17 @@ class SpotController extends AbstractController
         // And all the sports
         $sports = $sportRepository->findAll();
 
+        $pagination = $paginator->paginate(
+            $spots,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
             'locations' => $locations,
-            'sports' => $sports
+            'sports' => $sports, 
+            'pagination' => $pagination
         ]);
     }
 
@@ -53,19 +62,38 @@ class SpotController extends AbstractController
      * @return Response
      */
     #[Route('/show/{slug}', name: 'show')]
-    public function show(SpotRepository $spotRepository, $slug): Response
+    public function show(SpotRepository $spotRepository, $slug, PictureRepository $pictureRepository): Response
     {
-        // Get the spot by its slug
+        // Gets the spot by its slug
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
         // Checks if the spot exists
         if (!$spot) {
-            throw $this->createNotFoundException('Aucun spot ne répond à cet ID!');
+            throw $this->createNotFoundException('Aucun spot associé à cet ID!');
         }
 
-        // Return all the spot in the view
+        // Gets the pictures according to the spot
+        $pictures = $pictureRepository->findBy(['spot' => $spot]);
+
+        // Gets all the spots
+        $spots = $spotRepository->findAll();
+
+        // Determines the current index of the spot in the spot array
+        $currentIndex = null;
+        foreach ($spots as $index => $currentSpot) {
+            // Checks if the id of the current spot matches the id of the target spot
+            if ($currentSpot->getId() === $spot->getId()) {
+                // If there is a match, set $currentIndex as the index of the current spot in the array
+                $currentIndex = $index;
+            }
+        }
+
+        // Total of the spots in the spot array
+        $spotsCount = count($spots);
+
+        // Return all the spots in the view
         return $this->render('back/spot/show.html.twig', [
-            'spot' => $spot,
+            'spot' => $spot, 'pictures' => $pictures, 'spots' => $spots, 'currentIndex' => $currentIndex,  'spotsCount' => $spotsCount,
         ]);
     }
 
@@ -79,6 +107,7 @@ class SpotController extends AbstractController
     {
         // Create an instance for the entity spot
         $spot = new Spot();
+
         // Create a form
         $form = $this->createForm(SpotType::class, $spot);
 
@@ -147,14 +176,15 @@ class SpotController extends AbstractController
 
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
             $pictureFile = $form->get('picture')->getData();
-            if ($pictureFile) {
 
-                $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
-                $pictureFile->move($params->get('pictures_directory'), $newFilename);
-                
+            if ($pictureFile !== null) {
+                $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $this->slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
+
                 // Set the new filename in the spot entity
                 $spot->setPicture($newFilename);
-                
+
                 // Get the current picture path
                 $currentPath = $spot->getPicture();
 

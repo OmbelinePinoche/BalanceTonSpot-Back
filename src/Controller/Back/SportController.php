@@ -9,6 +9,7 @@ use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
 use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -132,7 +133,7 @@ class SportController extends AbstractController
 
 
     #[Route('/{slug}/spots', name: 'show_by_sport', methods: ['GET'])]
-    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, $slug)
+    public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, $slug, Request $request, PaginatorInterface $paginator)
     {
         //Find all the sports for the loop {% for sport in sports %} to work
         $sports = $sportRepository->findAll();
@@ -147,6 +148,12 @@ class SportController extends AbstractController
         // Search the spots associated with the sport
         $spots = $spotRepository->findBySport($sport);
 
+        $pagination = $paginator->paginate(
+            $spots,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         // Fetch all locations
         $locations = $locationRepository->findAll();
 
@@ -156,7 +163,7 @@ class SportController extends AbstractController
             'sport' => $sport,
             'locations' => $locations,
             'sports' => $sports,
-
+            'pagination' => $pagination
         ]);
     }
 

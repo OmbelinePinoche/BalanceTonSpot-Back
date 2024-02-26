@@ -29,7 +29,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for picture in pictures %}
+			{# Display paginated pictures #}
+			{% for picture in pagination %}
 				<tr>
 					<td>{{ picture.id }}</td>
 					<td>
@@ -46,15 +47,12 @@
 							<a href="{{ path('edit_picture', {id : picture.id})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 						<td>
-							<a href="{{ path('remove_picture', {id : picture.id})}}" class="btn btn-sm btn-outline-info">Supprimer</a>
+							<a href="{{ path('remove_picture', {id : picture.id})}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Supprimer</a>
 						</td>
 					{% endif %}
 				</tr>
-			</tbody>
+			{% endfor %}
 		</tbody>
-	</tr>
-{% else %}
-	<tr>
-		<td colspan="10">Aucune ville trouvée</td>
-	</tr>
-{% endfor %}</tbody></table>{% endblock %}
+	</table>
+	<div class="row justify-content-center">{{ knp_pagination_render(pagination) }}</div>
+</div>{% endblock %}

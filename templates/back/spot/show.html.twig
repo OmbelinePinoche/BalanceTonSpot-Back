@@ -16,11 +16,15 @@
 						<td>{{ spot.name }}</td>
 					</tr>
 					<tr>
-						<th>Image</th>
+						<th>Images</th>
 						<td>
 							{% if spot.picture %}
-								{% set fileName = spot.picture|split('/')|last %}
-								<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 800px; max-height: 500px;">
+								{% for key, picture in pictures %}
+									<div class="col-12 col-md-4 mb-4">
+										{% set fileName = picture.path|split('/')|last %}
+										<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 700px; max-height: 400px;">
+									</div>
+								{% endfor %}
 							{% else %}
 								Aucune image disponible
 							{% endif %}
@@ -33,29 +37,66 @@
 					<tr>
 						<th>Sport</th>
 						<td>
-							{% if spot.sportid is not null %}
-								{% for sport in spot.sportid %}
-									{{ sport.name }}
-								{% endfor %}
-							{% else %}
-								Aucun sport associé
-							{% endif %}
+							{% for sport in spot.sportid %}
+								{{ sport.name }}
+							{% endfor %}
 						</td>
 					</tr>
 					<tr>
 						<th>Description</th>
-						<td>{{ spot.description }}</td>
+						<td>{{ spot.description }}
+						</td>
 					</tr>
-
+					<tr>
+						<th>Commentaires</th>
+						<td>
+							{% set sortedComments = spot.comments|sort((a, b) => a.date.timestamp - b.date.timestamp) %}
+							{% if sortedComments is not empty %}
+								{% for comment in sortedComments %}
+									<div>
+										Ajouté le
+										{{ comment.date.format('d-m-Y') }}:
+									</div>
+									<div>
+										{% set fileName = comment.user.profilpicture|split('/')|last %}
+										<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 30px; max-height: 30px;">
+										<b>{{ comment.user }}</b>
+										|
+										{{ comment.rating }}/5
+									</div>
+									<div>
+										<i>{{ comment.content }}</i>
+									</div>
+									<br>
+								{% endfor %}
+							{% else %}
+								Aucun commentaire ajouté pour le moment. Sois le premier! <br>
+							{% endif %}
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+								<a href="{{path('add_comment')}}" class="btn btn-sm btn-outline-info">Ajouter un commentaire</a>
+							{% endif %}
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<div class="buttons-container">
 				<a href="{{ path('list') }}" class="btn btn-secondary">Retour à la liste</a>
-
+				{# Checks if the user has admin role to grant access to the udpate button #}
 				{% if is_granted('ROLE_ADMIN') %}
 					<a href="{{ path('edit', {'slug': spot.slug}) }}" class="btn btn-primary">Modifier</a>
+				{% endif %}
+				{% if currentIndex > 0 %}
+					{# If not the first spot, displays the button "Précédent" #}
+					<a href="{{ path('show', {'slug': spots[currentIndex - 1].slug}) }}" class="btn btn-primary">Précédent</a>
+				{% endif %}
+				{% if currentIndex + 1 < spotsCount %}
+					{# If there is a spot after the current one, displays the button "Suivant" #}
+					<a href="{{ path('show', {'slug': spots[currentIndex + 1].slug}) }}" class="btn btn-primary">Suivant</a>
+				{% else %}
+					{# If the last spot, links to the first spot #}
+					<a href="{{ path('show', {'slug': spots[0].slug}) }}" class="btn btn-primary">Retour au début</a>
 				{% endif %}
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+{% endblock %}

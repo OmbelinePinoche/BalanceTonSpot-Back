@@ -17,7 +17,7 @@ class Comment
     private ?int $id = null;
 
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 500)]
     private ?string $content = null;
 
     #[Groups(['api_list_comment', 'api_show_comment', 'api_comment_by_spot'])]

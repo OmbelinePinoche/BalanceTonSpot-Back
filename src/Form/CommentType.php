@@ -28,12 +28,16 @@ class CommentType extends AbstractType
             ->add('rating', ChoiceType::class, [
                 'label' => 'Note',
                 'choices' => [
-                    '0 étoile' => 0,
-                    '1 étoile' => 1,
-                    '2 étoiles' => 2,
-                    '3 étoiles' => 3,
-                    '4 étoiles' => 4,
-                    '5 étoiles' => 5
+                    '0/5' => 0,
+                    '1/5' => 1,
+                    '1.5/5' => 1.5,
+                    '2/5' => 2,
+                    '2.5/5' => 2.5,
+                    '3/5' => 3,
+                    '3.5/5' => 3.5,
+                    '4/5' => 4,
+                    '4.5/5' => 4.5,
+                    '5/5' => 5
                 ]
             ])
             ->add('date', DateType::class, [

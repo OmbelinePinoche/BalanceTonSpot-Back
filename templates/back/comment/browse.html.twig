@@ -11,7 +11,6 @@
 		<a href="{{ path('sort_comment', {'sortBy': 'spot'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
 		<a href="{{ path('sort_comment', {'sortBy': 'date'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par date</a>
 		<a href="{{ path('sort_comment', {'sortBy': 'user'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
-	</br>
 </div>
 <div class="col-12 col-lg-9">
 	<h2 class="text-muted fw-bold mb-4">Les commentaires
@@ -30,11 +29,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for comment in comments %}
+			{% for comment in pagination %}
 				<tr>
 					<td>{% set fileName = comment.user.profilpicture|split('/')|last %}
 						<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 30px; max-height: 30px;">
-{{ comment.user.pseudo }}</td>
+						{{ comment.user.pseudo }}</td>
 					<td>{{comment.spot.name }}</td>
 					<td>{{ comment.content }}</td>
 					<td>
@@ -47,9 +46,14 @@
 					<td>
 						<a href="{{ path('show_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Voir</a>
 					</td>
-					{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					{% if is_granted('ROLE_USER') and comment.user == app.user %}
 						<td>
-							<a href="{{ path('edit_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Modifier</a>
+							<a href="{{ path('edit_comment', {id: comment.id}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
+						</td>
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<td>
+							<a href="{{ path('remove_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Supprimer</a>
 						</td>
 					{% endif %}
 				</tr>
@@ -60,5 +64,5 @@
 			{% endfor %}
 		</tbody>
 	</table>
-
+	<div class="row justify-content-center">{{ knp_pagination_render(pagination) }}</div>
 {% endblock %}

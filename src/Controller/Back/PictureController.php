@@ -5,10 +5,9 @@ namespace App\Controller\Back;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use App\Repository\PictureRepository;
-use App\Repository\SpotRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,37 +23,21 @@ class PictureController extends AbstractController
     }
 
     #[Route('/pictures', name: 'list_pictures')]
-    public function list(PictureRepository $pictureRepository): Response
+    public function list(PictureRepository $pictureRepository, Request $request, PaginatorInterface $paginator): Response
     {
         // 1st step is getting all the pictures from the repository
         $pictures = $pictureRepository->findAll();
 
+        $pagination = $paginator->paginate(
+            $pictures,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         return $this->render('back/picture/browse.html.twig', [
             'pictures' => $pictures,
+            'pagination' => $pagination
         ]);
-    }
-
-    #[Route('/spot/{slug}/pictures', name: 'picture_by_spot')]
-    public function listBySpot(SpotRepository $spotRepository, $slug): Response
-    {
-        // Find the spot with the slug
-        $spot = $spotRepository->find(['slug' => $slug]);
-
-        // Check if the spot exists
-        if (!$spot) {
-            return $this->json(['message' => 'Spot non trouvé'], 404);
-        }
-
-        // Get the pictures associated to the spot
-        $pictures = $spot->getPictures();
-
-        // Check if there are pictures for the requested picture
-        if (!$pictures) {
-            return $this->json(['message' => 'Aucune image pour le spot sélectionné'], 404);
-        }
-
-        // Return the pictures associated to the spot
-        return $this->render('back/picture/pictureBySpot.html.twig');
     }
 
     /**
@@ -84,10 +67,10 @@ class PictureController extends AbstractController
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
-                // Récupérer le chemin actuel de l'image
+                // Get the current path
                 $currentPath = $picture->getPath();
 
-                // Supprimer l'ancienne image si elle existe
+                // Delete the previous picture if it exists
                 if ($currentPath) {
                     $currentFilePath = $this->getParameter('pictures_directory') . '/' . $currentPath;
                     if (file_exists($currentFilePath)) {
@@ -143,7 +126,6 @@ class PictureController extends AbstractController
             $pictureFile = $form->get('path')->getData();
 
             if ($pictureFile !== null) {
-
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
@@ -195,7 +177,7 @@ class PictureController extends AbstractController
     }
 
     #[Route('/picture/sort/{sortBy}', name: 'sort_picture')]
-    public function sortPicture(PictureRepository $pictureRepository, string $sortBy): Response
+    public function sortPicture(PictureRepository $pictureRepository, string $sortBy, Request $request, PaginatorInterface $paginator): Response
     {
         // Define default sorting method if an invalid one is provided
         $validSortOptions = ['nom', 'spot']; // Valid sorting options
@@ -218,10 +200,17 @@ class PictureController extends AbstractController
                 $pictures = $pictureRepository->findAllOrderedByName();
         }
 
+        $pagination = $paginator->paginate(
+            $pictures,
+            $request->query->getInt('page', 1), /*page number*/
+            6 /*limit per page*/
+        );
+
         // Render the browse.html.twig template with sorted pictures and sorting method
         return $this->render('back/picture/browse.html.twig', [
             'pictures' => $pictures,
             'sortBy' => $sortBy, // Pass the sorting method to the template
+            'pagination' => $pagination
         ]);
     }
 }

@@ -2,114 +2,120 @@
 
 {% block main %}
 
-    <!-- main -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<!-- main -->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <div class="container my-4">
-        <p class="display-5">
-            Bienvenue dans le backOffice de
-            <strong>Balance Ton Spot</strong>, la référence des passionnés de sports de glisse!
-        </p>
+	<div class="container my-4">
+		<p class="display-5">
+			Bienvenue dans le backOffice de
+			<strong>Balance Ton Spot</strong>, la référence des passionnés de sports de glisse!
+		</p>
 
-        <div class="container-xl bg-light p-5 border-top">
-            <div class="row mb-2">
-                <div class="col-12 col-lg-3">
+		<div class="container-xl bg-light p-5 border-top">
+			<div class="row mb-2">
+				<div class="col-12 col-lg-3">
 
-                    <ul class="list-unstyled">
-                        <h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
+					<ul class="list-unstyled">
+						<h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
 
-                        <select class="form-select mb-4" name="cities" id="city-select">
-                            <option value="" class="btn btn-sm btn-outline-danger">-- Sélectionner une ville --</option>
-                            {% for location in locations %}
-                                <option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger">{{ location.name }}</option>
-                            {% endfor %}
-                        </select>
+						<select class="form-select mb-4" name="cities" id="city-select">
+							<option value="" class="btn btn-sm btn-outline-danger">-- Sélectionner une ville --</option>
+							{% for location in locations %}
+								<option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger">{{ location.name }}</option>
+							{% endfor %}
+						</select>
 
-                        <script>
-                            $(document).ready(function () {
-                                $('#city-select').change(function () {
-                                    var selectedUrl = $(this).val();
+						<script>
+							$(document).ready(function () {
+$('#city-select').change(function () {
+var selectedUrl = $(this).val();
 
-                                    if (selectedUrl) {
-                                        window.location.href = selectedUrl;
-                                    }
-                                });
-                            });
-                        </script>
-                    </ul>
+if (selectedUrl) {
+window.location.href = selectedUrl;
+}
+});
+});
+						</script>
+					</ul>
 
-                    <h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
-                    <select class="form-select" name="cities" id="sport-select">
-                        <option value="" class="btn btn-sm btn-outline-danger">-- Sélectionner un sport --</option>
-                        {% for sport in sports %}
-                            <option value="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger">{{ sport.name }}</option>
-                        {% endfor %}
-                    </select>
+					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
+					<select class="form-select" name="cities" id="sport-select">
+						<option value="" class="btn btn-sm btn-outline-danger">-- Sélectionner un sport --</option>
+						{% for sport in sports %}
+							<option value="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger">{{ sport.name }}</option>
+						{% endfor %}
+					</select>
 
-                    <script>
-                        $(document).ready(function () {
-                            $('#sport-select').change(function () {
-                                var selectedUrl = $(this).val();
+					<script>
+						$(document).ready(function () {
+$('#sport-select').change(function () {
+var selectedUrl = $(this).val();
 
-                                if (selectedUrl) {
-                                    window.location.href = selectedUrl;
-                                }
-                            });
-                        });
-                    </script>
+if (selectedUrl) {
+window.location.href = selectedUrl;
+}
+});
+});
+					</script>
 
-                </div>
-                <div class="col-12 col-lg-9">
-                    <h2 class="text-muted fw-bold mb-4">Les spots
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{path('add')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
-                        {% endif %}
-                    </h2>
+				</div>
+				<div class="col-12 col-lg-9">
+					<h2 class="text-muted fw-bold mb-4">Les spots
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{path('add')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un spot</a>
+						{% endif %}
+					</h2>
 
-                    <table class="table table-hover mt-4">
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Description</th>
-                                <th>Image</th>
-                                <th>Ville</th>
-                            </tr>
-                        </thead>
+					<table class="table table-hover mt-4">
+						<thead>
+							<tr>
+								<th>Nom</th>
+								<th>Description</th>
+								<th>Image</th>
+								<th>Ville</th>
+							</tr>
+						</thead>
 
-                        <tbody>
-                            {% for spot in spots %}
-                                <tr>
-                                    <td>{{ spot.name }}</td>
-                                    <td>{{ spot.description }}</td>
-                                    <td>
-                                        {% if spot.picture %}
-                                            {% set fileName = spot.picture|split('/')|last %}
-                                            <img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
-                                        {% else %}
-                                            Aucune image disponible
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ spot.location.name }}</td>
-                                    <td>
-                                        <a href="{{ path('show', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Voir</a>
-                                        {% if is_granted('ROLE_ADMIN') %}
-                                            <a href="{{ path('edit', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
-                                        {% endif %}
-                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                            <a href="{{path('add_favorite', {id: spot.id}) }}" class="btn btn-sm btn-outline-info">Ajouter aux favoris</a>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="5">Aucun spot trouvé</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
+						<tbody>
+							<div>
+								{# Display paginated spots #}
+								{% for spot in pagination %}
+									<tr>
+										<td>{{ spot.name }}</td>
+										<td>
+											{# Set a maximum length for the description #}
+											{% set maxLength = 200 %}
+											{{ spot.description|length > maxLength ? spot.description|slice(0, maxLength) ~ '(...)' : spot.description }}</td>
+										<td>
+											{% if spot.picture %}
+												{% set fileName = spot.picture|split('/')|last %}
+												<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+											{% else %}
+												Aucune image disponible
+											{% endif %}
+										</td>
+										<td>{{ spot.location.name }}</td>
+										<td>
+											<a href="{{ path('show', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Voir</a>
+											{% if is_granted('ROLE_ADMIN') %}
+												<a href="{{ path('edit', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
+											{% endif %}
+											{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+												<a href="{{path('add_favorite', {id: spot.id}) }}" class="btn btn-sm btn-outline-info">Ajouter aux favoris</a>
+											{% endif %}
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="5">Aucun spot trouvé</td>
+									</tr>
+								{% endfor %}
+							</div>
+						</tbody>
+					</table>
+					<div class="row justify-content-center">{{ knp_pagination_render(pagination) }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

@@ -31,7 +31,8 @@ class SpotType extends AbstractType
             ])
             ->add('location', EntityType::class, [
                 'class' => Location::class,
-                'choice_label' => 'name', 'label' => 'Ville'
+                'choice_label' => 'name',
+                'label' => 'Ville',
             ])
             ->add('address', TypeTextType::class, [
                 'label' => 'Adresse'

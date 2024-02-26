@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6 bg-light p-4 rounded shadow">
+				<h2>Page non trouvée</h2>
+				<p>La page que vous cherchez n'existe pas!</p>
+				<a href="{{ path('list') }}" class="btn btn-primary">Retour à la page d'accueil</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -41,8 +41,13 @@
 
 			<div class="buttons-container">
 				<a href="{{ path('list_comment') }}" class="btn btn-secondary">Retour à la liste</a>
-				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-					<a href="{{ path('edit_comment', {id : comment.id}) }}" class="btn btn-primary">Modifier</a>
+				{% if is_granted('ROLE_USER') and comment.user == app.user %}
+					<a href="{{ path('edit_comment', {id: comment.id}) }}" class="btn btn-primary">Modifier</a>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<td>
+						<a href="{{ path('remove_comment', {id : comment.id})}}" class="btn btn-danger">Supprimer ce commentaire</a>
+					</td>
 				{% endif %}
 			</div>
 		</div>

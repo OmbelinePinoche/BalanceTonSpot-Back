@@ -9,7 +9,7 @@
 			</br>
 		</br>
 		<a href="{{ path('sort_sport', {'sortBy': 'name'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par nom</a>
-		<a href="{{ path('sort_sport', {'sortBy': 'spot'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
+		<a href="{{ path('sort_sport', {'sortBy': 'spot'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par nombre de spot</a>
 	</br>
 </div>
 <div class="col-12 col-lg-9">
@@ -36,7 +36,7 @@
 							<a href="{{ path('edit_sport', {slug : sport.slug})}}" class="btn btn-sm btn-outline-info">Modifier</a>
 						</td>
 						<td>
-							<a href="{{ path('remove_sport', {id : sport.id})}}"  class="btn btn-sm btn-outline-info">Supprimer</a>
+							<a href="{{ path('remove_sport', {id : sport.id})}}"  class="btn btn-sm btn-outline-danger mx-1 mb-2">Supprimer</a>
 						</td>
 					{% endif %}
 				</tr>

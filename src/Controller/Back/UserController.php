@@ -125,10 +125,6 @@ class UserController extends AbstractController
         // // Get the current user
         // $user = $this->getUser();
 
-        // // Check if the user is authenticated
-        // if (!$user) {
-        //     throw $this->createAccessDeniedException('Vous devez être connecté pour modifier votre profil.');
-        // }
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(UserType::class, $user);
@@ -155,7 +151,6 @@ class UserController extends AbstractController
             // Hash the password before register in the BDD
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
-            
             // Save the changes to the BDD
             $entityManager->flush();
 
