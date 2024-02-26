@@ -48,6 +48,16 @@
 						</td>
 					</tr>
 					<tr>
+						<th>Note</th>
+						<td>
+							{% if spot.rating is not null %}
+								{{ spot.rating }}/5
+							{% else %}
+								Aucune note disponible
+							{% endif %}
+						</td>
+					</tr>
+					<tr>
 						<th>Commentaires</th>
 						<td>
 							{% set sortedComments = spot.comments|sort((a, b) => a.date.timestamp - b.date.timestamp) %}
@@ -70,7 +80,8 @@
 									<br>
 								{% endfor %}
 							{% else %}
-								Aucun commentaire ajouté pour le moment. Sois le premier! <br>
+								Aucun commentaire ajouté pour le moment. Sois le premier!
+								<br>
 							{% endif %}
 							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 								<a href="{{path('add_comment')}}" class="btn btn-sm btn-outline-info">Ajouter un commentaire</a>

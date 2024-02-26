@@ -169,45 +169,6 @@ class LocationController extends AbstractController
         ]);
     }
 
-
-    #[Route('/select', name: 'choose_location')]
-    public function select(Request $request, LocationRepository $locationRepository, SportRepository $sportRepository): Response
-    {
-        // Create the form
-        $form = $this->createFormBuilder()
-            ->add('location', EntityType::class, [
-                'class' => Location::class,
-                'query_builder' => function (LocationRepository $locationRepository) {
-                    return $locationRepository->createQueryBuilder('c')->orderBy('c.name', 'ASC');
-                },
-                'choice_label' => 'name', // Define which property of the Location entity will be displayed in the select options
-                'placeholder' => 'Choose a location', // Optional: Add a placeholder
-            ])
-            ->getForm();
-
-        // Handle form submission
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Get the selected location
-            $selectedLocation = $form->get('location')->getData();
-
-            // Fetch spots associated with the selected location
-            $spots = $selectedLocation->getSpots();
-
-            // Render a template to display spots
-            return $this->render('back/location/show_spots_by_location.html.twig', [
-                'selectedLocation' => $selectedLocation,
-                'spots' => $spots,
-            ]);
-        }
-
-        // Render the form
-        return $this->render('back/location/select.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
     #[Route('/tri/{sortBy}', name: 'tri_location')]
     public function triLocation(LocationRepository $locationRepository, string $sortBy): Response
     {

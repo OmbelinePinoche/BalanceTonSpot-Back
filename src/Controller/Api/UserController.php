@@ -123,7 +123,8 @@ class UserController extends AbstractController
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur introuvable');
         }
-
+        
+        // Retrieve the uploaded file named 'profilPictureFile' from the files sent in the HTTP request
         $pictureFile = $request->files->get('profilPictureFile');
 
         // Check if a file was sent in the request

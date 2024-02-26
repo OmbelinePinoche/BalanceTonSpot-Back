@@ -56,7 +56,7 @@ CREATE TABLE `location` (
 INSERT INTO `location` (`id`, `name`, `slug`) VALUES
 (1,	'Isola',	'isola'),
 (2,	'Vars',	'vars'),
-(3,	'La Cluzaz',	'la-cluzaz'),
+(3,	'La Clusaz',	'la-clusaz'),
 (4,	'Paris',	'paris'),
 (5,	'Nantes',	'nantes'),
 (6,	'Bordeaux',	'bordeaux'),
@@ -92,8 +92,8 @@ CREATE TABLE `picture` (
 
 INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
 (1,	'Isola_2000',	'original-filename-6fe7d6365710e7c7.jpg',	1),
-(2,	'Vars_Park',	'original-filename-8dfba511264791bc.jpg',	2),
-(3,	'LZC_Park',	'original-filename-acd14dfa3332fbcb.jpg',	3),
+(2,	'original-filename-f42d6d20428670a5.jpg',	'original-filename-f42d6d20428670a5.jpg',	2),
+(3,	'original-filename-358d5cd89dfc73c5.jpg',	'original-filename-358d5cd89dfc73c5.jpg',	3),
 (4,	'Bercy',	'original-filename-c04157b5241767b1.jpg',	4),
 (5,	'EGP18',	'original-filename-625a48c751ab8d2f.jpg',	5),
 (6,	'Jemmapes',	'original-filename-cf828ae399fb8f10.jpg',	6),
@@ -205,8 +205,8 @@ CREATE TABLE `spot` (
 
 INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `address`, `rating`, `location_id`, `slug`) VALUES
 (1,	'Isola 2000',	'Le snowpark d\'Isola 2000 vous propose une expérience exceptionnelle à 2300 mètres d’altitude sur le secteur Marmotte. Découvrez de nouvelles sensations de glisse tous les jours de 10h à 16h dans cet espace ludique et technique, entretenu quotidiennement pour votre plaisir.',	'original-filename-8ba337c43db7325c.jpg',	'Station d\'Isola',	4.7,	1,	'isola-2000'),
-(2,	'Vars Park',	'Il y en a pour tout le monde. Le Varspark met un point d\'honneur à démocratiser la pratique du freestyle aussi bien pour les débutants que les spécialistes de la discipline.',	'original-filename-94deef056ced15d7.jpg',	'Station de Vars',	4.5,	2,	'vars-park'),
-(3,	'LCZ Park',	'Le snowpark de La Cluzaz propose un espace ludique à tous les amateurs de freestyle ! Une multitude de modules est à disposition durant toute la saison pour permettre aux skieurs les plus fous d’exprimer toute leur créativité.',	'original-filename-b228a84314c5f2ce.jpg',	'Station de La Clusaz',	5.0,	3,	'lcz-park'),
+(2,	'Vars Park',	'Il y en a pour tout le monde. Le Varspark met un point d\'honneur à démocratiser la pratique du freestyle aussi bien pour les débutants que les spécialistes de la discipline.',	'original-filename-1c89f1151dbeae60.jpg',	'Station de Vars',	4.5,	2,	'vars-park'),
+(3,	'LCZ Park',	'Le snowpark de La Cluzaz propose un espace ludique à tous les amateurs de freestyle ! Une multitude de modules est à disposition durant toute la saison pour permettre aux skieurs les plus fous d’exprimer toute leur créativité.',	'original-filename-51c0d06b199f1ea7.jpg',	'Station de La Clusaz',	5.0,	3,	'lcz-park'),
 (4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'original-filename-b34fffe4e998589c.jpg',	'Rue Raymond Aron, 75012 Paris',	3.0,	4,	'bercy'),
 (5,	'EGP18',	'C\'est désormais le plus gros skatepark parisien. Il se compose de parks, de 2  bowls en béton et d\'une fin-box permettant à des patineurs de niveaux variés de rider en indoor pour urface totale de 3545 m².',	'original-filename-b98a56ca6afa7135.jpg',	'Imp. des Fillettes, 75018 Paris',	5.0,	4,	'egp18'),
 (6,	'Jemmapes',	'Bien connu de la faune locale à roulettes, le skatepark du quai de Jemmapes fait partie des spots parisiens incontournables. Plutôt pas trop mal situé au bord du canal Saint Martin, assez ensoleillé, bien fréquenté en journée, ce petit park de ville aura de quoi vous combler pour démarrer/clôturer votre session entre potos.',	'original-filename-c47dee0d955d4068.jpg',	'140 quai de Jemmapes, 75010 Paris',	4.0,	4,	'jemmapes'),
@@ -310,4 +310,4 @@ CREATE TABLE `user_spot` (
 INSERT INTO `user_spot` (`user_id`, `spot_id`) VALUES
 (2,	7);
 
--- 2024-02-26 07:50:33
+-- 2024-02-26 10:47:31
