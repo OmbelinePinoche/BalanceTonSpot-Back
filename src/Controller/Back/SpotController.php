@@ -31,7 +31,7 @@ class SpotController extends AbstractController
      * Don't forget that the route above ('/back/spot') will be the start of all the routes created below
      * @return Response
      */
-    #[Route('/', name: 'list')]
+    #[Route('/home', name: 'list')]
     public function browse(SpotRepository $spotRepository, LocationRepository $locationRepository, SportRepository $sportRepository, Request $request, PaginatorInterface $paginator): Response
     {
         // 1st step is getting all the spots from the repository

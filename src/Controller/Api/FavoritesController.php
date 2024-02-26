@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Repository\SpotRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

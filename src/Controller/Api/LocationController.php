@@ -2,9 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\Location;
 use App\Repository\LocationRepository;
-use App\Form\FileTransformer;
 use App\Repository\SpotRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -46,7 +44,7 @@ class LocationController extends AbstractController
         $location = $locationRepository->findOneBy(['slug' => $slug]);
 
         if (!$location) {
-            return $this->json(['message' => 'location non trouvé'], 404);
+            return $this->json(['message' => 'Localisation inconnue'], 404);
         }
         // We want to return the locations to the view
         // $this->json method allows the conversion of a PHP object to a JSON object
@@ -62,7 +60,7 @@ class LocationController extends AbstractController
 
         // Checks if the location exists
         if (!$location) {
-            return $this->json(['message' => 'Localisation inconnue!'], 404);
+            return $this->json(['message' => 'Localisation inconnue'], 404);
         }
 
         //  Get the spots associated to the location

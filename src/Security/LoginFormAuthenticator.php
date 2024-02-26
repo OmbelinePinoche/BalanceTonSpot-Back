@@ -20,18 +20,23 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
+    // Defines the route used for authentication
     public const LOGIN_ROUTE = 'app_login';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 
+    // Method called to authenticate the user
     public function authenticate(Request $request): Passport
     {
+        // Get the email from the request
         $email = $request->request->get('email', '');
 
+        // Save the email in the session to remember it on unsuccessful login attempts
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
+        // Create a Passport object with a UserBadge, PasswordCredentials, and additional badges (CSRF, RememberMe)
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
@@ -42,17 +47,19 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    // Method called on successful authentication
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // Redirect to the target path (page visited before the login request) if there is one
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        // Redirect to the 'list' page on successful login
         return new RedirectResponse($this->urlGenerator->generate('list'));
     }
 
+    // Method called to get the login URL
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

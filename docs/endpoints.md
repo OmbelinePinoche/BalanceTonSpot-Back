@@ -15,26 +15,15 @@
 | `/api/comments` | GET | Comment | list | Lister tous les commentaires |
 | `/api/comment/{id}` | GET | Comment | show | Accéder à un commentaires |
 | `/api/spot/{slug}/comments` | GET | Comment | listBySpot | Lister les commentaires d’un spot |
-| `/api/login` | POST | Security | login | Connexion d’un utilisateur |
 
 **Routes Privées (connexion requise) :**
 
 | URL | HTTP METHOD | CONTROLLER | METHOD | COMMENTS |
 | --- | --- | --- | --- | --- |
-| `/api/spots` | POST | Spot | add | Ajouter un spot |
-| `/api/spot/{slug}` | PUT | Spot | edit | Modifier un spot |
-| `/api/spot/{id}` | DELETE | Spot | delete | Supprimer un spot |
-| `/api/sports` | POST | Sport | add | Ajouter un sport |
-| `/api/sport/{slug}` | PUT | Sport | edit | Modifier un sport |
-| `/api/sport/{id}` | DELETE | Sport | delete | Supprimer un sport |
-| `/api/location` | POST | location | add | Ajouter une ville |
-| `/api/location/{slug}` | PUT | Location | edit | Modifier une ville |
-| `/api/location/{id}` | DELETE | Location | delete | Supprimer une ville |
 | `/api/comments` | POST | Comment | add | Ajouter un commentaire |
 | `/api/secure/comment/{id}` | PUT | Comment | edit | Modifier un commentaire |
 | `/api/secure/comment/{id}` | DELETE | Comment | delete | Supprimer un commentaire |
 | `/api/users` | GET | User | list | Lister les utilisateurs |
-| `/api/user/{slug}` | GET | User | show | Consulter un profil utilisateur |
-| `/api/user/new` | POST | User | add | Création d’un utilisateur |
-| `/api/user/{slug}` | PUT | User | edit | Modification d’un utilisateur |
-| `/api/user/{id}` | DELETE | User | delete | Suppression d’un utilisateur |
+| `/api/user` | GET | User | show | Consulter le profil de l'utilisateur connecté|
+| `/api/user` | PUT | User | edit | Modification de l'utilisateur connecté |
+| `/api/user/{id}` | DELETE | User | delete | Suppression de l'utilisateur connecté|

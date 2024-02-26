@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -43,33 +42,10 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
-            return $this->json(['message' => 'Aucun user n\a été trouvé!'], 404);
+            return $this->json(['message' => 'Utilisateur inconnu'], 404);
         }
 
         return $this->json($user, 200, [], ['groups' => 'api_show_user']);
-    }
-
-    #[Route('/api/users', name: 'api_add_user', methods: ['POST'])]
-    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $user = new User();
-        $user->setEmail($data['email']);
-        $user->setPseudo($data['pseudo']);
-
-        // Hash password
-        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-        $user->setPassword($hashedPassword);
-
-        // Define the user role
-        $user->setRoles($data['roles']);
-
-        // We need to persist the user entity to the database to save the data
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return $this->json(['message' => 'Utilisateur créé avec succès'], 201);
     }
 
     #[Route('/api/user', name: 'api_edit_user', methods: ['PUT'])]
@@ -81,7 +57,7 @@ class UserController extends AbstractController
         // Check if the user exists
         if (!$user) {
             // If not, send the message
-            return $this->json(['message' => 'Aucun user n\a été trouvé!'], 404);
+            return $this->json(['message' => 'Utilisateur inconnu'], 404);
         }
 
         // Retrieve the data send in the request PUT
@@ -103,14 +79,14 @@ class UserController extends AbstractController
 
         // Check if the user exists
         if (!$user) {
-            return $this->json(['message' => 'Aucun utilisateur n\'a été trouvé'], 404);
+            return $this->json(['message' => 'Utilisateur inconnu'], 404);
         }
         // Delete the data send in the request 
         $entityManager->remove($user);
         $entityManager->flush();
 
         // Return the success message
-        return $this->json(['message' => 'Utilisateur supprimé avec succès!'], 200);
+        return $this->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
 
     #[Route('/api/profile/upload', name: 'api_profile_upload',  methods: ['POST'])]
@@ -121,9 +97,9 @@ class UserController extends AbstractController
 
         // Check if the user exists
         if (!$user) {
-            throw $this->createNotFoundException('Utilisateur introuvable');
+            throw $this->createNotFoundException('Utilisateur inconnu');
         }
-        
+
         // Retrieve the uploaded file named 'profilPictureFile' from the files sent in the HTTP request
         $pictureFile = $request->files->get('profilPictureFile');
 
@@ -134,8 +110,28 @@ class UserController extends AbstractController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Move the file to the directory where pictures are stored
+        // Validate file type
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'webp'];
+        $fileExtension = $pictureFile->guessExtension();
+
+        if (!in_array($fileExtension, $allowedExtensions)) {
+            return $this->json([
+                'error' => 'Type de fichier non autorisé'
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Validate file size (adjust the limit based on your requirements)
+        $maxFileSize = 5 * 1024 * 1024; // 5 MB
+        if ($pictureFile->getSize() > $maxFileSize) {
+            return $this->json([
+                'error' => 'La taille du fichier dépasse la limite autorisée'
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Generate a new filename to avoid potential security issues
         $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
+
+        // Move the file to the directory where pictures are stored
         $pictureFile->move($params->get('pictures_directory'), $newFilename);
 
         // Set the new filename in the user entity

@@ -66,10 +66,10 @@ class MailerController extends AbstractController
         // Check if the email was sent successfully
         if ($success) {
             // If successful, return a JSON response with a success message
-            return new JsonResponse(['message' => 'Email a été envoyé avec succès'], Response::HTTP_OK);
+            return new JsonResponse(['message' => 'L\'email a été envoyé avec succès'], Response::HTTP_OK);
         } else {
             // If failed, return a JSON response with an error message
-            return new JsonResponse(['message' => 'Echec de l/envoi de mail'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse(['message' => 'Echec de l\'envoi de mail'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

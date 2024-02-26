@@ -1,9 +1,6 @@
 <?php
 namespace App\Controller\Api;
 
-use App\Entity\Spot;
-use App\Entity\Sport;
-use App\Entity\Location;
 use App\Repository\SpotRepository;
 use App\Repository\SportRepository;
 use App\Repository\LocationRepository;

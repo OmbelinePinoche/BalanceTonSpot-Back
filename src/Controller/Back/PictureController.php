@@ -126,6 +126,7 @@ class PictureController extends AbstractController
             $pictureFile = $form->get('path')->getData();
 
             if ($pictureFile !== null) {
+                // Generate a safe and unique filename for the uploaded file
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
@@ -136,10 +137,12 @@ class PictureController extends AbstractController
                     $newFilename
                 );
 
+                // Update the Picture object with the new filename
                 $picture->setName($newFilename);
                 $picture->setPath($newFilename);
             }
 
+            // We persist the Picture object to the database
             $entityManager->persist($picture);
             $entityManager->flush();
 
