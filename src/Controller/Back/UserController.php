@@ -26,7 +26,6 @@ class UserController extends AbstractController
 
     /**
      * Shows all users in the backoffice
-     * Don't forget that the route above ('/back/user') will be the start of all the routes created below
      * @return Response
      */
     #[Route('/', name: 'list_user')]
@@ -42,14 +41,13 @@ class UserController extends AbstractController
 
     /**
      *  Shows a user by its slug in the backoffice
-     *  Don't forget that the route above ('/back/user') will be the start of all the routes created below
      *
      * @return Response
      */
     #[Route('/show/{pseudo}', name: 'show_user')]
     public function show(UserRepository $userRepository,  $pseudo): Response
     {
-        // Get the user by its pseudo
+        // Gets the user by its pseudo
         $user = $userRepository->findOneBy(['pseudo' => $pseudo]);
 
         // Checks if the user exists
@@ -57,23 +55,23 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('Aucun utilisateur ne répond à ce nom!');
         }
 
-        // Return all the user in the view
+        // Returns all the user in the view
         return $this->render('back/user/show.html.twig', [
             'user' => $user,
         ]);
     }
 
     /**
-     * Create a user with a form in the backoffice
+     * To create a user with a form in the backoffice
      * 
      * @return Response
      */
     #[Route('/new', name: 'add_user')]
     public function create(Request $request, EntityManagerInterface  $entityManager, ParameterBagInterface $params): Response
     {
-        // Create an instance for the entity user
+        // We want to create an instance for the entity user
         $user = new User();
-        // Create a form
+        // Creates a form
         $form = $this->createForm(UserType::class, $user);
 
         // I pass the information from my request to my form to find out if the form has been submitted
@@ -88,16 +86,16 @@ class UserController extends AbstractController
 
                 $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
 
-                // Move the file to the directory where pictures are stored
+                // Moves the file to the directory where pictures are stored
                 $pictureFile->move($params->get('pictures_directory'), $newFilename);
 
                 $user->setProfilPicture($newFilename);
             }
 
-            // Hash the password before register in the BDD
+            // We ask to hash the password before register in the database
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
-            // Persist the user to the BDD
+            // Persist the user to the database
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -107,7 +105,7 @@ class UserController extends AbstractController
                 'L\'utilisateur ' . $user->getEmail() . ' a bien été créé !'
             );
 
-            // Return the users in the view
+            // Returns the users in the view
             return $this->redirectToRoute('list_user');
         }
 
@@ -132,7 +130,7 @@ class UserController extends AbstractController
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
-        // checks if the form has been submitted and if it is valid
+        // This checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $pictureFile */
@@ -148,10 +146,10 @@ class UserController extends AbstractController
             }
 
             // Here, no need to persist because it already exists so no need to recreate it 
-            // Hash the password before register in the BDD
+            // We ask to hash the password before register in the database
             $hashedPassword = password_hash($user->getPassword(), PASSWORD_DEFAULT);
             $user->setPassword($hashedPassword);
-            // Save the changes to the BDD
+            // Saves the changes to the database
             $entityManager->flush();
 
             // We will display a 'flash message' which will allow us to display whether or not the user has been created
@@ -161,7 +159,7 @@ class UserController extends AbstractController
             );
             return $this->redirectToRoute('list_user');
         }
-        // Je passe tous les users à ma vue
+        // We want to pass the
         return $this->render('back/user/edit.html.twig', [
             'form' => $form,
             'user' => $user
@@ -178,11 +176,11 @@ class UserController extends AbstractController
         // Here we want delete a user so no need to create anything.
         // The user exists already 
 
-        // Delete the user
+        // Deletes the user
         $entityManager->remove($user);
         $entityManager->flush();
 
-        // Return user to the home page
+        // Returns user to the user list
         return $this->redirectToRoute('list_user');
     }
 
@@ -190,31 +188,31 @@ class UserController extends AbstractController
     public function triUser(UserRepository $userRepository, string $sortBy): Response
     {
 
-        // Define default sorting method if an invalid one is provided
+        // Defines default sorting method if an invalid one is provided
         $validSortOptions = ['pseudo', 'email', 'role'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'pseudo';
 
         switch ($sortBy) {
                 // If sorting by username
             case 'username':
-                // Retrieve pictures sorted by Pseudo
+                // Retrieves pictures sorted by Pseudo
                 $users = $userRepository->findAllOrderedByPseudo();
                 break;
                 // If sorting by email
             case 'email':
-                // Retrieve pictures sorted by Email
+                // Retrieves pictures sorted by Email
                 $users = $userRepository->findAllOrderedByEmail();
                 break;
                 // If sorting by role
             case 'role':
-                // Retrieve pictures sorted by Role
+                // Retrieves pictures sorted by Role
                 $users = $userRepository->findAllOrderedByRole();
                 break;
                 // If invalid sorting option provided, default to sorting by Pseudo
             default:
                 $users = $userRepository->findAllOrderedByPseudo();
         }
-        // Render the browse.html.twig template with sorted users and sorting method
+        // Render the requested template with sorted users and sorting method
         return $this->render('back/user/browse.html.twig', [
             'users' => $users,
             'sortBy' => $sortBy,

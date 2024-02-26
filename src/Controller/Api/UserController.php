@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
@@ -54,20 +53,20 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        // Check if the user exists
+        // Checks if the user exists
         if (!$user) {
-            // If not, send the message
+            // If not, sends the message
             return $this->json(['message' => 'Utilisateur inconnu'], 404);
         }
 
-        // Retrieve the data send in the request PUT
+        // Retrieves the data send in the request PUT
         $data = $request->getContent();
 
         $updatedUser = $serializer->deserialize($data, User::class, 'json', ['object_to_populate' => $user]);
 
         $entityManager->flush();
 
-        // Return to the updated user
+        // Returns the updated user
         return $this->json(['message' => 'Utilisateur modifié avec succès!'], 200);
     }
 
@@ -77,15 +76,15 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        // Check if the user exists
+        // Checks if the user exists
         if (!$user) {
             return $this->json(['message' => 'Utilisateur inconnu'], 404);
         }
-        // Delete the data send in the request 
+        // Deletes the data send in the request 
         $entityManager->remove($user);
         $entityManager->flush();
 
-        // Return the success message
+        // Returns the success message
         return $this->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
 
@@ -95,22 +94,22 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        // Check if the user exists
+        // Checks if the user exists
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur inconnu');
         }
 
-        // Retrieve the uploaded file named 'profilPictureFile' from the files sent in the HTTP request
+        // Retrieves the uploaded file named 'profilPictureFile' from the files sent in the HTTP request
         $pictureFile = $request->files->get('profilPictureFile');
 
-        // Check if a file was sent in the request
+        // Checks if a file was sent in the request
         if (!$pictureFile) {
             return $this->json([
                 'error' => 'Aucun fichier envoyé'
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Validate file type
+        // Validates file type
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'webp'];
         $fileExtension = $pictureFile->guessExtension();
 
@@ -120,7 +119,7 @@ class UserController extends AbstractController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Validate file size (adjust the limit based on your requirements)
+        // Validates file size (adjust the limit based on your requirements)
         $maxFileSize = 5 * 1024 * 1024; // 5 MB
         if ($pictureFile->getSize() > $maxFileSize) {
             return $this->json([
@@ -128,19 +127,19 @@ class UserController extends AbstractController
             ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Generate a new filename to avoid potential security issues
+        // Generates a new filename to avoid potential security issues
         $newFilename = uniqid() . '.' . $pictureFile->getClientOriginalName();
 
-        // Move the file to the directory where pictures are stored
+        // Moves the file to the directory where pictures are stored
         $pictureFile->move($params->get('pictures_directory'), $newFilename);
 
-        // Set the new filename in the user entity
+        // Sets the new filename in the user entity
         $user->setProfilPicture($newFilename);
 
-        // Save the user entity to the database
+        // We need to save the user entity to the database
         $entityManager->persist($user);
 
-        // Flush changes to the database
+        // Flushes changes to the database
         $entityManager->flush();
 
         return $this->json([

@@ -32,25 +32,24 @@ class PictureController extends AbstractController
     #[Route('/api/spot/{slug}/pictures', name: 'api_picture_by_spot', methods: ['GET'])]
     public function listBySpot(SpotRepository $spotRepository, $slug): Response
     {
-        // Find the spot with the slug
+        // Finds the spot with the slug
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
-        // Check if the spot exists
+        // Checks if the spot exists
         if (!$spot) {
             return $this->json(['message' => 'Spot non trouvé'], 404);
         }
 
-        // Get the pictures associated with the spot
+        // Gets the pictures associated with the spot
         $pictures = $spot->getPictures();
 
-        // Check if there are pictures for the requested spot
+        // Checks if there are pictures for the requested spot
         if (!$pictures) {
             return $this->json(['message' => 'Aucune image pour le spot sélectionné'], 404);
         }
 
-        // Return the pictures associated with the picture
+        // Returns the pictures associated with the spot
         return $this->json($pictures, 200, [], ['groups' => 'api_picture_by_spot']);
     }
-
 
 }

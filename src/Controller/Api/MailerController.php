@@ -22,15 +22,15 @@ class MailerController extends AbstractController
     #[Route('/api/emails', methods: ['GET'])]
     public function getEmails(): Response
     {
-        // Retrieve all users from the repository
+        // Retrieves all users from the repository
         $users = $this->userRepository->findAll();
 
-        // Extract email addresses of the users
+        // Extracts email addresses of the users
         $emails = array_map(function ($user) {
             return $user->getEmail();
         }, $users);
 
-        // Return email addresses as a JSON response
+        // Returns email addresses as a JSON response
         return $this->json($emails);
     }
 
@@ -38,32 +38,32 @@ class MailerController extends AbstractController
     #[Route('/api/emails', methods: ['POST'])]
     public function sendEmail(Request $request, MailerService $mailerService): JsonResponse
     {
-        // Decode the request content to retrieve data
+        // Decodes the request content to retrieve data
         $data = json_decode($request->getContent(), true);
-        // Extract the user email and message from the data
+        // Extracts the user email and message from the data
         $userEmail = $data['user_email'] ?? null;
         $subject = $data['subject'] ?? null;
         $content = $data['content'] ?? null;
 
-        // Check if the user email and message are provided
+        // Checks if the user email and message are provided
         if (!$userEmail || !$content || !$subject) {
-            // Return a JSON response with a message indicating that email and message are required
+            // Returns a JSON response with a message indicating that email and message are required
             return new JsonResponse(['message' => 'Données manquantes'], JsonResponse::HTTP_BAD_REQUEST);
         }
     
-        // Find the user by email in the repository
+        // Finds the user by email in the repository
         $user = $this->userRepository->findOneBy(['email' => $userEmail]);
     
-        // Check if the user is found
+        // Checks if the user is found
         if (!$user) {
-            // Return a JSON response with a message indicating user not found
+            // Returns a JSON response with a message indicating user not found
             return new JsonResponse(['message' => 'Utilisateur non trouvé'], JsonResponse::HTTP_NOT_FOUND);
         }
     
-        // Call the sendEmail() method of the MailerService and pass the user object and message
+        // Calls the sendEmail() method of the MailerService and pass the user object and message
         $success = $mailerService->sendEmail($user,$subject,$content);
     
-        // Check if the email was sent successfully
+        // Checks if the email was sent successfully
         if ($success) {
             // If successful, return a JSON response with a success message
             return new JsonResponse(['message' => 'L\'email a été envoyé avec succès'], Response::HTTP_OK);

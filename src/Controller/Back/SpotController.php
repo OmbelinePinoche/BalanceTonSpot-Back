@@ -28,7 +28,6 @@ class SpotController extends AbstractController
 
     /**
      * Shows all spots in the backoffice
-     * Don't forget that the route above ('/back/spot') will be the start of all the routes created below
      * @return Response
      */
     #[Route('/home', name: 'list')]
@@ -50,14 +49,13 @@ class SpotController extends AbstractController
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
             'locations' => $locations,
-            'sports' => $sports, 
+            'sports' => $sports,
             'pagination' => $pagination
         ]);
     }
 
     /**
      *  Shows a spot by ID in the backoffice
-     *  Don't forget that the route above ('/back/spot') will be the start of all the routes created below
      *
      * @return Response
      */
@@ -121,6 +119,7 @@ class SpotController extends AbstractController
             $pictureFile = $form->get('picture')->getData();
             if ($pictureFile) {
 
+                // Generates a new filename to avoid potential security issues
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
@@ -131,11 +130,13 @@ class SpotController extends AbstractController
                     $newFilename
                 );
 
+                // Sets the new filename in the spot entity
                 $spot->setPicture($newFilename);
             }
 
+            // Use the spot name by default if "name" field is available
+            $slug = $form->get('name')->getData() ?? ''; 
             // Generate the slug using the Slugger service
-            $slug = $form->get('name')->getData() ?? ''; // Use the spot name by default if "name" field is available
             $slug = $slugger->slug($slug);
             $spot->setSlug($slug);
 

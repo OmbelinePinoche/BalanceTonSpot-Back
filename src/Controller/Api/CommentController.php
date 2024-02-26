@@ -46,10 +46,10 @@ class CommentController extends AbstractController
     #[Route('/api/spot/{slug}/comments', name: 'api_comment_by_spot', methods: ['GET'])]
     public function listBySpot(CommentRepository $commentRepository, SpotRepository $spotRepository, $slug): Response
     {
-        // Search the spot in the repository thanks to the property "slug"
+        // We need to search the spot in the repository thanks to the property "slug"
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
-        // Get the comment associated with the spot
+        // Gets the comment associated with the spot
         $comments = $spot->getComments();
 
         // We want to return the comments to the view
@@ -88,23 +88,23 @@ class CommentController extends AbstractController
     #[Route('/api/spot/{slug}/comments', name: 'api_comment_by_spot', methods: ['GET'])]
     public function listByComment(SpotRepository $spotRepository, $slug): Response
     {
-        // Get the comments from the repository searching with the "content" param
+        // Gets the comments from the repository searching with the "content" param
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
-        // Check if the spot exists
+        // Checks if the spot exists
         if (!$spot) {
             return $this->json(['message' => 'Aucun spot associé à ce nom'], 404);
         }
 
-        // Call the function to get the comments from the spot entity
+        // Calls the function to get the comments from the spot entity
         $comments = $spot->getComments();
 
-        // Check if any comment exists
+        // Checks if any comment exists
         if (!$comments) {
             return $this->json(['message' => 'Aucun commentaire n\a été ajouté à ce spot'], 404);
         }
 
-        // Return all the comments according to the comment
+        // Returns all the comments according to the comment
         return $this->json($comments, 200, [], ['groups' => 'api_comment_by_spot']);
     }
 

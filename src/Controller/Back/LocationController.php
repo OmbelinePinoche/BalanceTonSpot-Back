@@ -12,7 +12,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -45,26 +44,27 @@ class LocationController extends AbstractController
 
 
     /**
-     * Create a location with a form in the backoffice
+     * To create a location with a form in the backoffice
      * 
      * @return Response
      */
     #[Route('/admin/new', name: 'add_location')]
     public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
-        // Create an instance for the entity location
+        // We need to create an instance for the entity location
         $location = new Location();
-        // Create a form
+        // Creates a form
         $form = $this->createForm(LocationType::class, $location);
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
 
-        //checks if the form has been submitted and if it is valid
+        // This checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Generate the slug using the Slugger service
             $slug = $form->get('name')->getData() ?? ''; // Use the location name by default if "name" field is available
+
+            // Generates the slug using the Slugger service
             $slug = $slugger->slug($slug);
             $location->setSlug($slug);
 
@@ -93,7 +93,7 @@ class LocationController extends AbstractController
     public function edit(location $location, Request $request, EntityManagerInterface  $entityManager): Response
     {
         // Here we want to edit a location so no need to create anything.
-        /*    The location exists already */
+
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(LocationType::class, $location);
@@ -113,7 +113,7 @@ class LocationController extends AbstractController
                 'La ville' . $location->getName() . ' a bien été modifiée !'
             );
 
-            // I return all the locations in the view
+            // Return all the locations in the view
             return $this->redirectToRoute('list_location');
         }
 
@@ -132,11 +132,11 @@ class LocationController extends AbstractController
     {
         // Here we want delete a location so no need to create anything.
 
-        // Delete the location
+        // Deletes the location
         $entityManager->remove($location);
         $entityManager->flush();
 
-        // Return user to the home page
+        // Returns user to the location list
         return $this->redirectToRoute('list_location');
     }
 
@@ -147,9 +147,9 @@ class LocationController extends AbstractController
         if (!$location) {
             return $this->json(['message' => 'Aucun emplacement n\'a été trouvé'], 404);
         }
-        // Get all the locations
+        // Gets all the locations
         $locations = $locationRepository->findAll();
-        // Search the spots from the repository with the param "location"
+        // We want to search the spots from the repository with the param "location"
         $spots = $spotRepository->findBy(['location' => $location]);
         $sports = $sportRepository->findAll();
 
@@ -159,7 +159,7 @@ class LocationController extends AbstractController
             6 /*limit per page*/
         );
 
-        // Return  to the view all the spots according to the location
+        // Returns to the view all the spots according to the location
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
             'sports' => $sports,
@@ -172,17 +172,17 @@ class LocationController extends AbstractController
     #[Route('/tri/{sortBy}', name: 'tri_location')]
     public function triLocation(LocationRepository $locationRepository, string $sortBy): Response
     {
-        // Define default sorting method if an invalid one is provided
+        // Defines default sorting method if an invalid one is provided
         $validSortOptions = ['name', 'spot'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'name';
 
-        // Fetch locations based on the chosen sorting method
+        // We want to fetch locations based on the chosen sorting method
         if ($sortBy === 'name') {
             $locations = $locationRepository->findAllOrderedByName();
         } elseif ($sortBy === 'spot') {
             $locations = $locationRepository->findAllOrderedBySpotCount();
         }
-        // Return the sports according to the chosen order
+        // Returns the sports according to the chosen order
         return $this->render('back/location/browse.html.twig', [
             'locations' => $locations,
             'sortBy' => $sortBy,

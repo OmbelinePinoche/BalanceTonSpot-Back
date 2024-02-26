@@ -3,7 +3,6 @@
 namespace App\Controller\Back;
 
 use App\Entity\Sport;
-use App\Entity\Spot;
 use App\Form\SportType;
 use App\Repository\LocationRepository;
 use App\Repository\SportRepository;
@@ -21,7 +20,6 @@ class SportController extends AbstractController
 {
     /**
      * Shows all sports in the backoffice
-     * Don't forget that the route above ('/back/sport') will be the start of all the routes created below
      * @return Response
      */
     #[Route('/', name: 'list_sport')]
@@ -36,7 +34,7 @@ class SportController extends AbstractController
     }
 
     /**
-     * Create a sport with a form in the backoffice
+     * To create a sport with a form in the backoffice
      * 
      * @return Response
      */
@@ -54,8 +52,9 @@ class SportController extends AbstractController
         // Checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Generate the slug using the Slugger service
-            $slug = $form->get('name')->getData() ?? ''; // Use the sport name by default if "name" field is available
+            // Uses the sport name by default if "name" field is available
+            $slug = $form->get('name')->getData() ?? ''; 
+            // Generates the slug using the Slugger service
             $slug = $slugger->slug($slug);
             $sport->setSlug($slug);
 
@@ -87,7 +86,7 @@ class SportController extends AbstractController
         // I build my form which revolves around my object
         // 1st param = the form class, 2eme param = the object we want to manipulate
         $form = $this->createForm(SportType::class, $sport);
-        // Here I build a form which manipulates an object $sport which already exists, therefore which already has values therefore in the form which will be displayed
+        // Here I build a form which manipulates an object $sport which already exists
 
         // I pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
@@ -121,11 +120,11 @@ class SportController extends AbstractController
     {
         // Here we want delete a sport so no need to create anything.
 
-        // Delete the sport
+        // Deletes the sport
         $entityManager->remove($sport);
         $entityManager->flush();
 
-        // Return user to the home page
+        // Returns user to the sport list
         return $this->redirectToRoute('list_sport');
     }
 
@@ -135,9 +134,9 @@ class SportController extends AbstractController
     #[Route('/{slug}/spots', name: 'show_by_sport', methods: ['GET'])]
     public function showBySport(SpotRepository $spotRepository, SportRepository $sportRepository, LocationRepository $locationRepository, $slug, Request $request, PaginatorInterface $paginator)
     {
-        //Find all the sports for the loop {% for sport in sports %} to work
+        // Finds all the sports for the loop {% for sport in sports %} to work
         $sports = $sportRepository->findAll();
-        // Find the sport based on the provided slug
+        // Finds the sport based on the provided slug
         $sport = $sportRepository->findOneBy(['slug' => $slug]);
 
         // Checks if the sport was found
@@ -145,7 +144,7 @@ class SportController extends AbstractController
             return $this->json(['message' => 'Aucun sport n\'a été trouvé pour le slug donné'], 404);
         }
 
-        // Search the spots associated with the sport
+        // We need to search the spots associated with the sport
         $spots = $spotRepository->findBySport($sport);
 
         $pagination = $paginator->paginate(
@@ -154,10 +153,10 @@ class SportController extends AbstractController
             6 /*limit per page*/
         );
 
-        // Fetch all locations
+        // Fetches all locations
         $locations = $locationRepository->findAll();
 
-        // Return to the view all the spots according to the sport
+        // Returns to the view all the spots according to the sport
         return $this->render('back/spot/browse.html.twig', [
             'spots' => $spots,
             'sport' => $sport,
@@ -170,7 +169,7 @@ class SportController extends AbstractController
     #[Route('/sort/{sortBy}', name: 'sort_sport')]
     public function triSport(SportRepository $sportRepository, string $sortBy): Response
     {
-        // Define default sorting method if an invalid one is provided
+        // Defines default sorting method if an invalid one is provided
         $validSortOptions = ['nom', 'spot'];
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
 
@@ -178,18 +177,18 @@ class SportController extends AbstractController
         switch ($sortBy) {
             // If sorting by name
             case 'nom':
-                // Retrieve pictures sorted by name
+                // Retrieves pictures sorted by name
                 $sports = $sportRepository->findAllOrderedByName();
                 break;
             case 'spot':
-                // Retrieve pictures sorted by spot
+                // Retrieves pictures sorted by spot
                 $sports = $sportRepository->findAllOrderedBySpot();
                 break;
             // If invalid sorting option provided, default to sorting by name
             default:
                 $sports = $sportRepository->findAllOrderedByName();
         }
-        // Return the sports according to the chosen order
+        // Returns the sports according to the chosen order
         return $this->render('back/sport/browse.html.twig', [
             'sports' => $sports,
             'sortBy' => $sortBy,

@@ -30,13 +30,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     // Method called to authenticate the user
     public function authenticate(Request $request): Passport
     {
-        // Get the email from the request
+        // Gets the email from the request
         $email = $request->request->get('email', '');
 
-        // Save the email in the session to remember it on unsuccessful login attempts
+        // Saves the email in the session to remember it on unsuccessful login attempts
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
-        // Create a Passport object with a UserBadge, PasswordCredentials, and additional badges (CSRF, RememberMe)
+        // Creates a Passport object with a UserBadge, PasswordCredentials, and additional badges (CSRF, RememberMe)
         return new Passport(
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
@@ -50,12 +50,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     // Method called on successful authentication
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        // Redirect to the target path (page visited before the login request) if there is one
+        // Redirects to the target path (page visited before the login request) if there is one
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // Redirect to the 'list' page on successful login
+        // Redirects to the 'list' page on successful login
         return new RedirectResponse($this->urlGenerator->generate('list'));
     }
 

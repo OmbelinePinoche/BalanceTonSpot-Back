@@ -41,16 +41,16 @@ class PictureController extends AbstractController
     }
 
     /**
-     * Create a picture with a form in the backoffice
+     * To create a picture with a form in the backoffice
      * 
      * @return Response
      */
     #[Route('/admin/picture/new', name: 'add_picture')]
     public function create(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        // Create an instance for the entity Picture
+        // We want to create an instance for the entity Picture
         $picture = new Picture();
-        // Create a form
+        // Creates a form
         $form = $this->createForm(PictureType::class, $picture);
 
         // I pass the information from my request to my form to find out if the form has been submitted
@@ -63,14 +63,15 @@ class PictureController extends AbstractController
             $pictureFile = $form->get('path')->getData();
             if ($pictureFile) {
 
+                // Generates a new filename to avoid potential security issues
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
-                // Get the current path
+                // Gets the current path
                 $currentPath = $picture->getPath();
 
-                // Delete the previous picture if it exists
+                // Deletes the previous picture if it exists
                 if ($currentPath) {
                     $currentFilePath = $this->getParameter('pictures_directory') . '/' . $currentPath;
                     if (file_exists($currentFilePath)) {
@@ -78,15 +79,17 @@ class PictureController extends AbstractController
                     }
                 }
 
-                // Move the file to the directory where pictures are stored
+                // Moves the file to the directory where pictures are stored
                 $pictureFile->move(
                     $this->getParameter('pictures_directory'),
                     $newFilename
                 );
 
+                // Sets the new filename in the user entity
                 $picture->setPath($newFilename);
             }
 
+            // We need to save the changes in the 
             $entityManager->persist($picture);
             $entityManager->flush();
 
@@ -96,7 +99,7 @@ class PictureController extends AbstractController
                 "L'image" . $picture->getName() . "a bien été ajoutée !"
             );
 
-            // Return the pictures in the view
+            // Returns the pictures in the view
             return $this->redirectToRoute('list_pictures');
         }
 
@@ -106,7 +109,7 @@ class PictureController extends AbstractController
     }
 
     /**
-     * Modify a picture via its ID in a form in the back office
+     * To modify a picture via its ID in a form in the back office
      * @return Response
      */
     #[Route('/admin/picture/edit/{id}', name: 'edit_picture')]
@@ -126,18 +129,23 @@ class PictureController extends AbstractController
             $pictureFile = $form->get('path')->getData();
 
             if ($pictureFile !== null) {
-                // Generate a safe and unique filename for the uploaded file
+
+                // Generates a safe and unique filename for the uploaded file
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+
                 $safeFilename = $this->slugger->slug($originalFilename);
+
+                
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
-                // Move the file to the directory where pictures are stored
+                // Moves the file to the directory where pictures are stored
                 $pictureFile->move(
                     $this->getParameter('pictures_directory'),
                     $newFilename
                 );
 
-                // Update the Picture object with the new filename
+                // Updates the Picture object with the new filename
                 $picture->setName($newFilename);
                 $picture->setPath($newFilename);
             }

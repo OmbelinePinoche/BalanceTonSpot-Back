@@ -40,7 +40,7 @@ class SpotController extends AbstractController
     #[Route('/api/spot/{slug}', name: 'api_show', methods: ['GET'])]
     public function show(SpotRepository $spotRepository, $slug): Response
     {
-        // Search the spot in the repository thanks to the property "slug"
+        // We need to search the spot in the repository thanks to the property "slug"
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
         // This checks if the given (id) spot exists
