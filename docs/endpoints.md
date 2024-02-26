@@ -8,8 +8,6 @@
 | `/api/sports` | GET | Sport | list | Lister tous les sports |
 | `/api/sport/{slug}` | GET | Sport | show | Accéder à un sport |
 | `/api/sport/{slug}/spots` | GET | Sport | listBySport | Lister tous les spots en fonction du sport |
-| `/api/location/{slug}/spots/snowboard` | GET | Sport | listSnow | Lister tous les spots de snowboard d’une ville |
-| `/api/location/{slug}/spots/skateboard` | GET | Sport | listSkate | Lister tous les spots de skateboard d’une ville |
 | `/api/location` | GET | Location | list |  Lister toutes les villes |
 | `/api/location/{slug}` | GET | Location | show | Accéder à une ville |
 | `/api/comments` | GET | Comment | list | Lister tous les commentaires |
@@ -26,4 +24,4 @@
 | `/api/users` | GET | User | list | Lister les utilisateurs |
 | `/api/user` | GET | User | show | Consulter le profil de l'utilisateur connecté|
 | `/api/user` | PUT | User | edit | Modification de l'utilisateur connecté |
-| `/api/user/{id}` | DELETE | User | delete | Suppression de l'utilisateur connecté|
+| `/api/user` | DELETE | User | delete | Suppression de l'utilisateur connecté|
