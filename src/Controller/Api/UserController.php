@@ -55,15 +55,14 @@ class UserController extends AbstractController
 
         $user = new User();
         $user->setEmail($data['email']);
-        $user->setPseudo($data['username']);
+        $user->setPseudo($data['pseudo']);
 
-        // Hash password
+        // This hashes password
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
 
-        // Define the user role
-        $user->setRoles($data['roles']);
-
+        $user->setroles($data['roles']);
+        
         // We need to persist the user entity to the database to save the data
         $entityManager->persist($user);
         $entityManager->flush();
