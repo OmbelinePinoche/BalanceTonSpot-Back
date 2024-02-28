@@ -100,7 +100,7 @@ window.location.href = selectedUrl;
 											{% if is_granted('ROLE_ADMIN') %}
 												<a href="{{ path('edit', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
 											{% endif %}
-											{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+											 {% if is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
 												<a href="{{path('add_favorite', {id: spot.id}) }}" class="btn btn-sm btn-outline-info">Ajouter aux favoris</a>
 											{% endif %}
 										</td>
