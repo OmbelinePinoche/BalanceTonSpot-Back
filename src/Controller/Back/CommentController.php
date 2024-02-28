@@ -84,7 +84,7 @@ class CommentController extends AbstractController
         // We pass the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
 
-        //checks if the form has been submitted and if it is valid
+        // This checks if the form has been submitted and if it is valid
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($comment);
             $entityManager->flush();
@@ -92,7 +92,7 @@ class CommentController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the comment has been created.
             $this->addFlash(
                 'addcomment',
-                'Le commentaire ' . $comment->getContent() . 'a bien été créé !'
+                'Votre commentaire a bien été ajouté sur le spot ' . $comment->getSpot()->getName(). '!'
             );
             return $this->redirectToRoute('list_comment');
         }
@@ -134,7 +134,7 @@ class CommentController extends AbstractController
             /*   We will display a 'flash message' which will allow us to display whether or not the comment has been updated. */
             $this->addFlash(
                 'updatecomment',
-                'Le commentaire ' . $comment->getContent() . ' a bien été modifié !'
+                'Votre commentaire a bien été modifié sur le spot ' . $comment->getSpot()->getName(). '!'
             );
 
             // I return all the comments in the view
@@ -163,7 +163,7 @@ class CommentController extends AbstractController
         /*   We will display a 'flash message' which will allow us to display whether or not the comment has been deleted. */
         $this->addFlash(
             'deletecomment',
-            'Le commentaire ' . $comment->getContent() . ' a bien été modifié !'
+            'Votre commentaire a bien été retiré du spot ' . $comment->getSpot()->getName(). '!'
         );
 
         // Return user to the home page

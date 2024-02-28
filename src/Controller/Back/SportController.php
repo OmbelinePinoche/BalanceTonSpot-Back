@@ -64,7 +64,7 @@ class SportController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the sport has been created.
             $this->addFlash(
                 'addsport',
-                'Le sport ' . $sport->getName() . ' a bien été créé !'
+                'Le sport ' . $sport->getName() . ' a bien été ajouté !'
             );
 
             // Return the sports in the view

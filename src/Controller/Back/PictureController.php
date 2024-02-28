@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[Route('/pictures')]
 class PictureController extends AbstractController
 {
     private $slugger;
@@ -22,7 +23,7 @@ class PictureController extends AbstractController
         $this->slugger = $slugger;
     }
 
-    #[Route('/pictures', name: 'list_pictures')]
+    #[Route('/', name: 'list_pictures')]
     public function list(PictureRepository $pictureRepository, Request $request, PaginatorInterface $paginator): Response
     {
         // 1st step is getting all the pictures from the repository
@@ -45,7 +46,7 @@ class PictureController extends AbstractController
      * 
      * @return Response
      */
-    #[Route('/admin/picture/new', name: 'add_picture')]
+    #[Route('/admin/new', name: 'add_picture')]
     public function create(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         // We want to create an instance for the entity Picture
@@ -96,7 +97,7 @@ class PictureController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the picture has been created.
             $this->addFlash(
                 'addpicture',
-                "L'image " . $picture->getName() . "a bien été ajoutée !"
+                "L'image " . $picture->getName() . " a bien été ajoutée !"
             );
 
             // Returns the pictures in the view
@@ -112,7 +113,7 @@ class PictureController extends AbstractController
      * To modify a picture via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/admin/picture/edit/{id}', name: 'edit_picture')]
+    #[Route('/admin/edit/{id}', name: 'edit_picture')]
     public function edit(Picture $picture, Request $request, EntityManagerInterface $entityManager): Response
     {
         // I build my form which revolves around my object
@@ -170,7 +171,7 @@ class PictureController extends AbstractController
      *  Modify a picture via its ID in a form in the back office
      * @return Response
      */
-    #[Route('/admin/picture/remove/{id}', name: 'remove_picture')]
+    #[Route('/admin/remove/{id}', name: 'remove_picture')]
     public function remove(Picture $picture, EntityManagerInterface $entityManager): Response
     {
         // Here we want delete a picture so no need to create anything
@@ -189,7 +190,7 @@ class PictureController extends AbstractController
         return $this->redirectToRoute('list_pictures');
     }
 
-    #[Route('/picture/sort/{sortBy}', name: 'sort_picture')]
+    #[Route('/sort/{sortBy}', name: 'sort_picture')]
     public function sortPicture(PictureRepository $pictureRepository, string $sortBy, Request $request, PaginatorInterface $paginator): Response
     {
         // Defines default sorting method if an invalid one is provided

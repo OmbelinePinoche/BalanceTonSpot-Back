@@ -48,7 +48,7 @@ Votre backend Symfony devrait être accessible à l'adresse http://localhost:808
 - `/api/sports` - GET - Lister tous les sports
 - `/api/sport/{slug}` - GET - Accéder à un sport
 - `/api/sport/{slug}/spots` - GET - Lister tous les spots en fonction du sport
-- `/api/location` - GET - Lister toutes les villes
+- `/api/locations` - GET - Lister toutes les villes
 - `/api/location/{slug}` - GET - Accéder à une ville
 - `/api/comments` - GET - Lister tous les commentaires
 

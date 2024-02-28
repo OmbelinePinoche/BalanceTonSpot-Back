@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/location')]
+#[Route('/locations')]
 class LocationController extends AbstractController
 {
     private $slugger;
@@ -74,7 +74,7 @@ class LocationController extends AbstractController
             // We will display a flash message which will allow us to display whether or not the location has been created.
             $this->addFlash(
                 'addlocation',
-                'La ville ' . $location->getName() . ' a bien été créée !'
+                'La ville ' . $location->getName() . ' a bien été ajoutée !'
             );
 
             return $this->redirectToRoute('list_location');

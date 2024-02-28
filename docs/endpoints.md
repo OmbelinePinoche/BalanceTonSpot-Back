@@ -13,6 +13,8 @@
 | `/api/comments` | GET | Comment | list | Lister tous les commentaires |
 | `/api/comment/{id}` | GET | Comment | show | Accéder à un commentaires |
 | `/api/spot/{slug}/comments` | GET | Comment | listBySpot | Lister les commentaires d’un spot |
+| `/api/emails` | GET | Mailer | getEmails | Accéder aux emails |
+| `/api/emails` | POST | Mailer | sendEmail | Envoyer un email |
 
 **Routes Privées (connexion requise) :**
 
