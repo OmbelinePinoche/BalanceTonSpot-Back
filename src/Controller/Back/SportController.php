@@ -53,7 +53,7 @@ class SportController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Uses the sport name by default if "name" field is available
-            $slug = $form->get('name')->getData() ?? ''; 
+            $slug = $form->get('name')->getData() ?? '';
             // Generates the slug using the Slugger service
             $slug = $slugger->slug($slug);
             $sport->setSlug($slug);
@@ -63,8 +63,8 @@ class SportController extends AbstractController
 
             // We will display a flash message which will allow us to display whether or not the sport has been created.
             $this->addFlash(
-                'succès',
-                'Le sport ' . $sport->getName() . 'a bien été créé !'
+                'addsport',
+                'Le sport ' . $sport->getName() . ' a bien été créé !'
             );
 
             // Return the sports in the view
@@ -96,9 +96,9 @@ class SportController extends AbstractController
 
             $entityManager->flush();
 
-            /*   We will display a 'flash message' which will allow us to display whether or not the sport has been created. */
+            /*   We will display a 'flash message' which will allow us to display whether or not the sport has been updated. */
             $this->addFlash(
-                'succès',
+                'updatesport',
                 'Le sport ' . $sport->getName() . ' a bien été modifié !'
             );
 
@@ -124,11 +124,15 @@ class SportController extends AbstractController
         $entityManager->remove($sport);
         $entityManager->flush();
 
+        /*   We will display a 'flash message' which will allow us to display whether or not the sport has been deleted. */
+        $this->addFlash(
+            'deletesport',
+            'Le sport ' . $sport->getName() . ' a bien été supprimé !'
+        );
+
         // Returns user to the sport list
         return $this->redirectToRoute('list_sport');
     }
-
-
 
 
     #[Route('/{slug}/spots', name: 'show_by_sport', methods: ['GET'])]
@@ -175,7 +179,7 @@ class SportController extends AbstractController
 
         // Switch based on sorting method provided
         switch ($sortBy) {
-            // If sorting by name
+                // If sorting by name
             case 'nom':
                 // Retrieves pictures sorted by name
                 $sports = $sportRepository->findAllOrderedByName();
@@ -184,7 +188,7 @@ class SportController extends AbstractController
                 // Retrieves pictures sorted by spot
                 $sports = $sportRepository->findAllOrderedBySpot();
                 break;
-            // If invalid sorting option provided, default to sorting by name
+                // If invalid sorting option provided, default to sorting by name
             default:
                 $sports = $sportRepository->findAllOrderedByName();
         }

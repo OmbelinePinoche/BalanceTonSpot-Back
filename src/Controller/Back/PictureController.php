@@ -95,8 +95,8 @@ class PictureController extends AbstractController
 
             // We will display a flash message which will allow us to display whether or not the picture has been created.
             $this->addFlash(
-                'succès',
-                "L'image" . $picture->getName() . "a bien été ajoutée !"
+                'addpicture',
+                "L'image " . $picture->getName() . "a bien été ajoutée !"
             );
 
             // Returns the pictures in the view
@@ -132,11 +132,7 @@ class PictureController extends AbstractController
 
                 // Generates a safe and unique filename for the uploaded file
                 $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
-
-
                 $safeFilename = $this->slugger->slug($originalFilename);
-
-                
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
                 // Moves the file to the directory where pictures are stored
@@ -154,16 +150,16 @@ class PictureController extends AbstractController
             $entityManager->persist($picture);
             $entityManager->flush();
 
-            // We will display a 'flash message' which will allow us to display whether or not the picture has been created
+            // We will display a 'flash message' which will allow us to display whether or not the picture has been updated
             $this->addFlash(
-                'succès',
-                "L'image" . $picture->getName() . " a bien été modifiée !"
+                'updatepicture',
+                "L'image " . $picture->getName() . " a bien été modifiée !"
             );
 
             return $this->redirectToRoute('list_pictures');
         }
 
-        // Je passe tous les pictures à ma vue
+        // Renders the form to the view
         return $this->render('back/picture/edit.html.twig', [
             'form' => $form,
             'picture' => $picture
@@ -179,31 +175,37 @@ class PictureController extends AbstractController
     {
         // Here we want delete a picture so no need to create anything
 
-        // Delete the picture
+        // Deletes the picture
         $entityManager->remove($picture);
         $entityManager->flush();
 
-        // Return user to the home page
+        // We will display a 'flash message' which will allow us to display whether or not the picture has been deleted
+        $this->addFlash(
+            'deletepicture',
+            "L'image " . $picture->getName() . " a bien été supprimée !"
+        );
+
+        // Returns user to the home page
         return $this->redirectToRoute('list_pictures');
     }
 
     #[Route('/picture/sort/{sortBy}', name: 'sort_picture')]
     public function sortPicture(PictureRepository $pictureRepository, string $sortBy, Request $request, PaginatorInterface $paginator): Response
     {
-        // Define default sorting method if an invalid one is provided
+        // Defines default sorting method if an invalid one is provided
         $validSortOptions = ['nom', 'spot']; // Valid sorting options
         $sortBy = in_array($sortBy, $validSortOptions) ? $sortBy : 'nom';
 
-        // Switch based on sorting method provided
+        // Switches based on sorting method provided
         switch ($sortBy) {
                 // If sorting by name
             case 'nom':
-                // Retrieve pictures sorted by name
+                // Retrieves pictures sorted by name
                 $pictures = $pictureRepository->findAllOrderedByName();
                 break;
                 // If sorting by spot
             case 'spot':
-                // Retrieve pictures sorted by spot
+                // Retrieves pictures sorted by spot
                 $pictures = $pictureRepository->findAllOrderedBySpot();
                 break;
                 // If invalid sorting option provided, default to sorting by name
@@ -217,10 +219,10 @@ class PictureController extends AbstractController
             6 /*limit per page*/
         );
 
-        // Render the browse.html.twig template with sorted pictures and sorting method
+        // This renders the browse.html.twig template with sorted pictures and sorting method
         return $this->render('back/picture/browse.html.twig', [
             'pictures' => $pictures,
-            'sortBy' => $sortBy, // Pass the sorting method to the template
+            'sortBy' => $sortBy, // Passes the sorting method to the template
             'pagination' => $pagination
         ]);
     }

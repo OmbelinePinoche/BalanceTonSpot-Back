@@ -54,13 +54,11 @@
 							{% endif %}
 						</ul>
 					</div>
-					{# We display the dropdown menu only if the user is logged in #}
-					{% if app.user %}
+					
 						<div class="nav-link" style="color: white;">
 							Vous êtes connecté en tant que
 							{{ app.user.pseudo }}
 						</div>
-					{% endif %}
 					<a href="{{ path('app_logout')}}">
 						<button type="button" class="btn btn-danger me-2">Déconnexion</button>
 					</a>

@@ -73,9 +73,10 @@ class LocationController extends AbstractController
 
             // We will display a flash message which will allow us to display whether or not the location has been created.
             $this->addFlash(
-                'succès',
-                'La ville' . $location->getName() . 'a bien été créée !'
+                'addlocation',
+                'La ville ' . $location->getName() . ' a bien été créée !'
             );
+
             return $this->redirectToRoute('list_location');
         }
 
@@ -109,11 +110,11 @@ class LocationController extends AbstractController
 
             /*   We will display a 'flash message' which will allow us to display whether or not the location has been created. */
             $this->addFlash(
-                'succès',
-                'La ville' . $location->getName() . ' a bien été modifiée !'
+                'updatelocation',
+                'La ville ' . $location->getName() . ' a bien été modifiée !'
             );
 
-            // Return all the locations in the view
+            // Returns all the locations in the view
             return $this->redirectToRoute('list_location');
         }
 
@@ -135,6 +136,12 @@ class LocationController extends AbstractController
         // Deletes the location
         $entityManager->remove($location);
         $entityManager->flush();
+
+        // We will display a flash message which will allow us to display whether or not the location has been deleted.
+        $this->addFlash(
+            'deletelocation',
+            'La ville ' . $location->getName() . ' a bien été supprimée !'
+        );
 
         // Returns user to the location list
         return $this->redirectToRoute('list_location');

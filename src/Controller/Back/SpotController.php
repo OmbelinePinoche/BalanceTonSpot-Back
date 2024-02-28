@@ -89,7 +89,7 @@ class SpotController extends AbstractController
         // Total of the spots in the spot array
         $spotsCount = count($spots);
 
-        // Return all the spots in the view
+        // Returns all the spots in the view
         return $this->render('back/spot/show.html.twig', [
             'spot' => $spot, 'pictures' => $pictures, 'spots' => $spots, 'currentIndex' => $currentIndex,  'spotsCount' => $spotsCount,
         ]);
@@ -103,13 +103,13 @@ class SpotController extends AbstractController
     #[Route('/admin/new', name: 'add')]
     public function create(Request $request, EntityManagerInterface  $entityManager, SluggerInterface $slugger): Response
     {
-        // Create an instance for the entity spot
+        // We need to create an instance for the entity spot
         $spot = new Spot();
 
-        // Create a form
+        // We create a form
         $form = $this->createForm(SpotType::class, $spot);
 
-        // I pass the information from my request to my form to find out if the form has been submitted
+        // This passes the information from my request to my form to find out if the form has been submitted
         $form->handleRequest($request);
 
         // Checks if the form has been submitted and if it is valid
@@ -124,7 +124,7 @@ class SpotController extends AbstractController
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
-                // Move the file to the directory where pictures are stored
+                // Moves the file to the directory where pictures are stored
                 $pictureFile->move(
                     $this->getParameter('pictures_directory'),
                     $newFilename
@@ -134,9 +134,9 @@ class SpotController extends AbstractController
                 $spot->setPicture($newFilename);
             }
 
-            // Use the spot name by default if "name" field is available
-            $slug = $form->get('name')->getData() ?? ''; 
-            // Generate the slug using the Slugger service
+            // Uses the spot name by default if "name" field is available
+            $slug = $form->get('name')->getData() ?? '';
+            // Generates the slug using the Slugger service
             $slug = $slugger->slug($slug);
             $spot->setSlug($slug);
 
@@ -145,11 +145,11 @@ class SpotController extends AbstractController
 
             // We will display a flash message which will allow us to display whether or not the spot has been created.
             $this->addFlash(
-                'succès',
+                'addspot',
                 'Le spot ' . $spot->getName() . ' a bien été créé !'
             );
 
-            // Return the spots in the view
+            // Returns the spots in the view
             return $this->redirectToRoute('list');
         }
 
@@ -183,13 +183,13 @@ class SpotController extends AbstractController
                 $safeFilename = $this->slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . bin2hex(random_bytes(8)) . '.' . $pictureFile->guessExtension();
 
-                // Set the new filename in the spot entity
+                // Sets the new filename in the spot entity
                 $spot->setPicture($newFilename);
 
-                // Get the current picture path
+                // Gets the current picture path
                 $currentPath = $spot->getPicture();
 
-                // Delete the previous picture path if it exists
+                // Deletes the previous picture path if it exists
                 if ($currentPath) {
                     $currentFilePath = $this->getParameter('pictures_directory') . '/' . $currentPath;
                     if (file_exists($currentFilePath)) {
@@ -197,7 +197,7 @@ class SpotController extends AbstractController
                     }
                 }
 
-                // Move the file to the directory where pictures are stored
+                // Moves the file to the directory where pictures are stored
                 $pictureFile->move(
                     $this->getParameter('pictures_directory'),
                     $newFilename
@@ -208,15 +208,15 @@ class SpotController extends AbstractController
 
             $entityManager->flush();
 
-            // We will display a 'flash message' which will allow us to display whether or not the spot has been created
+            // We will display a 'flash message' which will allow us to display whether or not the spot has been updated
             $this->addFlash(
-                'succès',
+                'updatespot',
                 'Le spot ' . $spot->getName() . ' a bien été modifié !'
             );
             return $this->redirectToRoute('list');
         }
 
-        // Je passe tous les spots à ma vue
+        // We return the form to the view
         return $this->render('back/spot/edit.html.twig', [
             'form' => $form,
             'spot' => $spot
@@ -232,11 +232,18 @@ class SpotController extends AbstractController
     {
         // Here we want delete a spot so no need to create anything
 
-        // Delete the spot
+        // Deletes the spot
         $entityManager->remove($spot);
         $entityManager->flush();
 
-        // Return user to the home page
+        // We will display a 'flash message' which will allow us to display whether or not the spot has been deleted
+        $this->addFlash(
+            'deletespot',
+            'Le spot ' . $spot->getName() . ' a bien été supprimé !'
+        );
+
+        // Returns user to the home page
         return $this->redirectToRoute('list');
     }
+
 }

@@ -20,6 +20,24 @@
 		{% endif %}
 	</h2>
 
+					{% for message in app.flashes('addpicture') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('updatepicture') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('deletepicture') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
 	<table class="table table-hover mt-4">
 		<thead>
 			<tr>

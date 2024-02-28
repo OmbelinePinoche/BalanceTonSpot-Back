@@ -19,6 +19,24 @@
 		{% endif %}
 	</h2>
 
+					{% for message in app.flashes('addcomment') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('updatecomment') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('deletecomment') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
 	<table class="table table-hover mt-4">
 		<thead>
 			<tr>

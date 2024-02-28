@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -45,6 +46,29 @@ class UserController extends AbstractController
         }
 
         return $this->json($user, 200, [], ['groups' => 'api_show_user']);
+    }
+
+    #[Route('/api/users', name: 'api_add_user', methods: ['POST'])]
+    public function new(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager, User $user): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = new User();
+        $user->setEmail($data['email']);
+        $user->setPseudo($data['username']);
+
+        // Hash password
+        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
+
+        // Define the user role
+        $user->setRoles($data['roles']);
+
+        // We need to persist the user entity to the database to save the data
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Utilisateur créé avec succès'], 201);
     }
 
     #[Route('/api/user', name: 'api_edit_user', methods: ['PUT'])]
