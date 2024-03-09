@@ -54,3 +54,7 @@ php bin/console make:migration
 ```bash
 php -S 0.0.0.0:8080 -t public
 ```
+## commande pour générer des tokens
+```bash
+php bin/console lexik:jwt:generate-keypair
+```
