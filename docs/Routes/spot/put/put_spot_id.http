@@ -1,0 +1,8 @@
+PUT http://0.0.0.0:8080/api/spot/vars-park HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDgwMDE1NDAsImV4cCI6MTcwODAwNTE0MCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQGFkbWluLmZyIn0.Y_Eu7os95FHX3v-cGCEjK3TjtRafUjQXxO-9KwKsF6T5S9CLPWEvMaCQ7Nm4dUL1VkUkOftO_kSBjrs7dts88WbGHbHjmm-JoZ8DCtFRW9UBeTB9TF6fgpEZaYy5T9XOkv3--Zm6kYfjniGq1KrUcHwMHGt2eghj5FW5ga1CuaPqE7zR8rwb5WJoHriHLlu6tWFrBwmO48NCYnw_WRLMIrtzZEOO8zxhbrxzlq5emKqoDTj6HuJzivm3EfUIL3V-_SaMBD3UuaAsemnQY_Mqa1mS_8gbpOkrRF8kR2PH-mI9P2IYuRacsJp87U5h0gAVZakxs5OrhpmGCbAYgT7_3Q
+
+{
+    "name": "Vars Park"
+}
+

@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+	<div class="container-xl bg-light p-5 border-top">
+		<div class="row mb-2">
+			<div class="col-12 col-lg-3">
+				<ul class="d-flex flex-column flex-wrap list-unstyled justify-content-center"></br>
+			</br>
+		</br>
+		<a href="{{ path('sort_comment', {'sortBy': 'spot'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par spot</a>
+		<a href="{{ path('sort_comment', {'sortBy': 'date'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par date</a>
+		<a href="{{ path('sort_comment', {'sortBy': 'user'}) }}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Trier par pseudo</a>
+</div>
+<div class="col-12 col-lg-9">
+	<h2 class="text-muted fw-bold mb-4">Les commentaires
+		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			<a href="{{path('add_comment')}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Ajouter un commentaire</a>
+		{% endif %}
+	</h2>
+
+					{% for message in app.flashes('addcomment') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('updatecomment') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+					{% for message in app.flashes('deletecomment') %}
+						<div class="alert alert-success" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+
+	<table class="table table-hover mt-4">
+		<thead>
+			<tr>
+				<th>Rider</th>
+				<th>Spot</th>
+				<th>Contenu du commentaire</th>
+				<th>Date d'ajout</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for comment in pagination %}
+				<tr>
+					<td>{% set fileName = comment.user.profilpicture|split('/')|last %}
+						<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du profil" class="img-fluid" style="max-width: 30px; max-height: 30px;">
+						{{ comment.user.pseudo }}</td>
+					<td>{{comment.spot.name }}</td>
+					<td>{{ comment.content }}</td>
+					<td>
+						{% if comment.date is not null %}
+							{{ comment.date.format('d-m-Y') }}
+						{% else %}
+							Date non disponible
+						{% endif %}
+					</td>
+					<td>
+						<a href="{{ path('show_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-info">Voir</a>
+					</td>
+					{% if is_granted('ROLE_USER') and comment.user == app.user %}
+						<td>
+							<a href="{{ path('edit_comment', {id: comment.id}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
+						</td>
+					{% endif %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<td>
+							<a href="{{ path('remove_comment', {id : comment.id})}}" class="btn btn-sm btn-outline-danger mx-1 mb-2">Supprimer</a>
+						</td>
+					{% endif %}
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="10">Aucun commentaire trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+ <div class="row justify-content-center">{{ knp_pagination_render(pagination) }}</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+PUT http://0.0.0.0:8080/api/user HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDg0MzQ5MjMsImV4cCI6MTcwODQzODUyMywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoicmlkZXJAdXNlci5mciJ9.dAlh2TtqJt41wg4OkUA7Is-9i_bAOQBDj-DoxfhLcXLThQZB46yHAPnV0lVV0F6BxwPslDxC4-_Cd7tu5VrFhgwLlHibJ_31yIf5ONVhmSqiDAYz2_QoeJdyXEcuiDSN-mWs7xKxWUe4GGwHCWEUXnsqjeR-3oOOWeVkwQCE78-nexI1g-MArSFVbsUIuf1hDLNjgif3W15y0iUM32KS4_RuS9Kkwy_ySfjtllYng5FAqztVjUc5YInhe5iK3nlquganGIKHcZcpsV8ma2ufHu5yAx_amWvH2kJvFxR-o0qTuksY_1pSlyJV_rC2fIfmbyQHzO5wgrm5qUv0vZAa0A
+
+{
+    "pseudo": "rider"
+}

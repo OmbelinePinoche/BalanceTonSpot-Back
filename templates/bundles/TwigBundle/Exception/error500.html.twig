@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6 bg-light p-4 rounded shadow">
+				<h2>Oops! Une erreur est survenue!</h2>
+				<p>La requête que vous tentez d'envoyer ne correspond pas aux paramètres attendus.</p>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+				<a href="{{ path('list') }}" class="btn btn-primary">Retour à la page d'accueil</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

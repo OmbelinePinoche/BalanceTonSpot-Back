@@ -1,0 +1,8 @@
+POST http://0.0.0.0:8080/api/spot/bercy/comments HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MDg1MjkwMDEsImV4cCI6MTcwODUzMjYwMSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoicmlkZXJAdXNlci5mciJ9.ACfcSMa4yU9tHrPsMyeg__JgE5xHqWsGKEZK5XjjTG3Ly0f68R4v7ljNtTwiBS6AvKWoosegdalNFlO3ScC-MOqEH9X4VwLAtqOCPpS8QXk6iDMX2pS_XHCFheRUiPmBzX4Txx99cQ8a5iDd-19jHP3yrfLP9kPlpIrRU4ZnDwHlGyxP4Hvy64GgCDC9cTacwgx51SCAzaYuQUkZbmOUOGHLD7hQQpTgXckYHodO9iwubNWzpkxR8xZbcD56y8fv1Y36Qa34mhcFarJkfSSHWnFVhQkW38SU_FM4fvsS1G4JAUbZ55y3iodcgd2i_2wrObuZoPdRL2GiSukH1WQ9lw
+
+{
+    "content": "blabla",
+    "rating": "4"
+}

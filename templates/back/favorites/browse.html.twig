@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<div class="container-xl bg-light p-5 border-top">
+
+        <div class="row mb-2">
+
+            <h2 class="text-muted fw-bold mb-4">Mes spots</h2>
+
+
+				<table class="table table-hover mt-4">
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Description</th>
+							<th>Image</th>
+							<th>Ville</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for spot in favorites %}
+							<tr>
+								<td>{{ spot.name }}</td>
+								<td>{{ spot.description }}</td>
+								<td>
+									{% if spot.picture %}
+										{% set fileName = spot.picture|split('/')|last %}
+										<img src="{{ asset('uploads/' ~ fileName) }}" alt="Image du spot" class="img-fluid" style="max-width: 200px; max-height: 200px;">
+									{% else %}
+										Aucune image disponible
+									{% endif %}
+								</td>
+								<td>{{ spot.location.name }}</td>
+								<td>
+									<a href="{{ path('show', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Voir</a>
+								</td>
+								{% if is_granted('ROLE_ADMIN') %}
+									<td>
+										<a href="{{ path('edit', {slug : spot.slug}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
+									</td>
+								{% endif %}
+								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+								<td>
+									<a href="{{path('remove_favorites', {id: spot.id}) }}" class="btn btn-sm btn-outline-info">Retirer des favoris</a>
+								</td>
+								{% endif %}
+							</tr>
+
+						{% else %}
+							<tr>
+								<td colspan="10">Aucun spot en favoris</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+        <div class="col">
+            <a href="{{ path('clear_favorites') }}" class="btn btn-danger btn-sm" onclick="return confirm('Vider votre liste de favoris?');">Vider la liste</a>
+        </div>
+
+    </div>
+{% endblock %}

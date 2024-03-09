@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+	<div class="container mt-5">
+		<div class="col-mb-4 bg-light p-4 rounded shadow">
+			<h2 class="text-muted fw-bold mb-4">Ajouter un commentaire</h2>
+
+			{{ form_start(form) }}
+			<div class="form-group">
+				{{ form_label(form.spot) }}
+				{{ form_widget(form.spot, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.content) }}
+				{{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.rating) }}
+				{{ form_widget(form.rating, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.date) }}
+				{{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.user) }}
+				{{ form_widget(form.user, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="form-group">
+				{{ form_widget(form.Ajouter, {'attr': {'class': 'btn btn-primary'}}) }}
+			</div>
+			{{ form_end(form) }}
+
+			<a href="{{ path('list_comment') }}" class="btn btn-secondary">Retour à la liste des commentaires</a>
+		</div>
+	</div>
+{% endblock %}

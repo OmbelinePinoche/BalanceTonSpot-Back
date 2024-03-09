@@ -1,0 +1,56 @@
+/* Responsive Styles for Small Screens */
+@media(max-width: 576px) {
+    .col-12 {
+        width: 100%;
+    }
+}
+
+/* Responsive Styles for Medium Screens */
+@media(min-width: 577px) and(max-width: 768px) {
+    .col-lg-3 {
+        width: 100%;
+    }
+}
+
+/* Responsive Styles for Large Screens */
+@media(min-width: 768px) {
+    .col-lg-9 {
+        width: 100%;
+    }
+}
+
+/* Custom styles for modern pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li {
+    margin: 0 2px;  /* Adjusted margin for a more compact layout */
+}
+
+.pagination a, .pagination span {
+    display: block;
+    padding: 2px 4px;  /* Adjusted padding for a more compact layout */
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.pagination .active span {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

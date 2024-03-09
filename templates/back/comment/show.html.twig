@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+	<div class="container mt-5">
+		<div class="col-mb-4 bg-light p-4 rounded shadow">
+			<h2 class="text-muted fw-bold mb-4">Commentaire de
+				<i>
+					{{ comment.user.pseudo }}</i>
+			</h2>
+
+			<table class="table table-hover mt-4">
+				<tbody>
+					<tr>
+						<th>Id</th>
+						<td>{{comment.id }}</td>
+					</tr>
+					<tr>
+						<th>Spot</th>
+						<td>{{comment.spot.name }}</td>
+					</tr>
+					<tr>
+						<th>Contenu</th>
+						<td>{{ comment.content }}</td>
+					</tr>
+					<tr>
+						<th>Note</th>
+						<td>{{ comment.rating }}</td>
+					</tr>
+					<tr>
+						<th>Ajouté le</th>
+						<td>
+							{% if comment.date is not null %}
+								{{ comment.date.format('d-m-Y') }}
+							{% else %}
+								Date non disponible
+							{% endif %}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="buttons-container">
+				<a href="{{ path('list_comment') }}" class="btn btn-secondary">Retour à la liste</a>
+				{% if is_granted('ROLE_USER') and comment.user == app.user %}
+					<a href="{{ path('edit_comment', {id: comment.id}) }}" class="btn btn-primary">Modifier</a>
+				{% endif %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<td>
+						<a href="{{ path('remove_comment', {id : comment.id})}}" class="btn btn-danger">Supprimer ce commentaire</a>
+					</td>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
