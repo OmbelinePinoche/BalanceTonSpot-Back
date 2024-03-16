@@ -51,15 +51,15 @@ security:
         - { path: ^/api/user,       roles: ROLE_USER }
         - { path: ^/api/users,       roles: ROLE_ADMIN }
         - { path: ^/api/secure,       roles: ROLE_USER }
-        - { path: ^/admin/edit, roles: ROLE_ADMIN }
-        - { path: ^/admin/new, roles: ROLE_ADMIN }
-        - { path: ^/admin/remove, roles: ROLE_ADMIN }
         - { path: ^/home, roles: ROLE_USER }
         - { path: ^/pictures, roles: ROLE_USER }
         - { path: ^/locations, roles: ROLE_USER }
         - { path: ^/sports, roles: ROLE_USER }
         - { path: ^/comments, roles: ROLE_USER }
         - { path: ^/users, roles: ROLE_ADMIN }
+        - { path: ^/admin/edit, roles: ROLE_ADMIN }
+        - { path: ^/admin/new, roles: ROLE_ADMIN }
+        - { path: ^/admin/remove, roles: ROLE_ADMIN }
 
     role_hierarchy:
         # ROLE_ADMIN has all ROLE_USER's rights + his own

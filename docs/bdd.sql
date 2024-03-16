@@ -24,7 +24,6 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`id`, `content`, `spot_id`, `date`, `rating`, `user_id`) VALUES
 (4,	'On m\'avait recommandée ce spot, je comprends pourquoi maintenant! Il est INCROYABLE!',	1,	'2023-02-12',	5.0,	2),
-(7,	'C\'est quoi cette blague lol',	4,	'2024-02-14',	2.0,	2),
 (9,	'Là je dis oui!',	5,	'2024-02-14',	5.0,	2),
 (10,	'Cété trop cool mème que je suis tombé qu\'une fois et ma maman a dit que GT trop fort!',	1,	'2024-02-01',	4.0,	21),
 (12,	'ETOILEU DES NEIIIGEEUUUU PAYS MERVEILLEUUUUX',	13,	'2024-02-05',	5.0,	4),
@@ -67,7 +66,6 @@ INSERT INTO `location` (`id`, `name`, `slug`) VALUES
 (11,	'Les 2 Alpes',	'les-2-alpes'),
 (12,	'Serre-Chevalier',	'serre-chevalier'),
 (13,	'Le Grand Bornand',	'le-grand-bornand'),
-(20,	'Angers',	'angers'),
 (21,	'Clermont-Ferrand',	'clermont-ferrand'),
 (22,	'Nice',	'Nice'),
 (24,	'Rennes',	'Rennes'),
@@ -77,7 +75,8 @@ INSERT INTO `location` (`id`, `name`, `slug`) VALUES
 (28,	'Les 7 Laux',	'Les-7-Laux'),
 (29,	'Saint-Lary',	'Saint-Lary'),
 (30,	'Chamrousse',	'Chamrousse'),
-(31,	'Toulouse',	'Toulouse');
+(31,	'Toulouse',	'Toulouse'),
+(33,	'Méribel',	'Meribel');
 
 DROP TABLE IF EXISTS `picture`;
 CREATE TABLE `picture` (
@@ -96,7 +95,6 @@ INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
 (3,	'original-filename-358d5cd89dfc73c5.jpg',	'original-filename-358d5cd89dfc73c5.jpg',	3),
 (4,	'Bercy',	'original-filename-c04157b5241767b1.jpg',	4),
 (5,	'EGP18',	'original-filename-625a48c751ab8d2f.jpg',	5),
-(6,	'Jemmapes',	'original-filename-cf828ae399fb8f10.jpg',	6),
 (7,	'Le_Hangar',	'original-filename-0aa1d706b87c850c.jpg',	7),
 (8,	'HDS',	'original-filename-1e43f28e385025fa.jpg',	8),
 (9,	'Le_Havre',	'original-filename-70509a0230c75f36.jpg',	9),
@@ -111,7 +109,6 @@ INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
 (18,	'La_Cluzaz_3',	'original-filename-78c8e8ff9d85add1.jpg',	3),
 (19,	'Bercy_2',	'original-filename-772e6bb2903bb730.jpg',	4),
 (20,	'EGP18_2',	'original-filename-b3713e18536d15cd.jpg',	5),
-(21,	'Jemmapes_2',	'original-filename-7d39a84c549fcd26.jpg',	6),
 (22,	'Le_Hangar_2',	'original-filename-c9601bfcfd6bc827.jpg',	7),
 (23,	'HDS_2',	'original-filename-4f93350a0c1b6e18.jpg',	8),
 (24,	'Le_Havre_2',	'original-filename-4d2ab59fd67866ce.jpg',	9),
@@ -126,7 +123,6 @@ INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
 (33,	'La_Cluzaz_3',	'original-filename-3030c7f7d5d87b86.jpg',	3),
 (34,	'Bercy_3',	'original-filename-49b8c8c33bb01169.jpg',	4),
 (35,	'EGP18_3',	'original-filename-eed8f6de7c7f184d.jpg',	5),
-(36,	'Jemmapes_3',	'original-filename-3d2d89987de14f08.jpg',	6),
 (37,	'Le_Hangar_3',	'original-filename-1bab05fcce476559.jpg',	7),
 (38,	'HDS_3',	'original-filename-2717645a08e87c44.jpg',	8),
 (39,	'Le_Havre_3',	'original-filename-bdd8d57b2936bc4c.jpg',	9),
@@ -174,7 +170,10 @@ INSERT INTO `picture` (`id`, `name`, `path`, `spot_id`) VALUES
 (98,	'Ponts_Jumeaux_3',	'original-filename-43bf82c87b4ba5e2.jpg',	60),
 (99,	'Avoriaz',	'original-filename-ea2ceae86b686052.jpg',	61),
 (100,	'Avoriaz_2',	'original-filename-c2dfd3011f4e5756.jpg',	61),
-(101,	'Avoriaz_3',	'original-filename-1f5469a787002f83.jpg',	61);
+(101,	'Avoriaz_3',	'original-filename-1f5469a787002f83.jpg',	61),
+(104,	'Jemmapes',	'original-filename-5cef74ea1b209149.jpg',	68),
+(105,	'Jemmapes_2',	'original-filename-e735ed45ce0bfba0.jpg',	68),
+(106,	'Jemmapes_3',	'original-filename-b13bb0b1b0ed65cc.jpg',	68);
 
 DROP TABLE IF EXISTS `sport`;
 CREATE TABLE `sport` (
@@ -207,9 +206,8 @@ INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `address`, `rating`,
 (1,	'Isola 2000',	'Le snowpark d\'Isola 2000 vous propose une expérience exceptionnelle à 2300 mètres d’altitude sur le secteur Marmotte. Découvrez de nouvelles sensations de glisse tous les jours de 10h à 16h dans cet espace ludique et technique, entretenu quotidiennement pour votre plaisir.',	'original-filename-8ba337c43db7325c.jpg',	'Station d\'Isola',	4.5,	1,	'isola-2000'),
 (2,	'Vars Park',	'Il y en a pour tout le monde. Le Varspark met un point d\'honneur à démocratiser la pratique du freestyle aussi bien pour les débutants que les spécialistes de la discipline.',	'original-filename-1c89f1151dbeae60.jpg',	'Station de Vars',	NULL,	2,	'vars-park'),
 (3,	'LCZ Park',	'Le snowpark de La Cluzaz propose un espace ludique à tous les amateurs de freestyle ! Une multitude de modules est à disposition durant toute la saison pour permettre aux skieurs les plus fous d’exprimer toute leur créativité.',	'original-filename-51c0d06b199f1ea7.jpg',	'Station de La Clusaz',	5.0,	3,	'lcz-park'),
-(4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'original-filename-b34fffe4e998589c.jpg',	'Rue Raymond Aron, 75012 Paris',	3.0,	4,	'bercy'),
-(5,	'EGP18',	'C\'est désormais le plus gros skatepark parisien. Il se compose de parks, de 2  bowls en béton et d\'une fin-box permettant à des patineurs de niveaux variés de rider en indoor pour urface totale de 3545 m².',	'original-filename-b98a56ca6afa7135.jpg',	'Imp. des Fillettes, 75018 Paris',	5.0,	4,	'egp18'),
-(6,	'Jemmapes',	'Bien connu de la faune locale à roulettes, le skatepark du quai de Jemmapes fait partie des spots parisiens incontournables. Plutôt pas trop mal situé au bord du canal Saint Martin, assez ensoleillé, bien fréquenté en journée, ce petit park de ville aura de quoi vous combler pour démarrer/clôturer votre session entre potos.',	'original-filename-c47dee0d955d4068.jpg',	'140 quai de Jemmapes, 75010 Paris',	NULL,	4,	'jemmapes'),
+(4,	'Bercy',	'3 mois après le début des travaux, le skatepark de Bercy est ré-ouvert. Belle performance quand on se souvient des déboires des travaux de couverture du skatepark Jules Noël. Notre skatepark de bercy est maintenant doté d\'un toit... fini les dimanches pluvieux sans session.',	'original-filename-b34fffe4e998589c.jpg',	'Rue Raymond Aron, 75012 Paris',	0.0,	4,	'bercy'),
+(5,	'EGP18',	'C\'est désormais le plus gros skatepark parisien. Il se compose de parks, de 2  bowls en béton et d\'une fin-box permettant à des patineurs de niveaux variés de rider en indoor pour urface totale de 3545 m².',	'original-filename-576244f19dacbab4.jpg',	'Imp. des Fillettes, 75018 Paris',	5.0,	4,	'egp18'),
 (7,	'Le Hangar',	'Un skatepark indoor conçu à partir de matériaux de récupération pour rider proprement sur un florilège de modules : bowl en bois, big ramp, street area… Au Hangar, il y a de quoi faire le plein de sensations ou de frayeurs, ça dépendra de vous.',	'original-filename-0e0534c4a206be9b.jpg',	'9 allée des Vinaigriers - 44300 Nantes',	NULL,	5,	'le-hangar'),
 (8,	'Hangar Darwin Skatepark',	'Le skatepark Le Hangar est un skatepark couvert associatif de 5300 m², géré par la Ligue de l\'Enseignement - FAL 44. Accueillant des particuliers et des groupes, il propose des stages, des cours et organise des événements.',	'original-filename-80bcb63f6ce21e9f.jpg',	'87 Quai des Queyries, 33100 Bordeaux',	NULL,	6,	'hangar-darwin-skatepark'),
 (9,	'Skatepark du Havre',	'C\'est le plus grand skatepark gratuit à ciel ouvert en France. Elaboré par des spécialistes, le skatepark a été pensé pour offrir une aire de jeux adaptée se prêtant au mieux à l\'exercice de la glisse. Il peut se vanter d\'offrir une aire de street de 600 m² avec des plans inclinés, mais aussi un bowl de 1200 m², soit une aire totale de 1800 m² pour s\'amuser, quelque soit son niveau ou sa pratique.',	'original-filename-f703817580f61b68.jpg',	'27 Boulevard Albert 1er, 76600 Le Havre',	NULL,	7,	'skatepark-du-havre'),
@@ -231,7 +229,8 @@ INSERT INTO `spot` (`id`, `name`, `description`, `picture`, `address`, `rating`,
 (58,	'Sunset Park',	'Le Sunset Park de Chamrousse est réputé pour ses superbes sessions au coucher du soleil (d’où son nom). Ce spot se compose de 4 espaces : le Snowpark, le Kid Park, l’Initiatic Park et le Family Park qui correspondent à des pratiques et niveaux variés.\r\nOutre une vue imprenable sur Grenoble, ce lieu magique est principalement connu pour ses modules très ludiques et son ambiance ultra fun. Un park conçu pour s’amuser, que ce soit entre potes ou en famille et le tout dans un espace sécurisé. La petite station iséroise joue dans la cour des grands avec ce spot composé d’une trentaine de modules en tout genre.',	'original-filename-ebf7c77ecb254b0a.jpg',	'Station de Chamrousse',	NULL,	30,	'Sunset-Park'),
 (59,	'Les Fougères',	'Un bien beau skatepark à l\'Est de Paris, porte des Lilas. Le spot est très street, beaucoup de curbs.\r\nPas mal de style aussi : original dans sa construction, avec des modules qu\'on ne voit pas partout. Un look bien intégré intégré au paysage urbain, et une conception franchement sympa.',	'original-filename-297cdad7f9df3f3f.jpg',	'26 Rue de Noisy-le-Sec, 75020 Paris',	3.7,	4,	'Les-Fougeres'),
 (60,	'Ponts-Jumeaux',	'Ce skatepark en béton propose une surface de 1400m². Il contient une partie rampe avec un grand bowl (profondeur : 1m80) composé d’un coping (1m20) et d’un ilot central, ainsi qu\'une partie street en longueur avec des ledges et rails en descente sur deux niveaux. Il y a deux niveaux sur ce parcours. La partie inférieure contient des ledges en descente en arêtes, deux longs ledges (30cm et 40cm), une barre, table à manual et un quarter en bout de spot.',	'original-filename-d01f0bb0b58aaeba.jpg',	'Port de l\'Embouchure, 31200 Toulouse',	4.0,	31,	'Ponts-Jumeaux'),
-(61,	'Avoriaz',	'Créé en 1993, le spot d’Avoriaz est non seulement le 1er snowpark a avoir vu le jour en France Mais c’est surtout le plus écologique. Notamment grâce à Jake Burton qui a pu y developper le projet “The Stash” avec des modules en bois et murs végétaux entre autres. Avoriaz est est aussi réputée comme la station qui a le plus investi dans le snowboard ces 20 dernières années avec principalement le park d’Arare ou celui de La Chapelle qui feront votre bonheur quel que soit votre niveau et votre âge.',	'original-filename-d129fcf6febd508f.jpg',	'Station d\'Avoriaz',	NULL,	27,	'Avoriaz');
+(61,	'Avoriaz',	'Créé en 1993, le spot d’Avoriaz est non seulement le 1er snowpark a avoir vu le jour en France Mais c’est surtout le plus écologique. Notamment grâce à Jake Burton qui a pu y developper le projet “The Stash” avec des modules en bois et murs végétaux entre autres. Avoriaz est est aussi réputée comme la station qui a le plus investi dans le snowboard ces 20 dernières années avec principalement le park d’Arare ou celui de La Chapelle qui feront votre bonheur quel que soit votre niveau et votre âge.',	'original-filename-d129fcf6febd508f.jpg',	'Station d\'Avoriaz',	NULL,	27,	'Avoriaz'),
+(68,	'Jemmapes',	'Bien connu de la faune locale à roulettes, le skatepark du quai de Jemmapes fait partie des spots parisiens incontournables. Plutôt pas trop mal situé au bord du canal Saint Martin, assez ensoleillé, bien fréquenté en journée, ce petit park de ville aura de quoi vous combler pour démarrer/clôturer votre session entre potos.',	'original-filename-3f266477dd504fe9.jpg',	'140 quai de Jemmapes, 75010 Paris',	NULL,	4,	'Jemmapes');
 
 DROP TABLE IF EXISTS `spot_sport`;
 CREATE TABLE `spot_sport` (
@@ -250,7 +249,6 @@ INSERT INTO `spot_sport` (`spot_id`, `sport_id`) VALUES
 (3,	2),
 (4,	1),
 (5,	1),
-(6,	1),
 (7,	1),
 (8,	1),
 (9,	1),
@@ -272,7 +270,8 @@ INSERT INTO `spot_sport` (`spot_id`, `sport_id`) VALUES
 (58,	2),
 (59,	1),
 (60,	1),
-(61,	2);
+(61,	2),
+(68,	1);
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -310,4 +309,4 @@ CREATE TABLE `user_spot` (
 INSERT INTO `user_spot` (`user_id`, `spot_id`) VALUES
 (2,	7);
 
--- 2024-02-26 13:38:33
+-- 2024-03-14 16:43:05

@@ -67,7 +67,7 @@ class FavoritesController extends AbstractController
 
         // Adds a flash message indicating the spot has been added to favorites
         $this->addFlash(
-            'success',
+            'addfavorites',
             'Le spot ' . $spot->getName() . ' a bien été ajouté dans les favoris !'
         );
 
