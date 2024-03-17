@@ -72,7 +72,7 @@ class FavoritesController extends AbstractController
     }
 
     #[Route('/api/favorites/{spotId}', name: 'api_remove_favorites', methods: ['DELETE'])]
-    public function removefavorite(EntityManagerInterface $entityManager, SpotRepository $spotRepository, $spotId): Response
+    public function removeFavorite(EntityManagerInterface $entityManager, SpotRepository $spotRepository, $spotId): Response
     {
         /** @var User $user */
         $user = $this->getUser();

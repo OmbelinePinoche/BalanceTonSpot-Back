@@ -49,8 +49,18 @@ class CommentController extends AbstractController
         // We need to search the spot in the repository thanks to the property "slug"
         $spot = $spotRepository->findOneBy(['slug' => $slug]);
 
-        // Gets the comment associated with the spot
+        // Checks if the spot exists
+        if (!$spot) {
+            return $this->json(['message' => 'Aucun spot associé à ce nom'], 404);
+        }
+
+        // Calls the function to get the comments from the spot entity
         $comments = $spot->getComments();
+
+        // Checks if any comment exists
+        if (!$comments) {
+            return $this->json(['message' => 'Aucun commentaire n\a été ajouté à ce spot'], 404);
+        }
 
         // We want to return the comments to the view
         // $this->json method allows the conversion of a PHP object to a JSON object
@@ -85,31 +95,8 @@ class CommentController extends AbstractController
         );
     }
 
-    #[Route('/api/spot/{slug}/comments', name: 'api_comment_by_spot', methods: ['GET'])]
-    public function listByComment(SpotRepository $spotRepository, $slug): Response
-    {
-        // Gets the comments from the repository searching with the "content" param
-        $spot = $spotRepository->findOneBy(['slug' => $slug]);
-
-        // Checks if the spot exists
-        if (!$spot) {
-            return $this->json(['message' => 'Aucun spot associé à ce nom'], 404);
-        }
-
-        // Calls the function to get the comments from the spot entity
-        $comments = $spot->getComments();
-
-        // Checks if any comment exists
-        if (!$comments) {
-            return $this->json(['message' => 'Aucun commentaire n\a été ajouté à ce spot'], 404);
-        }
-
-        // Returns all the comments according to the comment
-        return $this->json($comments, 200, [], ['groups' => 'api_comment_by_spot']);
-    }
-
     #[Route('/api/spot/{slug}/comments', name: 'api_add_comment', methods: ['POST'])]
-    public function addComment(Request $request, EntityManagerInterface $entityManager, $slug, SpotRepository $spotRepository): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, $slug, SpotRepository $spotRepository): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -191,7 +178,7 @@ class CommentController extends AbstractController
     }
 
     #[Route('/api/secure/comment/{id}', name: 'api_comment_delete', methods: ['DELETE'])]
-    public function removeComment(Comment $comment = null, EntityManagerInterface $entityManager): Response
+    public function delete(Comment $comment = null, EntityManagerInterface $entityManager): Response
     {
         /** @var User $user */
         $user = $this->getUser();

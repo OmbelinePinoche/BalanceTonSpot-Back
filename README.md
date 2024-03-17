@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-# BalanceTonSpot-Backoffice
-Api et backoffice de mon projet professionnel "Balance Ton Spot" (formation O'Clock)
-=======
 # Balance Ton Spot - Backend
 
 Bienvenue dans le backend de l'application Balance Ton Spot ! Cette application permet aux utilisateurs de découvrir les spots de skateboard et snowboard près de chez eux!
 
 ## Prérequis
 
-- PHP 5.4
+- PHP 8.2
 - Symfony 7.0
 - Base de données (MySQL)
 
@@ -44,20 +40,17 @@ Bienvenue dans le backend de l'application Balance Ton Spot ! Cette application 
 
 Votre backend Symfony devrait être accessible à l'adresse http://localhost:8080.
 
-## Endpoints
+## Endpoints principaux
 
 - `/api/spots` - GET - Lister tous les spots
 - `/api/spot/{slug}` - GET - Accéder à un spot
 - `/api/location/{slug}/spots` - GET - Lister tous les spots d’une ville
-- `/api/sports` - GET - Lister tous les sports
-- `/api/sport/{slug}` - GET - Accéder à un sport
-- `/api/sport/{slug}/spots` - GET - Lister tous les spots en fonction du sport
-- `/api/locations` - GET - Lister toutes les villes
-- `/api/location/{slug}` - GET - Accéder à une ville
-- `/api/comments` - GET - Lister tous les commentaires
+- `/api/sport/{slug}/spots` - GET - Lister les spots en fonction du sport
+- `/api/spot/{slug}/comments` - POST - Ajouter un commentaire
+- `/api/favorites/{spotId}` - POST -  Ajouter un spot aux favoris
+- `/api/profile/upload` - PUT -  Mettre à jour la photo de profil utilisateur
 
 ## Documentation
 
 Vous pouvez retrouver quelques commandes pour l'installation de dépendances Symfony ou la création de classes dans le fichier `commandes.md` du dossier `docs`.
-Pour plus d'informations sur l'utilisation de chaque endpoint, veuillez consulter le fichier `endpoints.md`, également dans le dossier `docs`.
->>>>>>> origin/master
+Pour consulter l'ensemble des endpoints, veuillez consulter le fichier `endpoints.md`, également dans le dossier `docs`.
