@@ -58,7 +58,7 @@
 				</table>
 
 				<div class="buttons-container">
-					<a href="{{ path('list_user') }}" class="btn btn-secondary">Retour à la liste</a>
+					<a href="{{ path('list_user') }}" class="btn btn-secondary" style="background-color: #897b68; border: #897b68;">Retour à la liste</a>
 
 					{% if is_granted('ROLE_USER') and app.user == user %}
 						<a href="{{ path('edit_user', {'pseudo': user.pseudo}) }}" class="btn btn-primary">Modifier</a>

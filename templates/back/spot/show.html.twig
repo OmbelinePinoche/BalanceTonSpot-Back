@@ -91,21 +91,21 @@
 				</tbody>
 			</table>
 			<div class="buttons-container">
-				<a href="{{ path('list') }}" class="btn btn-secondary">Retour à la liste</a>
+				<a href="{{ path('list') }}" class="btn btn-secondary" style="background-color: #897b68; border: #897b68;">Retour à la liste</a>
 				{# Checks if the user has admin role to grant access to the udpate button #}
 				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('edit', {'slug': spot.slug}) }}" class="btn btn-primary">Modifier</a>
+					<a href="{{ path('edit', {'slug': spot.slug}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
 				{% endif %}
 				{% if currentIndex > 0 %}
 					{# If not the first spot, displays the button "Précédent" #}
-					<a href="{{ path('show', {'slug': spots[currentIndex - 1].slug}) }}" class="btn btn-primary">Précédent</a>
+					<a href="{{ path('show', {'slug': spots[currentIndex - 1].slug}) }}" class="btn btn-primary" style="background-color: #897b68; border: #897b68;">Précédent</a>
 				{% endif %}
 				{% if currentIndex + 1 < spotsCount %}
 					{# If there is a spot after the current one, displays the button "Suivant" #}
-					<a href="{{ path('show', {'slug': spots[currentIndex + 1].slug}) }}" class="btn btn-primary">Suivant</a>
+					<a href="{{ path('show', {'slug': spots[currentIndex + 1].slug}) }}" class="btn btn-primary" style="background-color: #897b68; border: #897b68;">Suivant</a>
 				{% else %}
 					{# If the last spot, links to the first spot #}
-					<a href="{{ path('show', {'slug': spots[0].slug}) }}" class="btn btn-primary">Retour au début</a>
+					<a href="{{ path('show', {'slug': spots[0].slug}) }}" class="btn btn-primary" style="background-color: #897b68; border: #897b68;">Retour au début</a>
 				{% endif %}
 			</div>
 		</div>

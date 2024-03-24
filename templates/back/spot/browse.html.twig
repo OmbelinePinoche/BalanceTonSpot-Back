@@ -18,9 +18,9 @@
 						<h3 class="text-center text-muted fw-bold mb-4">Par ville</h3>
 
 						<select class="form-select mb-4" name="cities" id="city-select">
-							<option value="" class="btn btn-sm btn-outline-danger">-- Sélectionner une ville --</option>
+							<option value="" class="btn btn-sm btn-outline-danger" style="color: #17a2b8;">-- Sélectionner une ville --</option>
 							{% for location in locations %}
-								<option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger">{{ location.name }}</option>
+								<option value="{{ path('show_by_location', {'slug': location.slug}) }}" class="btn btn-sm btn-outline-danger" style="color: #17a2b8;">{{ location.name }}</option>
 							{% endfor %}
 						</select>
 
@@ -38,9 +38,9 @@ window.location.href = selectedUrl;
 
 					<h3 class="text-center text-muted fw-bold mb-4">Par sport</h3>
 					<select class="form-select" name="cities" id="sport-select">
-						<option value="" class="btn btn-sm btn-outline-danger d-flex justify-content-center">-- Sélectionner un sport --</option>
+						<option value="" class="btn btn-sm btn-outline-danger d-flex justify-content-center" style="color: #17a2b8;">-- Sélectionner un sport --</option>
 						{% for sport in sports %}
-							<option value="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger">{{ sport.name }}</option>
+							<option value="{{ path('show_by_sport', {'slug': sport.slug}) }}" class="btn btn-sm btn-outline-danger" style="color: #17a2b8;">{{ sport.name }}</option>
 						{% endfor %}
 					</select>
 					<br>

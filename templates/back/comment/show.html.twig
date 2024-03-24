@@ -40,9 +40,9 @@
 			</table>
 
 			<div class="buttons-container">
-				<a href="{{ path('list_comment') }}" class="btn btn-secondary">Retour à la liste</a>
+				<a href="{{ path('list_comment') }}" class="btn btn-secondary" style="background-color: #897b68; border: #897b68;">Retour à la liste</a>
 				{% if is_granted('ROLE_USER') and comment.user == app.user %}
-					<a href="{{ path('edit_comment', {id: comment.id}) }}" class="btn btn-primary">Modifier</a>
+					<a href="{{ path('edit_comment', {id: comment.id}) }}" class="btn btn-sm btn-outline-info">Modifier</a>
 				{% endif %}
 				{% if is_granted('ROLE_ADMIN') %}
 					<td>
